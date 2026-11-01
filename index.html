@@ -4,22 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#09080b">
-  <title>SUKI</title>
-  <meta name="description" content="SUKI - all-in-one Discord bot">
+  <meta name="theme-color" content="#080709">
+  <title>SUKI — easy utility bot</title>
+  <meta name="description" content="all-in-one Discord bot">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
       color-scheme: dark;
-      --bg: #09080b;
-      --line: rgba(255, 255, 255, .10);
-      --text: #f4f2f4;
-      --muted: #89858d;
-      --accent: #c94b59;
+      --bg: #080709;
+      --text: #ffffff;
+      --muted: #aaa5ad;
+      --accent: #b83d50;
+      --line: rgba(255,255,255,.10);
     }
 
     * {
@@ -33,13 +33,37 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(ellipse at 50% -20%, rgba(126, 35, 49, .16), transparent 52%),
-        radial-gradient(ellipse at 90% 75%, rgba(91, 48, 68, .07), transparent 40%),
-        var(--bg);
+      overflow-x: hidden;
+      background: var(--bg);
       color: var(--text);
       font-family: 'Space Grotesk', sans-serif;
       -webkit-font-smoothing: antialiased;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(100px);
+    }
+
+    body::before {
+      width: 650px;
+      height: 650px;
+      top: -300px;
+      left: -230px;
+      background: radial-gradient(circle, rgba(156,38,60,.45), rgba(91,20,38,.15) 45%, transparent 72%);
+    }
+
+    body::after {
+      width: 750px;
+      height: 750px;
+      right: -300px;
+      top: 180px;
+      background: radial-gradient(circle, rgba(133,35,55,.34), rgba(83,25,44,.12) 48%, transparent 72%);
     }
 
     a {
@@ -47,98 +71,187 @@
       text-decoration: none;
     }
 
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .light {
+      position: absolute;
+      width: 380px;
+      height: 900px;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: .15;
+      transform: rotate(35deg);
+    }
+
+    .light-one {
+      top: -480px;
+      left: 18%;
+      background: #d5b5c0;
+    }
+
+    .light-two {
+      top: 5%;
+      right: 8%;
+      background: #a32e49;
+      opacity: .18;
+    }
+
+    .light-three {
+      bottom: -650px;
+      left: 38%;
+      background: #c34b60;
+      opacity: .17;
+    }
+
     .shell {
-      width: min(960px, calc(100% - 40px));
+      width: min(1240px, calc(100% - 64px));
       margin: 0 auto;
     }
 
     header {
-      height: 76px;
-      display: flex;
+      height: 82px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
+      position: relative;
+      z-index: 10;
     }
 
     .brand {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: .19em;
+      gap: 11px;
+      width: fit-content;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.04em;
     }
 
     .mark {
-      width: 28px;
-      height: 28px;
+      width: 34px;
+      height: 34px;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(201, 75, 89, .35);
-      border-radius: 9px;
-      color: #d87881;
+      border: 1px solid rgba(201,75,89,.35);
+      border-radius: 11px;
+      color: #e28a96;
+      font-size: 17px;
+      background: linear-gradient(145deg, rgba(255,255,255,.13), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px rgba(255,255,255,.16), 0 0 24px rgba(160,48,65,.12);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 999px;
+      background: rgba(255,255,255,.055);
+      box-shadow: inset 0 1px rgba(255,255,255,.07), 0 8px 30px rgba(0,0,0,.15);
+      backdrop-filter: blur(22px);
+    }
+
+    .nav a {
+      padding: 10px 17px;
+      border-radius: 999px;
+      color: #c3bec7;
+      font-size: 12px;
+      font-weight: 600;
+      transition: color .2s ease, background .2s ease;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: white;
+      background: rgba(255,255,255,.09);
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .header-invite {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 42px;
+      padding: 0 19px;
+      border-radius: 999px;
+      color: #171317;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .header-invite:hover {
+      transform: translateY(-2px);
+      background: #eee8eb;
+    }
+
+    .header-invite span {
       font-size: 15px;
-      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025));
-      box-shadow: inset 0 1px rgba(255,255,255,.17), 0 0 18px rgba(160,48,65,.08);
-      backdrop-filter: blur(12px);
     }
 
     main {
-      min-height: calc(100vh - 76px);
-      display: grid;
-      place-items: center;
-      padding: 80px 0;
+      min-height: calc(100svh - 82px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 65px 0 110px;
     }
 
     .hero {
       width: 100%;
       text-align: center;
+      position: relative;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 13px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.035);
-      color: #b4afb7;
-      font: 10px 'DM Mono', monospace;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      box-shadow: inset 0 1px rgba(255,255,255,.08);
-      backdrop-filter: blur(14px);
+    .hero h1 {
+      max-width: 1050px;
+      margin: 0 auto;
+      font-size: clamp(48px, 8.5vw, 104px);
+      line-height: .99;
+      letter-spacing: -.085em;
+      font-weight: 700;
     }
 
-    h1 {
-      margin: 28px 0 14px;
-      font-size: clamp(68px, 13vw, 116px);
-      line-height: .92;
-      letter-spacing: -.095em;
-      font-weight: 800;
+    .hero h1 span {
+      display: block;
+      color: #fff;
     }
 
-    h1 span {
-      background: linear-gradient(180deg, #fff 8%, #e3dce0 55%, #a69aa2 100%);
+    .hero h1 .accent {
+      background: linear-gradient(100deg, #fff 5%, #e9dce0 55%, #c77b89 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 8px 28px rgba(255,255,255,.07));
     }
 
     .intro {
-      max-width: 440px;
-      margin: 0 auto;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.85;
+      max-width: 475px;
+      margin: 26px auto 0;
+      color: #c1bbc4;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     .actions {
       display: flex;
       justify-content: center;
-      gap: 10px;
+      align-items: center;
+      gap: 13px;
       margin-top: 30px;
       flex-wrap: wrap;
     }
@@ -147,276 +260,473 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      min-height: 43px;
-      padding: 0 17px;
-      border-radius: 11px;
-      font-size: 11px;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 23px;
+      border-radius: 999px;
+      font-size: 13px;
       font-weight: 700;
-      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
-      backdrop-filter: blur(14px);
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      backdrop-filter: blur(18px);
     }
 
     .button:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
     }
 
     .primary {
-      color: white;
-      border: 1px solid rgba(255,255,255,.22);
-      background: linear-gradient(145deg, #bd4b59, #963541);
-      box-shadow: inset 0 1px rgba(255,255,255,.24), 0 5px 20px rgba(120,35,48,.16);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      background: #a93448;
+      box-shadow: 0 5px 30px rgba(155,39,60,.22), inset 0 1px rgba(255,255,255,.18);
     }
 
     .primary:hover {
-      border-color: rgba(255,255,255,.35);
-      background: linear-gradient(145deg, #ce5967, #a13a49);
-      box-shadow: inset 0 1px rgba(255,255,255,.3), 0 7px 25px rgba(120,35,48,.24);
+      background: #c04459;
+      box-shadow: 0 8px 35px rgba(155,39,60,.35), inset 0 1px rgba(255,255,255,.2);
     }
 
     .secondary {
-      color: #d8d5da;
-      border: 1px solid rgba(255,255,255,.12);
-      background: linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.025));
-      box-shadow: inset 0 1px rgba(255,255,255,.10), 0 6px 20px rgba(0,0,0,.12);
+      color: #f0edf1;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(255,255,255,.065);
+      box-shadow: inset 0 1px rgba(255,255,255,.07);
     }
 
     .secondary:hover {
-      border-color: rgba(201,75,89,.35);
-      background: rgba(255,255,255,.075);
+      border-color: rgba(201,75,89,.4);
+      background: rgba(255,255,255,.10);
     }
 
-    .features {
-      padding-top: 85px;
-      padding-bottom: 110px;
-      border-top: 1px solid var(--line);
+    .button-arrow {
+      font-size: 16px;
+      opacity: .8;
+    }
+
+    .overview {
+      padding: 95px 0 115px;
+      border-top: 1px solid rgba(255,255,255,.09);
     }
 
     .section-heading {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 45px;
     }
 
     .section-heading h2 {
       margin: 0;
-      font-size: clamp(28px, 5vw, 42px);
-      letter-spacing: -.055em;
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: -.065em;
       font-weight: 700;
     }
 
     .section-heading p {
-      margin: 10px 0 0;
+      margin: 11px 0 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
     }
 
-    .feature-grid {
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .preview-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 245px;
+      padding: 27px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 19px;
+      background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018));
+      box-shadow: inset 0 1px rgba(255,255,255,.07), 0 10px 35px rgba(0,0,0,.10);
+      backdrop-filter: blur(20px);
+      transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(201,75,89,.35);
+      background: linear-gradient(145deg, rgba(201,75,89,.09), rgba(255,255,255,.025));
+      box-shadow: 0 15px 40px rgba(0,0,0,.2), inset 0 1px rgba(255,255,255,.10);
+    }
+
+    .preview-icon {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(201,75,89,.27);
+      border-radius: 12px;
+      color: #df8190;
+      background: rgba(201,75,89,.10);
+      font-size: 19px;
+    }
+
+    .preview-card h3 {
+      margin: 0 0 9px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .preview-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .preview-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 24px;
+      color: #e28a96;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .preview-link span {
+      transition: transform .2s ease;
+    }
+
+    .preview-card:hover .preview-link span {
+      transform: translateX(4px);
+    }
+
+    .highlights {
+      padding: 0 0 115px;
+    }
+
+    .highlight-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 13px;
     }
 
-    .feature-card {
-      position: relative;
+    .highlight {
       padding: 23px;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 15px;
-      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
-      box-shadow: inset 0 1px rgba(255,255,255,.07);
-      backdrop-filter: blur(16px);
-      transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      background: rgba(255,255,255,.035);
     }
 
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(201,75,89,.35);
-      background: linear-gradient(145deg, rgba(201,75,89,.09), rgba(255,255,255,.025));
-      box-shadow: 0 10px 30px rgba(0,0,0,.18), inset 0 1px rgba(255,255,255,.1);
+    .highlight span {
+      display: block;
+      margin-bottom: 12px;
+      color: #df8190;
+      font-size: 20px;
     }
 
-    .feature-icon {
-      display: grid;
-      place-items: center;
-      width: 36px;
-      height: 36px;
-      margin-bottom: 19px;
-      border: 1px solid rgba(201,75,89,.25);
-      border-radius: 10px;
-      color: #d87881;
-      background: rgba(201,75,89,.08);
-      font-size: 18px;
-    }
-
-    .feature-card h3 {
-      margin: 0 0 8px;
-      color: var(--text);
+    .highlight h3 {
+      margin: 0 0 7px;
       font-size: 14px;
-      font-weight: 600;
     }
 
-    .feature-card p {
+    .highlight p {
       margin: 0;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.8;
     }
 
-    @media (max-width: 760px) {
-      .feature-grid {
+    .bottom-cta {
+      margin-bottom: 100px;
+      padding: 60px 25px;
+      text-align: center;
+      border: 1px solid rgba(201,75,89,.20);
+      border-radius: 22px;
+      background: radial-gradient(ellipse at 50% 120%, rgba(156,38,60,.18), transparent 70%), rgba(255,255,255,.035);
+      box-shadow: inset 0 1px rgba(255,255,255,.06);
+    }
+
+    .bottom-cta h2 {
+      margin: 0;
+      font-size: clamp(27px, 5vw, 40px);
+      letter-spacing: -.06em;
+    }
+
+    .bottom-cta p {
+      margin: 12px auto 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 27px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      color: #b9b2bc;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-size: 11px;
+      transition: color .2s ease;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        grid-template-columns: 1fr auto;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .preview-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 560px) {
       .shell {
-        width: calc(100% - 32px);
+        width: calc(100% - 36px);
       }
 
       header {
-        height: 68px;
+        height: 72px;
+      }
+
+      .brand {
+        font-size: 15px;
+      }
+
+      .mark {
+        width: 31px;
+        height: 31px;
+      }
+
+      .header-invite {
+        min-height: 39px;
+        padding: 0 13px;
+        font-size: 11px;
       }
 
       main {
-        min-height: calc(100vh - 68px);
-        padding: 80px 0;
+        min-height: calc(90svh - 72px);
+        padding: 70px 0 95px;
+      }
+
+      .hero h1 {
+        font-size: clamp(45px, 12vw, 68px);
       }
 
       .intro {
-        font-size: 13px;
+        max-width: 350px;
+        margin-top: 21px;
+        font-size: 14px;
       }
 
-      .features {
-        padding-top: 65px;
+      .actions {
+        gap: 10px;
+        margin-top: 25px;
+      }
+
+      .button {
+        min-height: 45px;
+        padding: 0 17px;
+        font-size: 12px;
+      }
+
+      .overview {
+        padding: 75px 0 85px;
+      }
+
+      .section-heading {
+        margin-bottom: 32px;
+      }
+
+      .preview-grid,
+      .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .preview-card {
+        min-height: 220px;
+        padding: 23px;
+      }
+
+      .highlights {
         padding-bottom: 75px;
       }
 
-      .feature-grid {
-        grid-template-columns: 1fr;
-        gap: 11px;
+      .bottom-cta {
+        margin-bottom: 70px;
+        padding: 45px 20px;
       }
 
-      .feature-card {
-        padding: 20px;
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="ambient">
+    <div class="light light-one"></div>
+    <div class="light light-two"></div>
+    <div class="light light-three"></div>
+  </div>
+
   <header class="shell">
-    <a class="brand" href="#">
+    <a class="brand" href="index.html">
       <span class="mark">猫</span>
       <span>SUKI</span>
     </a>
+
+    <nav class="nav">
+      <a href="features.html">Features</a>
+      <a href="commands.html">Commands</a>
+      <a href="embeds.html">Embeds</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="header-invite" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
+        <span>◈</span> Add to Discord
+      </a>
+    </div>
   </header>
 
   <main class="shell">
     <section class="hero">
-      <div class="eyebrow">simple utility bot</div>
+      <h1>
+        <span>your server.</span>
+        <span class="accent">your own way.</span>
+      </h1>
 
-      <h1><span>suki.</span></h1>
-
-      <p class="intro">1.11.26</p>
+      <p class="intro">
+        A little bit of everything.
+        Make your server feel like yours with Suki.
+      </p>
 
       <div class="actions">
         <a class="button primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
-          Add to Discord <span>↗</span>
+          Add to Discord <span class="button-arrow">↗</span>
         </a>
 
-        <a class="button secondary" href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener">
-          Join the Discord <span>↗</span>
+        <a class="button secondary" href="features.html">
+          Explore features <span class="button-arrow">→</span>
         </a>
       </div>
     </section>
   </main>
 
-  <section class="features shell" id="features">
+  <section class="overview shell">
     <div class="section-heading">
-      <h2>everything you need.</h2>
-      <p>all in one bot.</p>
+      <h2> SUKI</h2>
+      <p>Everything your server needs, all in one place.</p>
     </div>
 
-    <div class="feature-grid">
+    <div class="preview-grid">
 
-      <article class="feature-card">
-        <div class="feature-icon">✧</div>
-        <h3>Welcome system</h3>
-        <p>Give new members a personalized welcome with customizable greetings and messages.</p>
-      </article>
+      <a class="preview-card" href="features.html">
+        <div class="preview-icon">✧</div>
+        <h3>Features</h3>
+        <p>From server management to economy, games and collectibles. Explore everything SUKI has to offer.</p>
+        <span class="preview-link">Explore features <span>→</span></span>
+      </a>
 
-      <article class="feature-card">
-        <div class="feature-icon">▤</div>
-        <h3>Embed builder</h3>
-        <p>Create custom embeds for welcome messages, announcements and more.</p>
-      </article>
+      <a class="preview-card" href="commands.html">
+        <div class="preview-icon">⌘</div>
+        <h3>Commands</h3>
+        <p>Find the commands you need, explore categories and learn how to use SUKI.</p>
+        <span class="preview-link">Browse commands <span>→</span></span>
+      </a>
 
-      <article class="feature-card">
-        <div class="feature-icon">⚙</div>
-        <h3>Bot configuration</h3>
-        <p>Customize SUKI's settings and match its features to your server.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">◈</div>
-        <h3>Economy</h3>
-        <p>Earn, save and spend virtual currency throughout your server.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">⌘</div>
-        <h3>Server activities</h3>
-        <p>Take on jobs, complete activities and earn rewards along the way.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">▣</div>
-        <h3>Shop system</h3>
-        <p>Browse the shop and spend your hard-earned currency on items.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">✦</div>
-        <h3>Server drops</h3>
-        <p>Discover surprise drops, collect rewards, and more.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">▧</div>
-        <h3>Inventory</h3>
-        <p>Keep track of your items, collectibles and everything you've earned.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">♠</div>
-        <h3>Games</h3>
-        <p>Take a break with games like blackjack, coinflip, and more.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">♡</div>
-        <h3>Pets</h3>
-        <p>Collect pets, look after them and build your own little collection.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">↗</div>
-        <h3>XP & leveling</h3>
-        <p>Gain experience, level up and show off your server activity.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">⌑</div>
-        <h3>Admin tools</h3>
-        <p>Access useful server management and administration tools.</p>
-      </article>
-
-      <article class="feature-card">
-        <div class="feature-icon">◎</div>
-        <h3>Profiles</h3>
-        <p>Showcase your balance, level, inventory, pets and personal stats.</p>
-      </article>
+      <a class="preview-card" href="embeds.html">
+        <div class="preview-icon">▤</div>
+        <h3>Embeds</h3>
+        <p>Discover customizable embeds for welcomes, announcements and server messages.</p>
+        <span class="preview-link">Explore embeds <span>→</span></span>
+      </a>
 
     </div>
   </section>
+
+  <section class="highlights shell">
+    <div class="section-heading">
+      <h2>a little bit of everything.</h2>
+      <p>Made to bring more to your Discord server.</p>
+    </div>
+
+    <div class="highlight-grid">
+      <article class="highlight">
+        <span>◈</span>
+        <h3>Build your economy</h3>
+        <p>Earn currency, take on jobs, shop for items and grow your collection.</p>
+      </article>
+
+      <article class="highlight">
+        <span>♡</span>
+        <h3>Make it personal</h3>
+        <p>Collect pets, customize your profile and show off your progress.</p>
+      </article>
+
+      <article class="highlight">
+        <span>✦</span>
+        <h3>Keep things fun</h3>
+        <p>Play games, discover drops and give your community more to enjoy.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bottom-cta shell">
+    <h2>SUKI</h2>
+    <p>Give your Discord server a little something extra.</p>
+    <a class="button primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
+      Add to Discord <span class="button-arrow">↗</span>
+    </a>
+  </section>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span class="footer-brand">猫 SUKI © 2026</span>
+      <div class="footer-links">
+        <a href="features.html">Features</a>
+        <a href="commands.html">Commands</a>
+        <a href="embeds.html">Embeds</a>
+        <a href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener">Support server</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
