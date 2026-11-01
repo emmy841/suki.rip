@@ -15,13 +15,10 @@
     :root {
       color-scheme: dark;
       --bg: #09080b;
-      --surface: rgba(255, 255, 255, .045);
-      --surface-hover: rgba(255, 255, 255, .075);
       --line: rgba(255, 255, 255, .10);
       --text: #f4f2f4;
       --muted: #89858d;
       --accent: #c94b59;
-      --accent-soft: rgba(201, 75, 89, .14);
     }
 
     * {
@@ -35,25 +32,13 @@
     body {
       margin: 0;
       min-height: 100vh;
-      position: relative;
-      isolation: isolate;
       background:
         radial-gradient(ellipse at 50% -20%, rgba(126, 35, 49, .16), transparent 52%),
         radial-gradient(ellipse at 90% 75%, rgba(91, 48, 68, .07), transparent 40%),
-        #09080b;
+        var(--bg);
       color: var(--text);
       font-family: Manrope, sans-serif;
       -webkit-font-smoothing: antialiased;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, .012) 48%, transparent 70%);
     }
 
     a {
@@ -92,22 +77,14 @@
       border-radius: 9px;
       color: #d87881;
       font-size: 15px;
-      background: linear-gradient(
-        145deg,
-        rgba(255, 255, 255, .12),
-        rgba(255, 255, 255, .025)
-      );
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, .17),
-        0 0 18px rgba(160, 48, 65, .08);
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px rgba(255,255,255,.17), 0 0 18px rgba(160,48,65,.08);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
     }
 
     .nav {
       display: flex;
       align-items: center;
-      gap: 25px;
       color: var(--muted);
       font: 10px 'DM Mono', monospace;
       letter-spacing: .12em;
@@ -122,27 +99,11 @@
       color: var(--text);
     }
 
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #aaa5ad;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 9px rgba(201, 75, 89, .55);
-    }
-
     main {
-      min-height: calc(100vh - 130px);
+      min-height: calc(100vh - 76px);
       display: grid;
       place-items: center;
-      padding: 100px 0 115px;
+      padding: 80px 0;
     }
 
     .hero {
@@ -157,16 +118,13 @@
       padding: 8px 13px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: rgba(255, 255, 255, .035);
+      background: rgba(255,255,255,.035);
       color: #b4afb7;
       font: 10px 'DM Mono', monospace;
       letter-spacing: .13em;
       text-transform: uppercase;
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, .08),
-        0 5px 25px rgba(0, 0, 0, .12);
+      box-shadow: inset 0 1px rgba(255,255,255,.08);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
     h1 {
@@ -178,16 +136,11 @@
     }
 
     h1 span {
-      background: linear-gradient(
-        180deg,
-        #ffffff 8%,
-        #e3dce0 55%,
-        #a69aa2 100%
-      );
+      background: linear-gradient(180deg, #fff 8%, #e3dce0 55%, #a69aa2 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 8px 28px rgba(255, 255, 255, .07));
+      filter: drop-shadow(0 8px 28px rgba(255,255,255,.07));
     }
 
     .intro {
@@ -216,14 +169,8 @@
       border-radius: 11px;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: .015em;
-      transition:
-        transform .2s ease,
-        border-color .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
     }
 
     .button:hover {
@@ -231,110 +178,28 @@
     }
 
     .primary {
-      position: relative;
-      overflow: hidden;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, .22);
-      background: linear-gradient(
-        145deg,
-        #bd4b59,
-        #963541
-      );
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, .24),
-        0 5px 20px rgba(120, 35, 48, .16);
-    }
-
-    .primary::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 45%;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, .13),
-        transparent
-      );
-      pointer-events: none;
+      color: white;
+      border: 1px solid rgba(255,255,255,.22);
+      background: linear-gradient(145deg, #bd4b59, #963541);
+      box-shadow: inset 0 1px rgba(255,255,255,.24), 0 5px 20px rgba(120,35,48,.16);
     }
 
     .primary:hover {
-      border-color: rgba(255, 255, 255, .35);
-      background: linear-gradient(
-        145deg,
-        #ce5967,
-        #a13a49
-      );
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, .3),
-        0 7px 25px rgba(120, 35, 48, .24);
+      border-color: rgba(255,255,255,.35);
+      background: linear-gradient(145deg, #ce5967, #a13a49);
+      box-shadow: inset 0 1px rgba(255,255,255,.3), 0 7px 25px rgba(120,35,48,.24);
     }
 
     .secondary {
       color: #d8d5da;
-      border: 1px solid rgba(255, 255, 255, .12);
-      background: linear-gradient(
-        145deg,
-        rgba(255, 255, 255, .085),
-        rgba(255, 255, 255, .025)
-      );
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, .10),
-        0 6px 20px rgba(0, 0, 0, .12);
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px rgba(255,255,255,.10), 0 6px 20px rgba(0,0,0,.12);
     }
 
     .secondary:hover {
-      border-color: rgba(201, 75, 89, .35);
-      background: rgba(255, 255, 255, .075);
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, .13),
-        0 6px 24px rgba(0, 0, 0, .2);
-    }
-
-    .divider {
-      width: 1px;
-      height: 12px;
-      background: var(--line);
-    }
-
-    .bottom-line {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin-top: 76px;
-      color: #716b74;
-      font: 9px 'DM Mono', monospace;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-
-    .bottom-line::before,
-    .bottom-line::after {
-      content: "";
-      width: 34px;
-      height: 1px;
-      background: var(--line);
-    }
-
-    footer {
-      min-height: 54px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      color: #716c75;
-      font: 9px 'DM Mono', monospace;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    footer strong {
-      color: #bcb6be;
-      font-weight: 500;
+      border-color: rgba(201,75,89,.35);
+      background: rgba(255,255,255,.075);
     }
 
     @media (max-width: 560px) {
@@ -346,32 +211,13 @@
         height: 68px;
       }
 
-      .nav {
-        gap: 14px;
-      }
-
-      .nav .status {
-        display: none;
-      }
-
       main {
-        min-height: calc(100vh - 122px);
+        min-height: calc(100vh - 68px);
         padding: 80px 0;
       }
 
       .intro {
         font-size: 13px;
-      }
-
-      .bottom-line {
-        margin-top: 62px;
-      }
-
-      footer {
-        padding: 18px 0;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
       }
     }
   </style>
@@ -385,21 +231,13 @@
     </a>
 
     <nav class="nav" aria-label="Main navigation">
-      <span class="status">
-        <i class="dot"></i>
-        SYSTEM ONLINE
-      </span>
-      <i class="divider"></i>
       <a href="https://discord.com" target="_blank" rel="noopener">Discord ↗</a>
     </nav>
   </header>
 
   <main class="shell">
     <section class="hero">
-      <div class="eyebrow">
-        <i class="dot"></i>
-        text here
-      </div>
+      <div class="eyebrow">text here</div>
 
       <h1><span>suki.</span></h1>
 
@@ -411,17 +249,10 @@
         </a>
 
         <a class="button secondary" href="https://discord.com" target="_blank" rel="noopener">
-          Join the community <span>↗</span>
+          Join the Discord <span>↗</span>
         </a>
       </div>
-
-      <div class="bottom-line">text here</div>
     </section>
   </main>
-
-  <footer class="shell">
-    <span><strong>© SUKI</strong> &nbsp; meow</span>
-    <span>suki.rip</span>
-  </footer>
 </body>
 </html>
