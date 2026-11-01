@@ -3,37 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090a0d">
+  <meta name="theme-color" content="#09080b">
   <title>SUKI</title>
   <meta name="description" content="SUKI">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
       color-scheme: dark;
-      --bg: #090a0d;
-      --surface: rgba(255,255,255,.045);
-      --line: rgba(255,255,255,.105);
-      --text: #f4f3f5;
-      --muted: #85858f;
-      --accent: #f04a55;
+      --bg: #09080b;
+      --surface: rgba(255, 255, 255, .045);
+      --surface-hover: rgba(255, 255, 255, .075);
+      --line: rgba(255, 255, 255, .10);
+      --text: #f4f2f4;
+      --muted: #89858d;
+      --accent: #c94b59;
+      --accent-soft: rgba(201, 75, 89, .14);
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      position: relative;
+      isolation: isolate;
       background:
-        radial-gradient(ellipse at 50% -25%, rgba(240,74,85,.16), transparent 48%),
-        radial-gradient(ellipse at 90% 70%, rgba(114,91,145,.08), transparent 38%),
-        var(--bg);
+        radial-gradient(ellipse at 50% -20%, rgba(126, 35, 49, .16), transparent 52%),
+        radial-gradient(ellipse at 90% 75%, rgba(91, 48, 68, .07), transparent 40%),
+        #09080b;
       color: var(--text);
       font-family: Manrope, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    a { color: inherit; text-decoration: none; }
-    .shell { width: min(960px, calc(100% - 40px)); margin: 0 auto; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, .012) 48%, transparent 70%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
     header {
       height: 76px;
       display: flex;
@@ -41,96 +73,322 @@
       justify-content: space-between;
       border-bottom: 1px solid var(--line);
     }
+
     .brand {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 15px; font-weight: 800; letter-spacing: .19em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .19em;
     }
+
     .mark {
-      width: 28px; height: 28px; display: grid; place-items: center;
-      border: 1px solid rgba(240,74,85,.5); border-radius: 9px;
-      color: var(--accent); font-size: 15px;
-      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.015));
-      box-shadow: inset 0 1px rgba(255,255,255,.18), 0 0 22px rgba(240,74,85,.12);
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(201, 75, 89, .35);
+      border-radius: 9px;
+      color: #d87881;
+      font-size: 15px;
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, .12),
+        rgba(255, 255, 255, .025)
+      );
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, .17),
+        0 0 18px rgba(160, 48, 65, .08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
+
     .nav {
-      display: flex; align-items: center; gap: 25px;
-      color: var(--muted); font: 10px 'DM Mono', monospace;
-      letter-spacing: .12em; text-transform: uppercase;
-    }
-    .nav a:hover { color: var(--text); }
-    .status { display: flex; align-items: center; gap: 8px; color: #aaaab2; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-    main { min-height: calc(100vh - 130px); display: grid; place-items: center; padding: 100px 0 115px; }
-    .hero { width: 100%; text-align: center; }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 9px;
-      padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
-      background: rgba(255,255,255,.025); color: #b4b1b9;
-      font: 10px 'DM Mono', monospace; letter-spacing: .13em; text-transform: uppercase;
-      box-shadow: inset 0 1px rgba(255,255,255,.06);
-    }
-    h1 {
-      margin: 28px 0 14px; font-size: clamp(68px, 13vw, 116px);
-      line-height: .92; letter-spacing: -.095em; font-weight: 800;
-    }
-    h1 span {
-      background: linear-gradient(180deg, #fff 12%, #c7c3ca 58%, #77737d 100%);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      filter: drop-shadow(0 8px 30px rgba(255,255,255,.08));
-    }
-    .intro {
-      max-width: 440px; margin: 0 auto; color: var(--muted);
-      font-size: 14px; line-height: 1.85;
-    }
-    .actions { display: flex; justify-content: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
-    .button {
-      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-      min-height: 43px; padding: 0 17px; border-radius: 11px;
-      font-size: 11px; font-weight: 700; letter-spacing: .015em;
-      transition: transform .2s, border-color .2s, background .2s;
-    }
-    .button:hover { transform: translateY(-2px); }
-    .primary {
-      color: white; border: 1px solid rgba(255,255,255,.23);
-      background: linear-gradient(180deg, #f35a64, #c92e3b);
-      box-shadow: inset 0 1px rgba(255,255,255,.35), 0 8px 28px rgba(225,55,68,.2);
-    }
-    .secondary {
-      color: #d8d6dc; border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
-      box-shadow: inset 0 1px rgba(255,255,255,.08);
-    }
-    .divider { width: 1px; height: 12px; background: var(--line); }
-    .bottom-line {
-      display: flex; justify-content: center; align-items: center; gap: 12px;
-      margin-top: 76px; color: #666570; font: 9px 'DM Mono', monospace;
-      letter-spacing: .14em; text-transform: uppercase;
-    }
-    .bottom-line:before,.bottom-line:after { content: ""; width: 34px; height: 1px; background: var(--line); }
-    footer {
-      min-height: 54px; border-top: 1px solid var(--line);
-      display: flex; align-items: center; justify-content: space-between; gap: 15px;
-      color: #696873; font: 9px 'DM Mono', monospace; letter-spacing: .1em;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      color: var(--muted);
+      font: 10px 'DM Mono', monospace;
+      letter-spacing: .12em;
       text-transform: uppercase;
     }
-    footer strong { color: #aaa7b0; font-weight: 500; }
+
+    .nav a {
+      transition: color .2s ease;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #aaa5ad;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 9px rgba(201, 75, 89, .55);
+    }
+
+    main {
+      min-height: calc(100vh - 130px);
+      display: grid;
+      place-items: center;
+      padding: 100px 0 115px;
+    }
+
+    .hero {
+      width: 100%;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .035);
+      color: #b4afb7;
+      font: 10px 'DM Mono', monospace;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, .08),
+        0 5px 25px rgba(0, 0, 0, .12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    h1 {
+      margin: 28px 0 14px;
+      font-size: clamp(68px, 13vw, 116px);
+      line-height: .92;
+      letter-spacing: -.095em;
+      font-weight: 800;
+    }
+
+    h1 span {
+      background: linear-gradient(
+        180deg,
+        #ffffff 8%,
+        #e3dce0 55%,
+        #a69aa2 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 8px 28px rgba(255, 255, 255, .07));
+    }
+
+    .intro {
+      max-width: 440px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 43px;
+      padding: 0 17px;
+      border-radius: 11px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .015em;
+      transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .22);
+      background: linear-gradient(
+        145deg,
+        #bd4b59,
+        #963541
+      );
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, .24),
+        0 5px 20px rgba(120, 35, 48, .16);
+    }
+
+    .primary::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 45%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, .13),
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    .primary:hover {
+      border-color: rgba(255, 255, 255, .35);
+      background: linear-gradient(
+        145deg,
+        #ce5967,
+        #a13a49
+      );
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, .3),
+        0 7px 25px rgba(120, 35, 48, .24);
+    }
+
+    .secondary {
+      color: #d8d5da;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, .085),
+        rgba(255, 255, 255, .025)
+      );
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, .10),
+        0 6px 20px rgba(0, 0, 0, .12);
+    }
+
+    .secondary:hover {
+      border-color: rgba(201, 75, 89, .35);
+      background: rgba(255, 255, 255, .075);
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, .13),
+        0 6px 24px rgba(0, 0, 0, .2);
+    }
+
+    .divider {
+      width: 1px;
+      height: 12px;
+      background: var(--line);
+    }
+
+    .bottom-line {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 76px;
+      color: #716b74;
+      font: 9px 'DM Mono', monospace;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .bottom-line::before,
+    .bottom-line::after {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: var(--line);
+    }
+
+    footer {
+      min-height: 54px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      color: #716c75;
+      font: 9px 'DM Mono', monospace;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    footer strong {
+      color: #bcb6be;
+      font-weight: 500;
+    }
+
     @media (max-width: 560px) {
-      .shell { width: calc(100% - 32px); }
-      header { height: 68px; }
-      .nav { gap: 14px; }
-      .nav .status { display: none; }
-      main { min-height: calc(100vh - 122px); padding: 80px 0; }
-      .intro { font-size: 13px; }
-      .bottom-line { margin-top: 62px; }
-      footer { padding: 18px 0; flex-direction: column; align-items: flex-start; justify-content: center; }
+      .shell {
+        width: calc(100% - 32px);
+      }
+
+      header {
+        height: 68px;
+      }
+
+      .nav {
+        gap: 14px;
+      }
+
+      .nav .status {
+        display: none;
+      }
+
+      main {
+        min-height: calc(100vh - 122px);
+        padding: 80px 0;
+      }
+
+      .intro {
+        font-size: 13px;
+      }
+
+      .bottom-line {
+        margin-top: 62px;
+      }
+
+      footer {
+        padding: 18px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+      }
     }
   </style>
 </head>
+
 <body>
   <header class="shell">
-    <a class="brand" href="#"><span class="mark">猫</span><span>SUKI</span></a>
+    <a class="brand" href="#">
+      <span class="mark">猫</span>
+      <span>SUKI</span>
+    </a>
+
     <nav class="nav" aria-label="Main navigation">
-      <span class="status"><i class="dot"></i> SYSTEM ONLINE</span>
+      <span class="status">
+        <i class="dot"></i>
+        SYSTEM ONLINE
+      </span>
       <i class="divider"></i>
       <a href="https://discord.com" target="_blank" rel="noopener">Discord ↗</a>
     </nav>
@@ -138,13 +396,25 @@
 
   <main class="shell">
     <section class="hero">
-      <div class="eyebrow"><i class="dot"></i> text here</div>
-      <h1><span>suki.</span></h1>
-      <p class="intro">text here</p>
-      <div class="actions">
-        <a class="button primary" href="https://discord.com" target="_blank" rel="noopener">Add to Discord <span>↗</span></a>
-        <a class="button secondary" href="https://discord.com" target="_blank" rel="noopener">Join the community <span>↗</span></a>
+      <div class="eyebrow">
+        <i class="dot"></i>
+        text here
       </div>
+
+      <h1><span>suki.</span></h1>
+
+      <p class="intro">text here</p>
+
+      <div class="actions">
+        <a class="button primary" href="https://discord.com" target="_blank" rel="noopener">
+          Add to Discord <span>↗</span>
+        </a>
+
+        <a class="button secondary" href="https://discord.com" target="_blank" rel="noopener">
+          Join the community <span>↗</span>
+        </a>
+      </div>
+
       <div class="bottom-line">text here</div>
     </section>
   </main>
