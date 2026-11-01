@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#09080b">
   <title>SUKI</title>
-  <meta name="description" content="SUKI">
+  <meta name="description" content="SUKI - all-in-one Discord bot">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,23 +81,6 @@
       background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025));
       box-shadow: inset 0 1px rgba(255,255,255,.17), 0 0 18px rgba(160,48,65,.08);
       backdrop-filter: blur(12px);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      color: var(--muted);
-      font: 10px 'DM Mono', monospace;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .nav a {
-      transition: color .2s ease;
-    }
-
-    .nav a:hover {
-      color: var(--text);
     }
 
     main {
@@ -202,6 +186,87 @@
       background: rgba(255,255,255,.075);
     }
 
+    .features {
+      padding-top: 85px;
+      padding-bottom: 110px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -.055em;
+      font-weight: 700;
+    }
+
+    .section-heading p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .feature-card {
+      position: relative;
+      padding: 23px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 15px;
+      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      box-shadow: inset 0 1px rgba(255,255,255,.07);
+      backdrop-filter: blur(16px);
+      transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201,75,89,.35);
+      background: linear-gradient(145deg, rgba(201,75,89,.09), rgba(255,255,255,.025));
+      box-shadow: 0 10px 30px rgba(0,0,0,.18), inset 0 1px rgba(255,255,255,.1);
+    }
+
+    .feature-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 19px;
+      border: 1px solid rgba(201,75,89,.25);
+      border-radius: 10px;
+      color: #d87881;
+      background: rgba(201,75,89,.08);
+      font-size: 18px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 760px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 560px) {
       .shell {
         width: calc(100% - 32px);
@@ -218,6 +283,20 @@
 
       .intro {
         font-size: 13px;
+      }
+
+      .features {
+        padding-top: 65px;
+        padding-bottom: 75px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 11px;
+      }
+
+      .feature-card {
+        padding: 20px;
       }
     }
   </style>
@@ -240,15 +319,104 @@
       <p class="intro">1.11.26</p>
 
       <div class="actions">
-        <a class="button primary" href="https://discord.com" target="_blank" rel="noopener">
+        <a class="button primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
           Add to Discord <span>↗</span>
         </a>
 
-        <a class="button secondary" href="https://discord.com" target="_blank" rel="noopener">
+        <a class="button secondary" href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener">
           Join the Discord <span>↗</span>
         </a>
       </div>
     </section>
   </main>
+
+  <section class="features shell" id="features">
+    <div class="section-heading">
+      <h2>everything you need.</h2>
+      <p>all in one bot.</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <article class="feature-card">
+        <div class="feature-icon">✧</div>
+        <h3>Welcome system</h3>
+        <p>Give new members a personalized welcome with customizable greetings and messages.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">▤</div>
+        <h3>Embed builder</h3>
+        <p>Create custom embeds for welcome messages, announcements and more.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">⚙</div>
+        <h3>Bot configuration</h3>
+        <p>Customize SUKI's settings and match its features to your server.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">◈</div>
+        <h3>Economy</h3>
+        <p>Earn, save and spend virtual currency throughout your server.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">⌘</div>
+        <h3>Server activities</h3>
+        <p>Take on jobs, complete activities and earn rewards along the way.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">▣</div>
+        <h3>Shop system</h3>
+        <p>Browse the shop and spend your hard-earned currency on items.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">✦</div>
+        <h3>Server drops</h3>
+        <p>Discover surprise drops, collect rewards, and more.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">▧</div>
+        <h3>Inventory</h3>
+        <p>Keep track of your items, collectibles and everything you've earned.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">♠</div>
+        <h3>Games</h3>
+        <p>Take a break with games like blackjack, coinflip, and more.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">♡</div>
+        <h3>Pets</h3>
+        <p>Collect pets, look after them and build your own little collection.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">↗</div>
+        <h3>XP & leveling</h3>
+        <p>Gain experience, level up and show off your server activity.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">⌑</div>
+        <h3>Admin tools</h3>
+        <p>Access useful server management and administration tools.</p>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">◎</div>
+        <h3>Profiles</h3>
+        <p>Showcase your balance, level, inventory, pets and personal stats.</p>
+      </article>
+
+    </div>
+  </section>
 </body>
 </html>
