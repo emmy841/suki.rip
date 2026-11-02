@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080709">
   <meta name="description" content="Suki's interactive embed builder.">
-  <title> embeds </title></title>
+  <title>embeds</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -702,11 +702,19 @@
       height: 39px;
       flex-shrink: 0;
       place-items: center;
+      overflow: hidden;
       border-radius: 50%;
       background: linear-gradient(145deg, #c74b60, #762a42);
       color: white;
       font-size: 16px;
       font-weight: 600;
+    }
+
+    .discord-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
     .discord-content {
@@ -915,6 +923,23 @@
       color: var(--subtle);
       font-size: 10px;
       line-height: 1.7;
+    }
+
+    .identity-reset {
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: rgba(255,255,255,.035);
+      color: var(--muted);
+      font-size: 10px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .identity-reset:hover {
+      border-color: var(--border-hover);
+      color: var(--accent-light);
     }
 
     .bottom-cta {
@@ -1190,7 +1215,6 @@
 
       <p class="intro">
         Create, customize and preview your own Discord embeds.
-        
       </p>
 
       <p class="hero-note">
@@ -1203,7 +1227,7 @@
     <div class="container">
       <div class="section-heading reveal">
         <div>
-          <p class="section-kicker">INTERACTIVE BUILDER</p>
+          <p class="section-kicker">EMBED BUILDER</p>
           <h2>Build your embed.</h2>
         </div>
 
@@ -1219,6 +1243,43 @@
             <h3>Embed editor</h3>
             <span class="panel-label">CUSTOMISE</span>
           </div>
+
+          <section class="form-section">
+            <div class="panel-heading">
+              <h3>Bot identity</h3>
+              <button class="identity-reset" id="resetIdentity" type="button">
+                Reset identity
+              </button>
+            </div>
+
+            <p class="form-section-title">Message appearance</p>
+
+            <div class="form-group">
+              <label for="botName">Bot name</label>
+              <input
+                class="form-control"
+                id="botName"
+                maxlength="80"
+                value="suki."
+                placeholder="Enter bot name..."
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="botAvatar">Bot avatar URL</label>
+              <input
+                class="form-control"
+                id="botAvatar"
+                type="url"
+                placeholder="https://example.com/avatar.png"
+              >
+            </div>
+
+            <p class="builder-tip">
+              Customise the bot's appearance in the preview.
+              This does not change its actual Discord profile.
+            </p>
+          </section>
 
           <section class="form-section">
             <p class="form-section-title">Basic information</p>
@@ -1336,16 +1397,16 @@
         <aside class="preview-panel reveal">
           <div class="panel-heading">
             <h3>Live preview</h3>
-            <span class="preview-label">LIVE</span>
+            <span class="preview-label">PREVIEW</span>
           </div>
 
           <div class="discord-window">
             <div class="discord-message">
-              <div class="discord-avatar">猫</div>
+              <div class="discord-avatar" id="discordAvatarPreview">猫</div>
 
               <div class="discord-content">
                 <div class="discord-user">
-                  suki.
+                  <span id="discordBotName">suki.</span>
                   <span class="bot-tag">BOT</span>
                   <span class="discord-time">Today at 12:00 PM</span>
                 </div>
@@ -1384,7 +1445,7 @@
       <h2>Your embed. Your server.</h2>
 
       <p>
-        Finished designing? Copy your embed JSON and use it
+        Copy your embed JSON and use it
         as the starting point for your Suki embed setup.
       </p>
 
@@ -1426,6 +1487,11 @@
     const embedPreview = document.getElementById("embedPreview");
     const jsonOutput = document.getElementById("jsonOutput");
 
+    const botNameInput = document.getElementById("botName");
+    const botAvatarInput = document.getElementById("botAvatar");
+    const discordBotName = document.getElementById("discordBotName");
+    const discordAvatarPreview = document.getElementById("discordAvatarPreview");
+
     const inputs = {
       title: document.getElementById("embedTitle"),
       description: document.getElementById("embedDescription"),
@@ -1466,6 +1532,34 @@
         '"': "&quot;",
         "'": "&#039;"
       })[character]);
+    }
+
+    function renderBotIdentity() {
+      const name = botNameInput.value.trim() || "suki.";
+      const avatar = safeUrl(botAvatarInput.value.trim());
+
+      discordBotName.textContent = name;
+
+      if (avatar) {
+        discordAvatarPreview.innerHTML = "";
+
+        const img = document.createElement("img");
+        img.src = avatar;
+        img.alt = "";
+        img.onerror = () => {
+          discordAvatarPreview.textContent = "猫";
+        };
+
+        discordAvatarPreview.appendChild(img);
+      } else {
+        discordAvatarPreview.textContent = "猫";
+      }
+    }
+
+    function resetBotIdentity() {
+      botNameInput.value = "suki.";
+      botAvatarInput.value = "";
+      renderBotIdentity();
     }
 
     function getFields() {
@@ -1703,6 +1797,7 @@
 
       fieldsList.innerHTML = "";
       fieldCount = 0;
+      resetBotIdentity();
       renderPreview();
     }
 
@@ -1759,6 +1854,11 @@
       input.addEventListener("change", renderPreview);
     });
 
+    botNameInput.addEventListener("input", renderBotIdentity);
+    botAvatarInput.addEventListener("input", renderBotIdentity);
+
+    document.getElementById("resetIdentity").addEventListener("click", resetBotIdentity);
+
     document.getElementById("embedColorPicker").addEventListener("input", updateColorFromPicker);
     inputs.color.addEventListener("input", updateColorFromText);
     document.getElementById("addField").addEventListener("click", addField);
@@ -1789,6 +1889,7 @@
     }
 
     renderPreview();
+    renderBotIdentity();
   </script>
 </body>
 </html>
