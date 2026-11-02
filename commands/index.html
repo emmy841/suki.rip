@@ -902,6 +902,273 @@
         transform: none;
       }
     }
+    
+:root {
+  --bg: #080709;
+  --surface: rgba(255,255,255,0.035);
+  --surface-hover: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.075);
+  --border-hover: rgba(228,107,126,0.38);
+  --text: #f4f0f3;
+  --muted: #aaa5ad;
+  --subtle: #716b75;
+  --accent: #b83d50;
+  --accent-light: #e46b7e;
+  --radius: 20px;
+  --max-width: 1120px;
+}
+
+.site-header {
+  background: rgba(8,7,9,.78);
+  border-bottom-color: rgba(255,255,255,.055);
+  box-shadow: 0 8px 35px rgba(0,0,0,.12);
+}
+
+.brand-mark,
+.category-icon,
+.syntax-icon {
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.07),
+    0 4px 18px rgba(184,61,80,.055);
+}
+
+.nav-links {
+  background: rgba(255,255,255,.025);
+  border-color: rgba(255,255,255,.075);
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  background: rgba(184,61,80,.12);
+  color: #f0a0ad;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #c74b60, #a82f45);
+  box-shadow:
+    0 5px 22px rgba(184,61,80,.16),
+    inset 0 1px rgba(255,255,255,.13);
+}
+
+.button-primary:hover {
+  background: linear-gradient(135deg, #d65b70, #b6384f);
+  box-shadow:
+    0 8px 30px rgba(184,61,80,.25),
+    inset 0 1px rgba(255,255,255,.16);
+}
+
+.hero {
+  padding: 75px 0 55px;
+}
+
+.hero h1 {
+  text-shadow: 0 5px 35px rgba(184,61,80,.08);
+}
+
+.hero h1 span {
+  text-shadow: 0 0 35px rgba(228,107,126,.12);
+}
+
+.hero p {
+  color: #aaa5ad;
+}
+
+.search-panel {
+  border-color: rgba(255,255,255,.09);
+  background: rgba(12,10,13,.88);
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.2),
+    inset 0 1px rgba(255,255,255,.035);
+}
+
+.search-input {
+  background: rgba(255,255,255,.025);
+  border-color: rgba(255,255,255,.075);
+}
+
+.search-input:focus {
+  border-color: rgba(228,107,126,.5);
+  box-shadow: 0 0 0 3px rgba(184,61,80,.08);
+}
+
+.filter-button {
+  background: rgba(255,255,255,.025);
+  border-color: rgba(255,255,255,.075);
+}
+
+.filter-button:hover,
+.filter-button.active {
+  border-color: rgba(228,107,126,.4);
+  background: rgba(184,61,80,.13);
+  color: #f0a0ad;
+  box-shadow: inset 0 1px rgba(255,255,255,.035);
+}
+
+.syntax-guide,
+.category {
+  border-color: rgba(255,255,255,.075);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+
+.syntax-guide {
+  border-radius: 20px;
+}
+
+.syntax-item {
+  border-color: rgba(255,255,255,.065);
+  background: rgba(255,255,255,.018);
+  transition: border-color .2s ease, background .2s ease;
+}
+
+.syntax-item:hover {
+  border-color: rgba(184,61,80,.24);
+  background: rgba(184,61,80,.035);
+}
+
+.syntax-item code,
+.command-name {
+  color: #e98b9b;
+}
+
+.syntax-note {
+  border-top-color: rgba(255,255,255,.065);
+}
+
+.category {
+  border-radius: 19px;
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.category:hover {
+  border-color: rgba(184,61,80,.25);
+  box-shadow: 0 8px 30px rgba(0,0,0,.12);
+}
+
+.category.open {
+  border-color: rgba(184,61,80,.19);
+}
+
+.category-header {
+  transition: background .2s ease;
+}
+
+.category-header:hover {
+  background: rgba(255,255,255,.018);
+}
+
+.category-icon {
+  background: linear-gradient(145deg, rgba(184,61,80,.13), rgba(184,61,80,.045));
+  border-color: rgba(184,61,80,.22);
+}
+
+.category-title {
+  letter-spacing: -.3px;
+}
+
+.category-meta {
+  color: #817984;
+}
+
+.chevron {
+  transition: transform .3s ease, color .2s ease;
+}
+
+.category.open .chevron {
+  color: #f08a9b;
+}
+
+.command {
+  border-color: rgba(255,255,255,.065);
+  background: rgba(255,255,255,.018);
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    transform .2s ease;
+}
+
+.command:hover {
+  border-color: rgba(184,61,80,.3);
+  background: rgba(184,61,80,.045);
+  transform: translateY(-2px);
+}
+
+.command-tag {
+  border-color: rgba(255,255,255,.075);
+  background: rgba(255,255,255,.025);
+}
+
+.usage {
+  border: 1px solid rgba(255,255,255,.045);
+  background: rgba(0,0,0,.3);
+  color: #d2c8d1;
+}
+
+.empty-state {
+  border-color: rgba(255,255,255,.075);
+  background: rgba(255,255,255,.025);
+}
+
+.bottom-cta {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(184,61,80,.25);
+  background:
+    radial-gradient(ellipse at 50% 115%, rgba(184,61,80,.2), transparent 65%),
+    linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  box-shadow: inset 0 1px rgba(255,255,255,.035);
+}
+
+.bottom-cta h2 {
+  text-shadow: 0 4px 30px rgba(184,61,80,.1);
+}
+
+.site-footer {
+  border-top-color: rgba(255,255,255,.065);
+}
+
+.footer-links a:hover {
+  text-shadow: 0 0 15px rgba(228,107,126,.2);
+}
+
+.button:focus-visible,
+.nav-links a:focus-visible,
+.filter-button:focus-visible,
+.category-header:focus-visible,
+.footer-links a:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 58px 0 40px;
+  }
+
+  .search-panel {
+    top: 112px;
+    border-radius: 16px;
+  }
+
+  .syntax-guide,
+  .category {
+    border-radius: 16px;
+  }
+
+  .bottom-cta {
+    border-radius: 21px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .command:hover {
+    transform: none;
+  }
+}
   </style>
 </head>
 
