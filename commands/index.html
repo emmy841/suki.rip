@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-:root {
+ :root {
   --bg: #0b0b0d;
   --surface: #111114;
   --surface-hover: #17171b;
@@ -47,19 +47,6 @@ body {
   color: var(--text);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
-}
-
-body::before {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(193,77,98,.055),
-    transparent 55%
-  );
-  content: "";
-  pointer-events: none;
 }
 
 a {
@@ -187,7 +174,6 @@ button {
 
 .button-primary:hover {
   background: var(--accent-light);
-  box-shadow: 0 5px 20px rgba(193,77,98,.18);
 }
 
 .button-arrow {
@@ -225,7 +211,6 @@ button {
   height: 6px;
   border-radius: 50%;
   background: var(--accent-light);
-  box-shadow: 0 0 9px rgba(209,93,114,.5);
 }
 
 .hero h1 {
@@ -273,9 +258,7 @@ button {
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: rgba(17,17,20,.97);
-  box-shadow: 0 8px 28px rgba(0,0,0,.2);
-  backdrop-filter: blur(16px);
+  background: var(--surface);
 }
 
 .search-wrap {
@@ -656,9 +639,7 @@ button {
   padding: 52px 25px;
   border: 1px solid rgba(193,77,98,.3);
   border-radius: 12px;
-  background:
-    linear-gradient(145deg,rgba(193,77,98,.075),transparent 70%),
-    var(--surface);
+  background: var(--surface);
   text-align: center;
 }
 
@@ -1758,9 +1739,9 @@ button {
 
         category.hidden = visibleInCategory === 0;
 
-        if (query || activeFilter !== "all") {
-          category.classList.toggle("open", visibleInCategory > 0);
-          category.querySelector(".category-header").setAttribute(
+        category.classList.toggle("open", visibleInCategory > 0);
+
+category.querySelector(".category-header").setAttribute(
   "aria-expanded",
   category.classList.contains("open") ? "true" : "false"
 );
