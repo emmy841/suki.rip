@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080709">
+  <meta name="theme-color" content="#0b0b0d">
   <meta name="description" content="suki: all in one discord management">
   <title>suki. | home</title>
 
@@ -13,20 +14,17 @@
 
   <style>
     :root {
-      --bg: #080709;
-      --surface: rgba(255, 255, 255, 0.035);
-      --surface-hover: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.085);
-      --border-hover: rgba(184, 61, 80, 0.4);
-      --text: #f4f0f3;
-      --muted: #aaa5ad;
-      --subtle: #716b75;
-      --accent: #b83d50;
-      --accent-light: #e46b7e;
-      --mono: "DM Mono", monospace;
+      --bg: #0b0b0d;
+      --surface: #111114;
+      --surface-hover: #17171b;
+      --border: #242429;
+      --text: #f2f0f1;
+      --muted: #96939b;
+      --accent: #c14d62;
+      --accent-hover: #d15d72;
       --sans: "Space Grotesk", sans-serif;
-      --radius: 20px;
-      --max-width: 1120px;
+      --mono: "DM Mono", monospace;
+      --max-width: 1080px;
     }
 
     * {
@@ -48,28 +46,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    body::before {
-      position: fixed;
-      z-index: -2;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 50% -15%, rgba(184, 61, 80, 0.15), transparent 55%),
-        radial-gradient(ellipse at 5% 40%, rgba(117, 36, 65, 0.07), transparent 35%),
-        radial-gradient(ellipse at 95% 75%, rgba(184, 61, 80, 0.055), transparent 35%);
-      content: "";
-      pointer-events: none;
-    }
-
-    body::after {
-      position: fixed;
-      z-index: -1;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.15'/%3E%3C/svg%3E");
-      opacity: 0.12;
-      content: "";
-      pointer-events: none;
-    }
-
     a {
       color: inherit;
       text-decoration: none;
@@ -77,22 +53,8 @@
     }
 
     ::selection {
-      background: rgba(184, 61, 80, 0.45);
+      background: var(--accent);
       color: white;
-    }
-
-    .ambient {
-      position: fixed;
-      z-index: -1;
-      top: -180px;
-      left: 50%;
-      width: 650px;
-      height: 450px;
-      transform: translateX(-50%);
-      border-radius: 50%;
-      background: rgba(184, 61, 80, 0.09);
-      filter: blur(120px);
-      pointer-events: none;
     }
 
     .container {
@@ -104,38 +66,36 @@
       position: sticky;
       z-index: 100;
       top: 0;
-      padding: 18px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.035);
-      background: rgba(8, 7, 9, 0.72);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 11, 13, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .nav {
+      min-height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 28px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 11px;
+      gap: 10px;
       flex-shrink: 0;
     }
 
     .brand-mark {
       display: grid;
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       place-items: center;
-      border: 1px solid rgba(184, 61, 80, 0.3);
-      border-radius: 12px;
-      background: linear-gradient(145deg, rgba(184, 61, 80, 0.2), rgba(184, 61, 80, 0.045));
-      color: var(--accent-light);
-      font-size: 20px;
-      box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      background: #211116;
+      color: var(--accent-hover);
+      font-size: 17px;
     }
 
     .brand-name {
@@ -145,48 +105,38 @@
     }
 
     .brand-name span {
-      color: var(--accent-light);
+      color: var(--accent);
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 5px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.025);
+      gap: 30px;
     }
 
     .nav-links a {
-      padding: 9px 15px;
-      border-radius: 999px;
       color: var(--muted);
       font-size: 13px;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: color 0.2s ease;
     }
 
-    .nav-links a:hover {
-      background: rgba(255, 255, 255, 0.065);
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] {
       color: var(--text);
     }
 
     .button {
       display: inline-flex;
-      min-height: 44px;
+      min-height: 42px;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      padding: 0 19px;
+      gap: 10px;
+      padding: 0 17px;
       border: 1px solid transparent;
-      border-radius: 12px;
+      border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
-      transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
       cursor: pointer;
     }
 
@@ -195,48 +145,38 @@
     }
 
     .button-primary {
-      border-color: rgba(228, 107, 126, 0.35);
-      background: linear-gradient(135deg, #c74b60, #a82f45);
+      background: var(--accent);
       color: white;
-      box-shadow: 0 5px 22px rgba(184, 61, 80, 0.15);
     }
 
     .button-primary:hover {
-      background: linear-gradient(135deg, #d65b70, #b6384f);
-      box-shadow: 0 8px 28px rgba(184, 61, 80, 0.24);
+      background: var(--accent-hover);
     }
 
     .button-secondary {
       border-color: var(--border);
-      background: rgba(255, 255, 255, 0.035);
+      background: transparent;
       color: var(--text);
     }
 
     .button-secondary:hover {
-      border-color: var(--border-hover);
-      background: rgba(255, 255, 255, 0.06);
+      border-color: #55515a;
+      background: var(--surface);
     }
 
     .button-arrow {
-      font-size: 16px;
-      transition: transform 0.2s ease;
-    }
-
-    .button:hover .button-arrow {
-      transform: translateX(3px);
+      font-size: 15px;
     }
 
     main {
-      min-height: calc(100svh - 76px);
       display: flex;
+      min-height: 610px;
       align-items: center;
-      justify-content: center;
     }
 
     .hero {
-      position: relative;
       width: 100%;
-      padding: 105px 0 115px;
+      padding: 110px 0 120px;
       text-align: center;
     }
 
@@ -244,15 +184,11 @@
       display: inline-flex;
       align-items: center;
       gap: 9px;
-      margin-bottom: 27px;
-      padding: 8px 12px;
-      border: 1px solid rgba(184, 61, 80, 0.22);
-      border-radius: 999px;
-      background: rgba(184, 61, 80, 0.065);
-      color: #e8a0ab;
+      margin-bottom: 28px;
+      color: var(--accent-hover);
       font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 1.1px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
     }
 
@@ -260,33 +196,29 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--accent-light);
-      box-shadow: 0 0 12px rgba(228, 107, 126, 0.65);
+      background: var(--accent);
     }
 
     .hero h1 {
-      max-width: 1000px;
+      max-width: 850px;
       margin: 0 auto;
-      font-size: clamp(48px, 8.5vw, 96px);
+      font-size: clamp(50px, 8vw, 88px);
       font-weight: 600;
-      line-height: 0.99;
+      line-height: 1.02;
       letter-spacing: -5px;
     }
 
     .hero h1 span {
       display: block;
-    }
-
-    .hero h1 .accent {
-      color: var(--accent-light);
+      color: var(--accent);
     }
 
     .intro {
-      max-width: 500px;
-      margin: 25px auto 0;
+      max-width: 430px;
+      margin: 24px auto 0;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.9;
+      font-size: 15px;
+      line-height: 1.8;
     }
 
     .actions {
@@ -298,47 +230,42 @@
     }
 
     .hero-note {
-      margin-top: 22px;
-      color: var(--subtle);
+      margin-top: 25px;
+      color: #68656d;
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 0.2px;
-    }
-
-    .hero-note span {
-      color: var(--accent-light);
     }
 
     .overview {
-      padding: 85px 0 95px;
-      border-top: 1px solid rgba(255, 255, 255, 0.055);
+      padding: 85px 0;
+      border-top: 1px solid var(--border);
     }
 
     .section-heading {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      gap: 24px;
-      margin-bottom: 27px;
+      gap: 30px;
+      margin-bottom: 30px;
     }
 
     .section-kicker {
-      margin-bottom: 11px;
-      color: var(--accent-light);
+      margin-bottom: 10px;
+      color: var(--accent);
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: 1.4px;
+      letter-spacing: 1.3px;
       text-transform: uppercase;
     }
 
     .section-heading h2 {
-      font-size: clamp(28px, 4vw, 39px);
+      font-size: clamp(27px, 4vw, 36px);
       font-weight: 600;
-      letter-spacing: -1.8px;
+      letter-spacing: -1.5px;
     }
 
     .section-description {
-      max-width: 400px;
+      max-width: 380px;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.8;
@@ -351,74 +278,45 @@
     }
 
     .preview-card {
-      position: relative;
       display: flex;
-      min-height: 230px;
+      min-height: 215px;
       flex-direction: column;
       align-items: flex-start;
       padding: 23px;
-      overflow: hidden;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.014));
-      transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease;
-    }
-
-    .preview-card::before {
-      position: absolute;
-      top: -70px;
-      right: -70px;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: rgba(184, 61, 80, 0.08);
-      filter: blur(40px);
-      content: "";
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      pointer-events: none;
+      border-radius: 12px;
+      background: var(--surface);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
 
     .preview-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-hover);
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-    }
-
-    .preview-card:hover::before {
-      opacity: 1;
+      transform: translateY(-3px);
+      border-color: #484048;
+      background: var(--surface-hover);
     }
 
     .preview-icon {
       display: grid;
-      width: 43px;
-      height: 43px;
-      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
       place-items: center;
-      margin-bottom: 21px;
-      border: 1px solid rgba(184, 61, 80, 0.2);
-      border-radius: 13px;
-      background: rgba(184, 61, 80, 0.09);
-      color: var(--accent-light);
-      font-size: 19px;
+      margin-bottom: 22px;
+      border-radius: 9px;
+      background: #211116;
+      color: var(--accent-hover);
+      font-size: 18px;
     }
 
     .preview-card h3 {
-      margin-bottom: 9px;
+      margin-bottom: 8px;
       font-size: 16px;
       font-weight: 600;
-      letter-spacing: -0.35px;
     }
 
     .preview-card p {
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.85;
+      line-height: 1.8;
     }
 
     .preview-link {
@@ -427,7 +325,7 @@
       gap: 8px;
       margin-top: auto;
       padding-top: 20px;
-      color: var(--accent-light);
+      color: var(--accent-hover);
       font-size: 12px;
       font-weight: 600;
     }
@@ -441,7 +339,7 @@
     }
 
     .highlights {
-      padding: 0 0 95px;
+      padding: 0 0 90px;
     }
 
     .highlight-grid {
@@ -453,77 +351,75 @@
     .highlight {
       padding: 23px;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.014));
-      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+      border-radius: 12px;
+      background: var(--surface);
+      transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .highlight:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-hover);
+      border-color: #484048;
       background: var(--surface-hover);
     }
 
     .highlight > span {
       display: block;
-      margin-bottom: 13px;
-      color: var(--accent-light);
-      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--accent-hover);
+      font-size: 19px;
     }
 
     .highlight h3 {
-      margin-bottom: 9px;
-      font-size: 16px;
+      margin-bottom: 8px;
+      font-size: 15px;
       font-weight: 600;
     }
 
     .highlight p {
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.85;
+      line-height: 1.8;
     }
 
     .divider {
       height: 1px;
-      margin-top: 10px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+      background: var(--border);
     }
 
     .bottom-cta {
-      position: relative;
-      margin: 80px 0;
-      padding: 65px 30px;
-      overflow: hidden;
-      border: 1px solid rgba(184, 61, 80, 0.23);
-      border-radius: 26px;
-      background:
-        radial-gradient(ellipse at 50% 110%, rgba(184, 61, 80, 0.17), transparent 65%),
-        linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+      margin: 75px 0;
+      padding: 65px 25px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
       text-align: center;
     }
 
+    .bottom-cta .eyebrow {
+      margin-bottom: 18px;
+    }
+
     .bottom-cta h2 {
-      margin-bottom: 15px;
-      font-size: clamp(30px, 5vw, 47px);
+      margin-bottom: 13px;
+      font-size: clamp(30px, 5vw, 43px);
       font-weight: 600;
       letter-spacing: -2px;
     }
 
     .bottom-cta p {
-      max-width: 460px;
+      max-width: 440px;
       margin: 0 auto;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.85;
+      font-size: 13px;
+      line-height: 1.8;
     }
 
     .bottom-cta .button {
-      margin-top: 26px;
+      margin-top: 25px;
     }
 
     .site-footer {
-      padding: 30px 0 35px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
     }
 
     .footer-inner {
@@ -531,20 +427,19 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 22px;
+      gap: 24px;
     }
 
     .footer-brand {
-      color: #b9b2bc;
+      color: var(--muted);
       font-size: 12px;
-      font-weight: 600;
     }
 
     .footer-links {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 22px;
     }
 
     .footer-links a {
@@ -554,13 +449,13 @@
     }
 
     .footer-links a:hover {
-      color: var(--accent-light);
+      color: var(--text);
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .reveal.visible {
@@ -568,19 +463,18 @@
       transform: translateY(0);
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 850px) {
       .nav {
         flex-wrap: wrap;
+        padding: 14px 0;
       }
 
       .nav-links {
         order: 3;
         width: 100%;
         justify-content: center;
-      }
-
-      .nav-links a {
-        padding: 9px 17px;
+        gap: 24px;
+        padding-top: 8px;
       }
 
       .nav > .button {
@@ -601,34 +495,25 @@
 
     @media (max-width: 600px) {
       .container {
-        width: min(100% - 32px, var(--max-width));
+        width: calc(100% - 32px);
       }
 
-      .site-header {
-        padding: 13px 0;
-      }
-
-      .brand-mark {
-        width: 34px;
-        height: 34px;
-      }
-
-      .brand-name {
-        font-size: 17px;
-      }
-
-      .nav > .button {
-        min-height: 38px;
-        padding: 0 12px;
-        font-size: 11px;
+      .nav {
+        gap: 12px;
       }
 
       .nav-links {
         gap: 0;
+        justify-content: space-between;
       }
 
       .nav-links a {
-        padding: 9px 12px;
+        font-size: 11px;
+      }
+
+      .nav > .button {
+        min-height: 38px;
+        padding: 0 11px;
         font-size: 11px;
       }
 
@@ -637,11 +522,11 @@
       }
 
       .hero {
-        padding: 83px 0 85px;
+        padding: 85px 0 90px;
       }
 
       .hero h1 {
-        font-size: clamp(43px, 12vw, 64px);
+        font-size: clamp(43px, 11vw, 62px);
         letter-spacing: -2.8px;
       }
 
@@ -650,7 +535,7 @@
       }
 
       .overview {
-        padding: 65px 0 70px;
+        padding: 65px 0;
       }
 
       .preview-grid,
@@ -659,7 +544,7 @@
       }
 
       .preview-card {
-        min-height: 205px;
+        min-height: 195px;
       }
 
       .highlights {
@@ -667,7 +552,7 @@
       }
 
       .bottom-cta {
-        margin: 60px 0;
+        margin: 55px 0;
         padding: 48px 20px;
       }
 
@@ -677,7 +562,7 @@
       }
 
       .footer-links {
-        gap: 15px;
+        gap: 16px;
       }
     }
 
@@ -700,8 +585,6 @@
 </head>
 
 <body>
-  <div class="ambient" aria-hidden="true"></div>
-
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="/" aria-label="SUKI homepage">
@@ -736,7 +619,7 @@
 
       <h1>
         your server.
-        <span class="accent">your own way.</span>
+        <span>your own way.</span>
       </h1>
 
       <p class="intro">
@@ -760,7 +643,7 @@
       </div>
 
       <p class="hero-note">
-        <span>✳</span> suki: all in one discord management
+        suki: all in one discord management
       </p>
     </section>
   </main>
