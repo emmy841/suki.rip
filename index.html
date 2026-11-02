@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080709">
-  <title>suki</title>
-  <meta name="description" content="all-in-one Discord bot">
+  <meta name="description" content="SUKI is an all-in-one Discord bot for server management, economy, games, pets and more.">
+  <title>SUKI — Your server, your own way.</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,16 +14,26 @@
 
   <style>
     :root {
-      color-scheme: dark;
       --bg: #080709;
-      --text: #ffffff;
+      --surface: rgba(255, 255, 255, 0.035);
+      --surface-hover: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.085);
+      --border-hover: rgba(184, 61, 80, 0.4);
+      --text: #f4f0f3;
       --muted: #aaa5ad;
+      --subtle: #716b75;
       --accent: #b83d50;
-      --line: rgba(255,255,255,.10);
+      --accent-light: #e46b7e;
+      --mono: "DM Mono", monospace;
+      --sans: "Space Grotesk", sans-serif;
+      --radius: 20px;
+      --max-width: 1120px;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html {
@@ -31,353 +41,385 @@
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
       overflow-x: hidden;
       background: var(--bg);
       color: var(--text);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
     }
 
-    body::before,
-    body::after {
+    body::before {
+      position: fixed;
+      z-index: -2;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% -15%, rgba(184, 61, 80, 0.15), transparent 55%),
+        radial-gradient(ellipse at 5% 40%, rgba(117, 36, 65, 0.07), transparent 35%),
+        radial-gradient(ellipse at 95% 75%, rgba(184, 61, 80, 0.055), transparent 35%);
       content: "";
+      pointer-events: none;
+    }
+
+    body::after {
       position: fixed;
       z-index: -1;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.15'/%3E%3C/svg%3E");
+      opacity: 0.12;
+      content: "";
       pointer-events: none;
-      border-radius: 50%;
-      filter: blur(100px);
-    }
-
-    body::before {
-      width: 650px;
-      height: 650px;
-      top: -300px;
-      left: -230px;
-      background: radial-gradient(circle, rgba(156,38,60,.45), rgba(91,20,38,.15) 45%, transparent 72%);
-    }
-
-    body::after {
-      width: 750px;
-      height: 750px;
-      right: -300px;
-      top: 180px;
-      background: radial-gradient(circle, rgba(133,35,55,.34), rgba(83,25,44,.12) 48%, transparent 72%);
     }
 
     a {
       color: inherit;
       text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::selection {
+      background: rgba(184, 61, 80, 0.45);
+      color: white;
     }
 
     .ambient {
       position: fixed;
-      inset: 0;
       z-index: -1;
-      overflow: hidden;
+      top: -180px;
+      left: 50%;
+      width: 650px;
+      height: 450px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(184, 61, 80, 0.09);
+      filter: blur(120px);
       pointer-events: none;
     }
 
-    .light {
-      position: absolute;
-      width: 380px;
-      height: 900px;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: .15;
-      transform: rotate(35deg);
-    }
-
-    .light-one {
-      top: -480px;
-      left: 18%;
-      background: #d5b5c0;
-    }
-
-    .light-two {
-      top: 5%;
-      right: 8%;
-      background: #a32e49;
-      opacity: .18;
-    }
-
-    .light-three {
-      bottom: -650px;
-      left: 38%;
-      background: #c34b60;
-      opacity: .17;
-    }
-
-    .shell {
-      width: min(1240px, calc(100% - 64px));
+    .container {
+      width: min(var(--max-width), calc(100% - 48px));
       margin: 0 auto;
     }
 
-    header {
-      height: 82px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+    .site-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+      background: rgba(8, 7, 9, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .nav {
+      display: flex;
       align-items: center;
-      position: relative;
-      z-index: 10;
+      justify-content: space-between;
+      gap: 24px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
       gap: 11px;
-      width: fit-content;
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -.04em;
+      flex-shrink: 0;
     }
 
-    .mark {
-      width: 34px;
-      height: 34px;
+    .brand-mark {
       display: grid;
+      width: 38px;
+      height: 38px;
       place-items: center;
-      border: 1px solid rgba(201,75,89,.35);
-      border-radius: 11px;
-      color: #e28a96;
-      font-size: 17px;
-      background: linear-gradient(145deg, rgba(255,255,255,.13), rgba(255,255,255,.025));
-      box-shadow: inset 0 1px rgba(255,255,255,.16), 0 0 24px rgba(160,48,65,.12);
-      backdrop-filter: blur(16px);
+      border: 1px solid rgba(184, 61, 80, 0.3);
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(184, 61, 80, 0.2), rgba(184, 61, 80, 0.045));
+      color: var(--accent-light);
+      font-size: 20px;
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
     }
 
-    .nav {
+    .brand-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+    }
+
+    .brand-name span {
+      color: var(--accent-light);
+    }
+
+    .nav-links {
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 6px;
-      border: 1px solid rgba(255,255,255,.09);
+      padding: 5px;
+      border: 1px solid var(--border);
       border-radius: 999px;
-      background: rgba(255,255,255,.055);
-      box-shadow: inset 0 1px rgba(255,255,255,.07), 0 8px 30px rgba(0,0,0,.15);
-      backdrop-filter: blur(22px);
+      background: rgba(255, 255, 255, 0.025);
     }
 
-    .nav a {
-      padding: 10px 17px;
+    .nav-links a {
+      padding: 9px 15px;
       border-radius: 999px;
-      color: #c3bec7;
-      font-size: 12px;
-      font-weight: 600;
-      transition: color .2s ease, background .2s ease;
+      color: var(--muted);
+      font-size: 13px;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .nav a:hover,
-    .nav a.active {
-      color: white;
-      background: rgba(255,255,255,.09);
-    }
-
-    .header-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-
-    .header-invite {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      min-height: 42px;
-      padding: 0 19px;
-      border-radius: 999px;
-      color: #171317;
-      background: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      transition: transform .2s ease, background .2s ease;
-    }
-
-    .header-invite:hover {
-      transform: translateY(-2px);
-      background: #eee8eb;
-    }
-
-    .header-invite span {
-      font-size: 15px;
-    }
-
-    main {
-      min-height: calc(100svh - 82px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 65px 0 110px;
-    }
-
-    .hero {
-      width: 100%;
-      text-align: center;
-      position: relative;
-    }
-
-    .hero h1 {
-      max-width: 1050px;
-      margin: 0 auto;
-      font-size: clamp(48px, 8.5vw, 104px);
-      line-height: .99;
-      letter-spacing: -.085em;
-      font-weight: 700;
-    }
-
-    .hero h1 span {
-      display: block;
-      color: #fff;
-    }
-
-    .hero h1 .accent {
-      background: linear-gradient(100deg, #fff 5%, #e9dce0 55%, #c77b89 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .intro {
-      max-width: 475px;
-      margin: 26px auto 0;
-      color: #c1bbc4;
-      font-size: 16px;
-      line-height: 1.75;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 13px;
-      margin-top: 30px;
-      flex-wrap: wrap;
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.065);
+      color: var(--text);
     }
 
     .button {
       display: inline-flex;
+      min-height: 44px;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      min-height: 48px;
-      padding: 0 23px;
-      border-radius: 999px;
+      gap: 9px;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: 12px;
       font-size: 13px;
-      font-weight: 700;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
-      backdrop-filter: blur(18px);
+      font-weight: 600;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+      cursor: pointer;
     }
 
     .button:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
 
-    .primary {
-      color: #fff;
-      border: 1px solid rgba(255,255,255,.15);
-      background: #a93448;
-      box-shadow: 0 5px 30px rgba(155,39,60,.22), inset 0 1px rgba(255,255,255,.18);
+    .button-primary {
+      border-color: rgba(228, 107, 126, 0.35);
+      background: linear-gradient(135deg, #c74b60, #a82f45);
+      color: white;
+      box-shadow: 0 5px 22px rgba(184, 61, 80, 0.15);
     }
 
-    .primary:hover {
-      background: #c04459;
-      box-shadow: 0 8px 35px rgba(155,39,60,.35), inset 0 1px rgba(255,255,255,.2);
+    .button-primary:hover {
+      background: linear-gradient(135deg, #d65b70, #b6384f);
+      box-shadow: 0 8px 28px rgba(184, 61, 80, 0.24);
     }
 
-    .secondary {
-      color: #f0edf1;
-      border: 1px solid rgba(255,255,255,.13);
-      background: rgba(255,255,255,.065);
-      box-shadow: inset 0 1px rgba(255,255,255,.07);
+    .button-secondary {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text);
     }
 
-    .secondary:hover {
-      border-color: rgba(201,75,89,.4);
-      background: rgba(255,255,255,.10);
+    .button-secondary:hover {
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .button-arrow {
       font-size: 16px;
-      opacity: .8;
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover .button-arrow {
+      transform: translateX(3px);
+    }
+
+    main {
+      min-height: calc(100svh - 76px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      padding: 105px 0 115px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 27px;
+      padding: 8px 12px;
+      border: 1px solid rgba(184, 61, 80, 0.22);
+      border-radius: 999px;
+      background: rgba(184, 61, 80, 0.065);
+      color: #e8a0ab;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      box-shadow: 0 0 12px rgba(228, 107, 126, 0.65);
+    }
+
+    .hero h1 {
+      max-width: 1000px;
+      margin: 0 auto;
+      font-size: clamp(48px, 8.5vw, 96px);
+      font-weight: 600;
+      line-height: 0.99;
+      letter-spacing: -5px;
+    }
+
+    .hero h1 span {
+      display: block;
+    }
+
+    .hero h1 .accent {
+      color: var(--accent-light);
+    }
+
+    .intro {
+      max-width: 500px;
+      margin: 25px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .hero-note {
+      margin-top: 22px;
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero-note span {
+      color: var(--accent-light);
     }
 
     .overview {
-      padding: 95px 0 115px;
-      border-top: 1px solid rgba(255,255,255,.09);
+      padding: 85px 0 95px;
+      border-top: 1px solid rgba(255, 255, 255, 0.055);
     }
 
     .section-heading {
-      text-align: center;
-      margin-bottom: 45px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 27px;
+    }
+
+    .section-kicker {
+      margin-bottom: 11px;
+      color: var(--accent-light);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
     }
 
     .section-heading h2 {
-      margin: 0;
-      font-size: clamp(32px, 5vw, 48px);
-      letter-spacing: -.065em;
-      font-weight: 700;
+      font-size: clamp(28px, 4vw, 39px);
+      font-weight: 600;
+      letter-spacing: -1.8px;
     }
 
-    .section-heading p {
-      margin: 11px 0 0;
+    .section-description {
+      max-width: 400px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.8;
     }
 
     .preview-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 17px;
+      gap: 14px;
     }
 
     .preview-card {
       position: relative;
       display: flex;
+      min-height: 230px;
       flex-direction: column;
-      min-height: 245px;
-      padding: 27px;
+      align-items: flex-start;
+      padding: 23px;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 19px;
-      background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018));
-      box-shadow: inset 0 1px rgba(255,255,255,.07), 0 10px 35px rgba(0,0,0,.10);
-      backdrop-filter: blur(20px);
-      transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.014));
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    .preview-card::before {
+      position: absolute;
+      top: -70px;
+      right: -70px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: rgba(184, 61, 80, 0.08);
+      filter: blur(40px);
+      content: "";
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
     .preview-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(201,75,89,.35);
-      background: linear-gradient(145deg, rgba(201,75,89,.09), rgba(255,255,255,.025));
-      box-shadow: 0 15px 40px rgba(0,0,0,.2), inset 0 1px rgba(255,255,255,.10);
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .preview-card:hover::before {
+      opacity: 1;
     }
 
     .preview-icon {
       display: grid;
-      place-items: center;
       width: 43px;
       height: 43px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(201,75,89,.27);
-      border-radius: 12px;
-      color: #df8190;
-      background: rgba(201,75,89,.10);
+      flex-shrink: 0;
+      place-items: center;
+      margin-bottom: 21px;
+      border: 1px solid rgba(184, 61, 80, 0.2);
+      border-radius: 13px;
+      background: rgba(184, 61, 80, 0.09);
+      color: var(--accent-light);
       font-size: 19px;
     }
 
     .preview-card h3 {
-      margin: 0 0 9px;
-      font-size: 18px;
+      margin-bottom: 9px;
+      font-size: 16px;
       font-weight: 600;
+      letter-spacing: -0.35px;
     }
 
     .preview-card p {
-      margin: 0;
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
+      font-size: 12px;
+      line-height: 1.85;
     }
 
     .preview-link {
@@ -385,14 +427,14 @@
       align-items: center;
       gap: 8px;
       margin-top: auto;
-      padding-top: 24px;
-      color: #e28a96;
+      padding-top: 20px;
+      color: var(--accent-light);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .preview-link span {
-      transition: transform .2s ease;
+      transition: transform 0.2s ease;
     }
 
     .preview-card:hover .preview-link span {
@@ -400,73 +442,97 @@
     }
 
     .highlights {
-      padding: 0 0 115px;
+      padding: 0 0 95px;
     }
 
     .highlight-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 13px;
+      gap: 14px;
     }
 
     .highlight {
       padding: 23px;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.014));
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
 
-    .highlight span {
+    .highlight:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      background: var(--surface-hover);
+    }
+
+    .highlight > span {
       display: block;
-      margin-bottom: 12px;
-      color: #df8190;
+      margin-bottom: 13px;
+      color: var(--accent-light);
       font-size: 20px;
     }
 
     .highlight h3 {
-      margin: 0 0 7px;
-      font-size: 14px;
+      margin-bottom: 9px;
+      font-size: 16px;
+      font-weight: 600;
     }
 
     .highlight p {
-      margin: 0;
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.8;
+      line-height: 1.85;
+    }
+
+    .divider {
+      height: 1px;
+      margin-top: 10px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.09), transparent);
     }
 
     .bottom-cta {
-      margin-bottom: 100px;
-      padding: 60px 25px;
+      position: relative;
+      margin: 80px 0;
+      padding: 65px 30px;
+      overflow: hidden;
+      border: 1px solid rgba(184, 61, 80, 0.23);
+      border-radius: 26px;
+      background:
+        radial-gradient(ellipse at 50% 110%, rgba(184, 61, 80, 0.17), transparent 65%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
       text-align: center;
-      border: 1px solid rgba(201,75,89,.20);
-      border-radius: 22px;
-      background: radial-gradient(ellipse at 50% 120%, rgba(156,38,60,.18), transparent 70%), rgba(255,255,255,.035);
-      box-shadow: inset 0 1px rgba(255,255,255,.06);
     }
 
     .bottom-cta h2 {
-      margin: 0;
-      font-size: clamp(27px, 5vw, 40px);
-      letter-spacing: -.06em;
+      margin-bottom: 15px;
+      font-size: clamp(30px, 5vw, 47px);
+      font-weight: 600;
+      letter-spacing: -2px;
     }
 
     .bottom-cta p {
-      margin: 12px auto 24px;
+      max-width: 460px;
+      margin: 0 auto;
       color: var(--muted);
       font-size: 14px;
+      line-height: 1.85;
     }
 
-    footer {
-      padding: 27px 0;
-      border-top: 1px solid var(--line);
+    .bottom-cta .button {
+      margin-top: 26px;
+    }
+
+    .site-footer {
+      padding: 30px 0 35px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .footer-inner {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 20px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 22px;
     }
 
     .footer-brand {
@@ -477,115 +543,142 @@
 
     .footer-links {
       display: flex;
+      align-items: center;
       flex-wrap: wrap;
       gap: 20px;
     }
 
     .footer-links a {
       color: var(--muted);
-      font-size: 11px;
-      transition: color .2s ease;
+      font-size: 12px;
+      transition: color 0.2s ease;
     }
 
     .footer-links a:hover {
-      color: white;
+      color: var(--accent-light);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     @media (max-width: 900px) {
-      header {
-        grid-template-columns: 1fr auto;
-      }
-
       .nav {
-        display: none;
+        flex-wrap: wrap;
       }
 
-      .preview-grid {
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 9px 17px;
+      }
+
+      .nav > .button {
+        margin-left: auto;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .preview-grid,
+      .highlight-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 560px) {
-      .shell {
-        width: calc(100% - 36px);
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 32px, var(--max-width));
       }
 
-      header {
-        height: 72px;
+      .site-header {
+        padding: 13px 0;
       }
 
-      .brand {
-        font-size: 15px;
+      .brand-mark {
+        width: 34px;
+        height: 34px;
       }
 
-      .mark {
-        width: 31px;
-        height: 31px;
+      .brand-name {
+        font-size: 17px;
       }
 
-      .header-invite {
-        min-height: 39px;
-        padding: 0 13px;
+      .nav > .button {
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 11px;
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links a {
+        padding: 9px 12px;
         font-size: 11px;
       }
 
       main {
-        min-height: calc(90svh - 72px);
-        padding: 70px 0 95px;
+        min-height: auto;
+      }
+
+      .hero {
+        padding: 83px 0 85px;
       }
 
       .hero h1 {
-        font-size: clamp(45px, 12vw, 68px);
+        font-size: clamp(43px, 12vw, 64px);
+        letter-spacing: -2.8px;
       }
 
       .intro {
-        max-width: 350px;
-        margin-top: 21px;
         font-size: 14px;
       }
 
-      .actions {
-        gap: 10px;
-        margin-top: 25px;
-      }
-
-      .button {
-        min-height: 45px;
-        padding: 0 17px;
-        font-size: 12px;
-      }
-
       .overview {
-        padding: 75px 0 85px;
-      }
-
-      .section-heading {
-        margin-bottom: 32px;
+        padding: 65px 0 70px;
       }
 
       .preview-grid,
       .highlight-grid {
         grid-template-columns: 1fr;
-        gap: 12px;
       }
 
       .preview-card {
-        min-height: 220px;
-        padding: 23px;
+        min-height: 205px;
       }
 
       .highlights {
-        padding-bottom: 75px;
+        padding-bottom: 60px;
       }
 
       .bottom-cta {
-        margin-bottom: 70px;
-        padding: 45px 20px;
+        margin: 60px 0;
+        padding: 48px 20px;
       }
 
       .footer-inner {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-links {
+        gap: 15px;
       }
     }
 
@@ -594,42 +687,56 @@
       *::before,
       *::after {
         scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="ambient">
-    <div class="light light-one"></div>
-    <div class="light light-two"></div>
-    <div class="light light-three"></div>
-  </div>
+  <div class="ambient" aria-hidden="true"></div>
 
-  <header class="shell">
-    <a class="brand" href="index.html">
-      <span class="mark">猫</span>
-      <span>SUKI</span>
-    </a>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="SUKI homepage">
+        <span class="brand-mark" aria-hidden="true">猫</span>
+        <span class="brand-name">suki<span>.</span></span>
+      </a>
 
-   <nav class="nav">
-  <a href="/features/">Features</a>
-  <a href="/commands/">Commands</a>
-  <a href="/embeds/">Embeds</a>
-  </nav>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/" aria-current="page">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/commands/">Commands</a>
+        <a href="/embeds/">Embeds</a>
+      </nav>
 
-    <div class="header-actions">
-      <a class="header-invite" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
-        <span>◈</span> Add to Discord
+      <a
+        class="button button-primary"
+        href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
       </a>
     </div>
   </header>
 
-  <main class="shell">
-    <section class="hero">
+  <main>
+    <section class="hero container">
+      <div class="eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        SUKI
+      </div>
+
       <h1>
-        <span>your server.</span>
+        your server.
         <span class="accent">your own way.</span>
       </h1>
 
@@ -639,94 +746,196 @@
       </p>
 
       <div class="actions">
-        <a class="button primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
-          Add to Discord <span class="button-arrow">↗</span>
+        <a
+          class="button button-primary"
+          href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
         </a>
 
-        <a class="button secondary" href="features.html">
-          Explore features <span class="button-arrow">→</span>
+        <a class="button button-secondary" href="/features/">
+          Explore features <span class="button-arrow" aria-hidden="true">→</span>
         </a>
       </div>
+
+      <p class="hero-note">
+        <span>✳</span> one bot, plenty of ways to make it yours
+      </p>
     </section>
   </main>
 
-  <section class="overview shell">
-    <div class="section-heading">
-      <h2> SUKI</h2>
-      <p>Everything your server needs, all in one place.</p>
-    </div>
+  <section class="overview">
+    <div class="container">
+      <div class="section-heading reveal">
+        <div>
+          <p class="section-kicker">Get to know SUKI</p>
+          <h2>Everything in one place.</h2>
+        </div>
 
-    <div class="preview-grid">
+        <p class="section-description">
+          Explore the tools, commands and customization options
+          that bring your Discord community together.
+        </p>
+      </div>
 
-      <a class="preview-card" href="features.html">
-        <div class="preview-icon">✧</div>
-        <h3>Features</h3>
-        <p>From server management to economy, games and collectibles. Explore everything Suki has to offer.</p>
-        <span class="preview-link">Explore features <span>→</span></span>
-      </a>
+      <div class="preview-grid">
+        <a class="preview-card reveal" href="/features/">
+          <div class="preview-icon" aria-hidden="true">✧</div>
+          <h3>Features</h3>
+          <p>
+            From server management to economy, games and collectibles.
+            Explore everything Suki has to offer.
+          </p>
+          <span class="preview-link">
+            Explore features <span aria-hidden="true">→</span>
+          </span>
+        </a>
 
-      <a class="preview-card" href="commands.html">
-        <div class="preview-icon">⌘</div>
-        <h3>Commands</h3>
-        <p>Find the commands you need, explore categories and learn how to use Suki.</p>
-        <span class="preview-link">Browse commands <span>→</span></span>
-      </a>
+        <a class="preview-card reveal" href="/commands/">
+          <div class="preview-icon" aria-hidden="true">⌘</div>
+          <h3>Commands</h3>
+          <p>
+            Find the commands you need, explore categories and
+            learn how to use Suki.
+          </p>
+          <span class="preview-link">
+            Browse commands <span aria-hidden="true">→</span>
+          </span>
+        </a>
 
-      <a class="preview-card" href="embeds.html">
-        <div class="preview-icon">▤</div>
-        <h3>Embeds</h3>
-        <p>Discover customizable embeds for welcomes, announcements and server messages.</p>
-        <span class="preview-link">Explore embeds <span>→</span></span>
-      </a>
-
-    </div>
-  </section>
-
-  <section class="highlights shell">
-    <div class="section-heading">
-      <h2>a little bit of everything.</h2>
-      <p>Made to bring more to your Discord server.</p>
-    </div>
-
-    <div class="highlight-grid">
-      <article class="highlight">
-        <span>◈</span>
-        <h3>Build your economy</h3>
-        <p>Earn currency, take on jobs, shop for items and grow your collection.</p>
-      </article>
-
-      <article class="highlight">
-        <span>♡</span>
-        <h3>Make it personal</h3>
-        <p>Collect pets, customize your profile and show off your progress.</p>
-      </article>
-
-      <article class="highlight">
-        <span>✦</span>
-        <h3>Keep things fun</h3>
-        <p>Play games, discover drops and give your community more to enjoy.</p>
-      </article>
+        <a class="preview-card reveal" href="/embeds/">
+          <div class="preview-icon" aria-hidden="true">▤</div>
+          <h3>Embeds</h3>
+          <p>
+            Discover customizable embeds for welcomes,
+            announcements and server messages.
+          </p>
+          <span class="preview-link">
+            Explore embeds <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      </div>
     </div>
   </section>
 
-  <section class="bottom-cta shell">
-    <h2>SUKI</h2>
-    <p>Give your Discord server a little something extra.</p>
-    <a class="button primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener">
-      Add to Discord <span class="button-arrow">↗</span>
-    </a>
+  <section class="highlights">
+    <div class="container">
+      <div class="section-heading reveal">
+        <div>
+          <p class="section-kicker">A little bit of everything</p>
+          <h2>Made for your community.</h2>
+        </div>
+
+        <p class="section-description">
+          More ways to connect, create, collect and have fun
+          with the people in your server.
+        </p>
+      </div>
+
+      <div class="highlight-grid">
+        <article class="highlight reveal">
+          <span aria-hidden="true">◈</span>
+          <h3>Build your economy</h3>
+          <p>
+            Earn currency, take on jobs, shop for items
+            and grow your collection.
+          </p>
+        </article>
+
+        <article class="highlight reveal">
+          <span aria-hidden="true">♡</span>
+          <h3>Make it personal</h3>
+          <p>
+            Collect pets, customize your profile
+            and show off your progress.
+          </p>
+        </article>
+
+        <article class="highlight reveal">
+          <span aria-hidden="true">✦</span>
+          <h3>Keep things fun</h3>
+          <p>
+            Play games, discover drops and give
+            your community more to enjoy.
+          </p>
+        </article>
+      </div>
+    </div>
   </section>
 
- <footer>
-  <div class="shell footer-inner">
-    <span class="footer-brand">猫 SUKI © 2026</span>
-    <div class="footer-links">
-      <a href="/features/">Features</a>
-      <a href="/commands/">Commands</a>
-      <a href="/embeds/">Embeds</a>
-      <a href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener noreferrer">Support server</a>
-    </div>
+  <div class="container">
+    <div class="divider"></div>
+
+    <section class="bottom-cta reveal">
+      <div class="eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        Make yourself at home
+      </div>
+
+      <h2>Ready to add SUKI?</h2>
+
+      <p>
+        Give your Discord server a little something extra.
+        Bring Suki into your community and make the experience your own.
+      </p>
+
+      <a
+        class="button button-primary"
+        href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
+      </a>
+    </section>
   </div>
-</footer>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="/" aria-label="SUKI homepage">
+          <span class="brand-mark" aria-hidden="true">猫</span>
+          <span class="brand-name">suki<span>.</span></span>
+        </a>
+        <p class="footer-brand" style="margin-top: 9px;">
+          A little bit of everything.
+        </p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/commands/">Commands</a>
+        <a href="/embeds/">Embeds</a>
+        <a href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener noreferrer">Support server</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.08
+        }
+      );
+
+      revealElements.forEach(element => observer.observe(element));
+    } else {
+      revealElements.forEach(element => element.classList.add("visible"));
+    }
+  </script>
 </body>
 </html>
