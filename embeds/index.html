@@ -1,1 +1,1794 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080709">
+  <meta name="description" content="Suki's interactive embed builder.">
+  <title> embeds </title></title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080709;
+      --surface: rgba(255, 255, 255, 0.035);
+      --surface-hover: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.085);
+      --border-hover: rgba(184, 61, 80, 0.4);
+      --text: #f4f0f3;
+      --muted: #aaa5ad;
+      --subtle: #716b75;
+      --accent: #b83d50;
+      --accent-light: #e46b7e;
+      --mono: "DM Mono", monospace;
+      --sans: "Space Grotesk", sans-serif;
+      --radius: 20px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -2;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% -15%, rgba(184, 61, 80, 0.15), transparent 55%),
+        radial-gradient(ellipse at 5% 40%, rgba(117, 36, 65, 0.07), transparent 35%),
+        radial-gradient(ellipse at 95% 75%, rgba(184, 61, 80, 0.055), transparent 35%);
+      content: "";
+      pointer-events: none;
+    }
+
+    body::after {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.15'/%3E%3C/svg%3E");
+      opacity: 0.12;
+      content: "";
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::selection {
+      background: rgba(184, 61, 80, 0.45);
+      color: white;
+    }
+
+    .ambient {
+      position: fixed;
+      z-index: -1;
+      top: -180px;
+      left: 50%;
+      width: 650px;
+      height: 450px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(184, 61, 80, 0.09);
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+      background: rgba(8, 7, 9, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid rgba(184, 61, 80, 0.3);
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(184, 61, 80, 0.2), rgba(184, 61, 80, 0.045));
+      color: var(--accent-light);
+      font-size: 20px;
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+    }
+
+    .brand-name span {
+      color: var(--accent-light);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .nav-links a {
+      padding: 9px 15px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] {
+      background: rgba(255, 255, 255, 0.065);
+      color: var(--text);
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 19px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      border-color: rgba(228, 107, 126, 0.35);
+      background: linear-gradient(135deg, #c74b60, #a82f45);
+      color: white;
+      box-shadow: 0 5px 22px rgba(184, 61, 80, 0.15);
+    }
+
+    .button-primary:hover {
+      background: linear-gradient(135deg, #d65b70, #b6384f);
+      box-shadow: 0 8px 28px rgba(184, 61, 80, 0.24);
+    }
+
+    .button-secondary {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .button-arrow {
+      font-size: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover .button-arrow {
+      transform: translateX(3px);
+    }
+
+    main {
+      min-height: calc(100svh - 76px);
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      padding: 90px 0 65px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 27px;
+      padding: 8px 12px;
+      border: 1px solid rgba(184, 61, 80, 0.22);
+      border-radius: 999px;
+      background: rgba(184, 61, 80, 0.065);
+      color: #e8a0ab;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      box-shadow: 0 0 12px rgba(228, 107, 126, 0.65);
+    }
+
+    .hero h1 {
+      max-width: 1000px;
+      margin: 0 auto;
+      font-size: clamp(48px, 8.5vw, 96px);
+      font-weight: 600;
+      line-height: 0.99;
+      letter-spacing: -5px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--accent-light);
+    }
+
+    .intro {
+      max-width: 500px;
+      margin: 25px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .hero-note {
+      margin-top: 22px;
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero-note span {
+      color: var(--accent-light);
+    }
+
+    .builder-section {
+      padding: 65px 0 95px;
+      border-top: 1px solid rgba(255, 255, 255, 0.055);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 27px;
+    }
+
+    .section-kicker {
+      margin-bottom: 11px;
+      color: var(--accent-light);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(28px, 4vw, 39px);
+      font-weight: 600;
+      letter-spacing: -1.8px;
+    }
+
+    .section-description {
+      max-width: 400px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .builder-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      align-items: start;
+      gap: 18px;
+    }
+
+    .builder-panel,
+    .preview-panel {
+      min-width: 0;
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255,255,255,.042), rgba(255,255,255,.014));
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .panel-heading h3 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -.35px;
+    }
+
+    .panel-label {
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .form-section {
+      padding: 19px 0;
+      border-top: 1px solid rgba(255,255,255,.065);
+    }
+
+    .form-section:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .form-section-title {
+      margin-bottom: 15px;
+      color: var(--accent-light);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      color: #d8d1da;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .field-hint {
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 400;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 43px;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      background: rgba(0,0,0,.2);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 12px;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .form-control::placeholder {
+      color: var(--subtle);
+    }
+
+    .form-control:focus {
+      border-color: rgba(228,107,126,.5);
+      background: rgba(0,0,0,.3);
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-picker {
+      width: 46px;
+      height: 43px;
+      flex-shrink: 0;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+
+    .color-row .form-control {
+      flex: 1;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 12px 0;
+    }
+
+    .toggle-copy strong {
+      display: block;
+      color: #d8d1da;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .toggle-copy span {
+      display: block;
+      margin-top: 4px;
+      color: var(--subtle);
+      font-size: 10px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 39px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .toggle-track::before {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #aaa5ad;
+      content: "";
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .toggle input:checked + .toggle-track {
+      border-color: rgba(228,107,126,.4);
+      background: rgba(184,61,80,.35);
+    }
+
+    .toggle input:checked + .toggle-track::before {
+      transform: translateX(17px);
+      background: var(--accent-light);
+    }
+
+    .fields-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field-editor {
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+      background: rgba(255,255,255,.02);
+    }
+
+    .field-editor-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .field-editor-top span {
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .remove-field {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      place-items: center;
+      border: 1px solid rgba(184,61,80,.2);
+      border-radius: 8px;
+      background: rgba(184,61,80,.07);
+      color: var(--accent-light);
+      font-size: 15px;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+
+    .remove-field:hover {
+      background: rgba(184,61,80,.2);
+    }
+
+    .field-editor .form-group {
+      margin-bottom: 10px;
+    }
+
+    .field-editor .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-options {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .field-options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .field-options input {
+      accent-color: var(--accent);
+    }
+
+    .add-field {
+      display: flex;
+      width: 100%;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      border: 1px dashed rgba(184,61,80,.35);
+      border-radius: 10px;
+      background: rgba(184,61,80,.045);
+      color: var(--accent-light);
+      font-size: 11px;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .add-field:hover {
+      border-color: rgba(184,61,80,.65);
+      background: rgba(184,61,80,.1);
+    }
+
+    .builder-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.065);
+    }
+
+    .builder-actions .button {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .preview-panel {
+      position: sticky;
+      top: 105px;
+    }
+
+    .preview-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .preview-label::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #43b581;
+      box-shadow: 0 0 10px rgba(67,181,129,.4);
+      content: "";
+    }
+
+    .discord-window {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.055);
+      border-radius: 13px;
+      background: #313338;
+    }
+
+    .discord-message {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .discord-avatar {
+      display: grid;
+      width: 39px;
+      height: 39px;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #c74b60, #762a42);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .discord-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .discord-user {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 7px;
+      color: #f2f3f5;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .bot-tag {
+      padding: 2px 4px;
+      border-radius: 3px;
+      background: #5865f2;
+      color: white;
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .discord-time {
+      color: #949ba4;
+      font-size: 10px;
+      font-weight: 400;
+    }
+
+    .embed-card {
+      max-width: 100%;
+      margin-top: 5px;
+      padding: 13px 14px 15px;
+      overflow: hidden;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      background: #2b2d31;
+      color: #dbdee1;
+    }
+
+    .embed-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 9px;
+      color: #f2f3f5;
+      font-size: 11px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-author img {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .embed-title {
+      margin-bottom: 7px;
+      color: #00a8fc;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-description {
+      color: #dbdee1;
+      font-size: 12px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px 9px;
+      margin-top: 13px;
+    }
+
+    .embed-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .embed-field strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #f2f3f5;
+      font-size: 11px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-field span {
+      display: block;
+      color: #dbdee1;
+      font-size: 11px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-thumbnail {
+      float: right;
+      width: 75px;
+      max-width: 30%;
+      max-height: 75px;
+      margin: 0 0 10px 12px;
+      border-radius: 5px;
+      object-fit: cover;
+    }
+
+    .embed-image {
+      display: block;
+      width: 100%;
+      max-height: 260px;
+      margin-top: 13px;
+      border-radius: 4px;
+      object-fit: contain;
+    }
+
+    .embed-footer {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      color: #b5bac1;
+      font-size: 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-footer img {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .embed-empty {
+      color: #949ba4;
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .json-section {
+      margin-top: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+      background: rgba(0,0,0,.2);
+    }
+
+    .json-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .json-heading span {
+      color: var(--subtle);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .copy-json {
+      padding: 6px 9px;
+      border: 1px solid rgba(184,61,80,.3);
+      border-radius: 7px;
+      background: rgba(184,61,80,.1);
+      color: var(--accent-light);
+      font-size: 10px;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+
+    .copy-json:hover {
+      background: rgba(184,61,80,.2);
+    }
+
+    .json-output {
+      max-height: 250px;
+      padding: 14px;
+      overflow: auto;
+      color: #d4b7bf;
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .builder-tip {
+      margin-top: 15px;
+      color: var(--subtle);
+      font-size: 10px;
+      line-height: 1.7;
+    }
+
+    .bottom-cta {
+      position: relative;
+      margin: 20px 0 80px;
+      padding: 65px 30px;
+      overflow: hidden;
+      border: 1px solid rgba(184, 61, 80, 0.23);
+      border-radius: 26px;
+      background:
+        radial-gradient(ellipse at 50% 110%, rgba(184, 61, 80, 0.17), transparent 65%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+      text-align: center;
+    }
+
+    .bottom-cta h2 {
+      margin-bottom: 15px;
+      font-size: clamp(30px, 5vw, 47px);
+      font-weight: 600;
+      letter-spacing: -2px;
+    }
+
+    .bottom-cta p {
+      max-width: 460px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .bottom-cta .button {
+      margin-top: 26px;
+    }
+
+    .site-footer {
+      padding: 30px 0 35px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 22px;
+    }
+
+    .footer-brand {
+      color: #b9b2bc;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-size: 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-light);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 9px 17px;
+      }
+
+      .nav > .button {
+        margin-left: auto;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .builder-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 32px, var(--max-width));
+      }
+
+      .site-header {
+        padding: 13px 0;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand-name {
+        font-size: 17px;
+      }
+
+      .nav > .button {
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 11px;
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links a {
+        padding: 9px 12px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding: 75px 0 60px;
+      }
+
+      .hero h1 {
+        font-size: clamp(43px, 12vw, 64px);
+        letter-spacing: -2.8px;
+      }
+
+      .intro {
+        font-size: 14px;
+      }
+
+      .builder-section {
+        padding: 55px 0 70px;
+      }
+
+      .builder-panel,
+      .preview-panel {
+        padding: 16px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .discord-window {
+        padding: 12px;
+      }
+
+      .discord-message {
+        gap: 9px;
+      }
+
+      .discord-avatar {
+        width: 33px;
+        height: 33px;
+      }
+
+      .embed-card {
+        padding: 11px;
+      }
+
+      .builder-actions {
+        flex-direction: column;
+      }
+
+      .builder-actions .button {
+        width: 100%;
+      }
+
+      .bottom-cta {
+        margin: 10px 0 60px;
+        padding: 48px 20px;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-links {
+        gap: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="SUKI homepage">
+        <span class="brand-mark" aria-hidden="true">猫</span>
+        <span class="brand-name">suki<span>.</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/commands/">Commands</a>
+        <a href="/embeds/" aria-current="page">Embeds</a>
+      </nav>
+
+      <a
+        class="button button-primary"
+        href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        SUKI
+      </div>
+
+      <h1>
+        make it yours.
+        <span>down to every detail.</span>
+      </h1>
+
+      <p class="intro">
+        Create, customize and preview your own Discord embeds.
+        
+      </p>
+
+      <p class="hero-note">
+        <span>✳</span> featuring your design.
+      </p>
+    </section>
+  </main>
+
+  <section class="builder-section">
+    <div class="container">
+      <div class="section-heading reveal">
+        <div>
+          <p class="section-kicker">INTERACTIVE BUILDER</p>
+          <h2>Build your embed.</h2>
+        </div>
+
+        <p class="section-description">
+          Edit the fields on the left and watch your Discord-style
+          preview update instantly. No coding required.
+        </p>
+      </div>
+
+      <div class="builder-layout">
+        <div class="builder-panel reveal">
+          <div class="panel-heading">
+            <h3>Embed editor</h3>
+            <span class="panel-label">CUSTOMISE</span>
+          </div>
+
+          <section class="form-section">
+            <p class="form-section-title">Basic information</p>
+
+            <div class="form-group">
+              <label for="embedTitle">
+                Title
+                <span class="field-hint">256 characters max</span>
+              </label>
+              <input class="form-control" id="embedTitle" maxlength="256" placeholder="Something interesting...">
+            </div>
+
+            <div class="form-group">
+              <label for="embedDescription">
+                Description
+                <span class="field-hint">4096 characters max</span>
+              </label>
+              <textarea class="form-control" id="embedDescription" maxlength="4096" placeholder="Write your embed description here..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="embedUrl">Title URL <span class="field-hint">Optional</span></label>
+              <input class="form-control" id="embedUrl" type="url" placeholder="https://example.com">
+            </div>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Appearance</p>
+
+            <div class="form-group">
+              <label for="embedColor">Embed colour</label>
+              <div class="color-row">
+                <input class="color-picker" id="embedColorPicker" type="color" value="#b83d50" aria-label="Choose embed colour">
+                <input class="form-control" id="embedColor" value="#b83d50" maxlength="7" aria-label="Embed colour hex code">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="embedThumbnail">Thumbnail URL</label>
+                <input class="form-control" id="embedThumbnail" type="url" placeholder="https://...">
+              </div>
+
+              <div class="form-group">
+                <label for="embedImage">Main image URL</label>
+                <input class="form-control" id="embedImage" type="url" placeholder="https://...">
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Author</p>
+
+            <div class="form-group">
+              <label for="embedAuthor">Author name</label>
+              <input class="form-control" id="embedAuthor" maxlength="256" placeholder="Your name or server name">
+            </div>
+
+            <div class="form-group">
+              <label for="embedAuthorUrl">Author URL</label>
+              <input class="form-control" id="embedAuthorUrl" type="url" placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="embedAuthorIcon">Author icon URL</label>
+              <input class="form-control" id="embedAuthorIcon" type="url" placeholder="https://example.com/icon.png">
+            </div>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Embed fields</p>
+
+            <div class="fields-list" id="fieldsList"></div>
+
+            <button class="add-field" id="addField" type="button">
+              <span>＋</span> Add embed field
+            </button>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Footer</p>
+
+            <div class="form-group">
+              <label for="embedFooter">Footer text</label>
+              <input class="form-control" id="embedFooter" maxlength="2048" placeholder="A little note at the bottom...">
+            </div>
+
+            <div class="form-group">
+              <label for="embedFooterIcon">Footer icon URL</label>
+              <input class="form-control" id="embedFooterIcon" type="url" placeholder="https://example.com/icon.png">
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-copy">
+                <strong>Show timestamp</strong>
+                <span>Add the current timestamp to your embed.</span>
+              </div>
+              <label class="toggle">
+                <input id="embedTimestamp" type="checkbox">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </section>
+
+          <div class="builder-actions">
+            <button class="button button-secondary" id="resetButton" type="button">
+              Reset builder
+            </button>
+            <button class="button button-primary" id="copyButton" type="button">
+              Copy embed JSON <span class="button-arrow">↗</span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="preview-panel reveal">
+          <div class="panel-heading">
+            <h3>Live preview</h3>
+            <span class="preview-label">LIVE</span>
+          </div>
+
+          <div class="discord-window">
+            <div class="discord-message">
+              <div class="discord-avatar">猫</div>
+
+              <div class="discord-content">
+                <div class="discord-user">
+                  suki.
+                  <span class="bot-tag">BOT</span>
+                  <span class="discord-time">Today at 12:00 PM</span>
+                </div>
+
+                <div class="embed-card" id="embedPreview">
+                  <div class="embed-empty">Start typing to build your embed...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="json-section">
+            <div class="json-heading">
+              <span>Generated JSON</span>
+              <button class="copy-json" id="copyJsonButton" type="button">Copy JSON</button>
+            </div>
+            <pre class="json-output" id="jsonOutput">{}</pre>
+          </div>
+
+          <p class="builder-tip">
+            ✳ This preview is a visual approximation of a Discord embed.
+            Some details may appear slightly differently in Discord itself.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <section class="bottom-cta reveal">
+      <div class="eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        MAKE IT OFFICIAL
+      </div>
+
+      <h2>Your embed. Your server.</h2>
+
+      <p>
+        Finished designing? Copy your embed JSON and use it
+        as the starting point for your Suki embed setup.
+      </p>
+
+      <a
+        class="button button-primary"
+        href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Add Suki to Discord <span class="button-arrow">↗</span>
+      </a>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="/" aria-label="SUKI homepage">
+          <span class="brand-mark" aria-hidden="true">猫</span>
+          <span class="brand-name">suki<span>.</span></span>
+        </a>
+        <p class="footer-brand" style="margin-top: 9px;">
+          A little bit of everything.
+        </p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/commands/">Commands</a>
+        <a href="/embeds/">Embeds</a>
+        <a href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener noreferrer">Support server</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const fieldsList = document.getElementById("fieldsList");
+    const embedPreview = document.getElementById("embedPreview");
+    const jsonOutput = document.getElementById("jsonOutput");
+
+    const inputs = {
+      title: document.getElementById("embedTitle"),
+      description: document.getElementById("embedDescription"),
+      url: document.getElementById("embedUrl"),
+      color: document.getElementById("embedColor"),
+      thumbnail: document.getElementById("embedThumbnail"),
+      image: document.getElementById("embedImage"),
+      author: document.getElementById("embedAuthor"),
+      authorUrl: document.getElementById("embedAuthorUrl"),
+      authorIcon: document.getElementById("embedAuthorIcon"),
+      footer: document.getElementById("embedFooter"),
+      footerIcon: document.getElementById("embedFooterIcon"),
+      timestamp: document.getElementById("embedTimestamp")
+    };
+
+    let fieldCount = 0;
+
+    function isValidUrl(value) {
+      if (!value) return false;
+
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:";
+      } catch {
+        return false;
+      }
+    }
+
+    function safeUrl(value) {
+      return isValidUrl(value) ? value : "";
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[character]);
+    }
+
+    function getFields() {
+      return [...fieldsList.querySelectorAll(".field-editor")].map(editor => ({
+        name: editor.querySelector(".field-name").value.trim(),
+        value: editor.querySelector(".field-value").value.trim(),
+        inline: editor.querySelector(".field-inline").checked
+      })).filter(field => field.name || field.value);
+    }
+
+    function getEmbedData() {
+      const data = {};
+
+      const title = inputs.title.value.trim();
+      const description = inputs.description.value.trim();
+      const url = safeUrl(inputs.url.value.trim());
+      const author = inputs.author.value.trim();
+      const authorUrl = safeUrl(inputs.authorUrl.value.trim());
+      const authorIcon = safeUrl(inputs.authorIcon.value.trim());
+      const footer = inputs.footer.value.trim();
+      const footerIcon = safeUrl(inputs.footerIcon.value.trim());
+      const thumbnail = safeUrl(inputs.thumbnail.value.trim());
+      const image = safeUrl(inputs.image.value.trim());
+
+      let color = inputs.color.value.trim();
+
+      if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+        data.color = parseInt(color.slice(1), 16);
+      }
+
+      if (title) data.title = title;
+      if (description) data.description = description;
+      if (url) data.url = url;
+
+      if (author) {
+        data.author = { name: author };
+
+        if (authorUrl) data.author.url = authorUrl;
+        if (authorIcon) data.author.icon_url = authorIcon;
+      }
+
+      const fields = getFields();
+
+      if (fields.length) {
+        data.fields = fields.map(field => ({
+          name: field.name || "Untitled field",
+          value: field.value || "No content",
+          inline: field.inline
+        }));
+      }
+
+      if (footer) {
+        data.footer = { text: footer };
+
+        if (footerIcon) data.footer.icon_url = footerIcon;
+      }
+
+      if (thumbnail) data.thumbnail = { url: thumbnail };
+      if (image) data.image = { url: image };
+
+      if (inputs.timestamp.checked) {
+        data.timestamp = new Date().toISOString();
+      }
+
+      return data;
+    }
+
+    function renderPreview() {
+      const data = getEmbedData();
+
+      embedPreview.style.borderLeftColor =
+        inputs.color.value.match(/^#[0-9a-fA-F]{6}$/)
+          ? inputs.color.value
+          : "#b83d50";
+
+      let html = "";
+
+      if (data.author) {
+        html += `
+          <div class="embed-author">
+            ${data.author.icon_url
+              ? `<img src="${escapeHtml(data.author.icon_url)}" alt="" onerror="this.style.display='none'">`
+              : ""}
+            ${escapeHtml(data.author.name)}
+          </div>
+        `;
+      }
+
+      if (data.thumbnail) {
+        html += `
+          <img class="embed-thumbnail"
+            src="${escapeHtml(data.thumbnail.url)}"
+            alt=""
+            onerror="this.style.display='none'">
+        `;
+      }
+
+      if (data.title) {
+        html += `
+          <div class="embed-title">
+            ${data.url
+              ? `<a href="${escapeHtml(data.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(data.title)}</a>`
+              : escapeHtml(data.title)}
+          </div>
+        `;
+      }
+
+      if (data.description) {
+        html += `<div class="embed-description">${escapeHtml(data.description)}</div>`;
+      }
+
+      if (data.fields && data.fields.length) {
+        html += `<div class="embed-fields">`;
+
+        data.fields.forEach(field => {
+          html += `
+            <div class="embed-field ${field.inline ? "" : "full"}">
+              <strong>${escapeHtml(field.name)}</strong>
+              <span>${escapeHtml(field.value)}</span>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      if (data.image) {
+        html += `
+          <img class="embed-image"
+            src="${escapeHtml(data.image.url)}"
+            alt=""
+            onerror="this.style.display='none'">
+        `;
+      }
+
+      if (data.footer) {
+        html += `
+          <div class="embed-footer">
+            ${data.footer.icon_url
+              ? `<img src="${escapeHtml(data.footer.icon_url)}" alt="" onerror="this.style.display='none'">`
+              : ""}
+            ${escapeHtml(data.footer.text)}
+            ${data.timestamp
+              ? `<span> · ${new Date(data.timestamp).toLocaleString()}</span>`
+              : ""}
+          </div>
+        `;
+      } else if (data.timestamp) {
+        html += `
+          <div class="embed-footer">
+            ${new Date(data.timestamp).toLocaleString()}
+          </div>
+        `;
+      }
+
+      if (!html) {
+        html = `<div class="embed-empty">Start typing to build your embed...</div>`;
+      }
+
+      embedPreview.innerHTML = html;
+      jsonOutput.textContent = JSON.stringify(data, null, 2);
+    }
+
+    function addField() {
+      const existingFields = fieldsList.querySelectorAll(".field-editor");
+
+      if (existingFields.length >= 25) {
+        alert("Discord embeds can contain a maximum of 25 fields.");
+        return;
+      }
+
+      fieldCount++;
+
+      const editor = document.createElement("div");
+      editor.className = "field-editor";
+
+      editor.innerHTML = `
+        <div class="field-editor-top">
+          <span>Field ${fieldCount}</span>
+          <button class="remove-field" type="button" aria-label="Remove field">×</button>
+        </div>
+
+        <div class="form-group">
+          <label>Field name</label>
+          <input class="form-control field-name" maxlength="256" placeholder="Field heading">
+        </div>
+
+        <div class="form-group">
+          <label>Field value</label>
+          <textarea class="form-control field-value" maxlength="1024" placeholder="Field content..." style="min-height:75px;"></textarea>
+        </div>
+
+        <div class="field-options">
+          <label>
+            <input class="field-inline" type="checkbox">
+            Display inline
+          </label>
+        </div>
+      `;
+
+      editor.querySelectorAll("input, textarea").forEach(input => {
+        input.addEventListener("input", renderPreview);
+        input.addEventListener("change", renderPreview);
+      });
+
+      editor.querySelector(".remove-field").addEventListener("click", () => {
+        editor.remove();
+        updateFieldLabels();
+        renderPreview();
+      });
+
+      fieldsList.appendChild(editor);
+      updateFieldLabels();
+      renderPreview();
+    }
+
+    function updateFieldLabels() {
+      fieldsList.querySelectorAll(".field-editor").forEach((editor, index) => {
+        editor.querySelector(".field-editor-top span").textContent = `Field ${index + 1}`;
+      });
+    }
+
+    function resetBuilder() {
+      Object.values(inputs).forEach(input => {
+        if (input.type === "checkbox") {
+          input.checked = false;
+        } else if (input.id === "embedColor") {
+          input.value = "#b83d50";
+        } else if (input.id === "embedColorPicker") {
+          input.value = "#b83d50";
+        } else {
+          input.value = "";
+        }
+      });
+
+      fieldsList.innerHTML = "";
+      fieldCount = 0;
+      renderPreview();
+    }
+
+    function updateColorFromPicker() {
+      inputs.color.value = document.getElementById("embedColorPicker").value;
+      renderPreview();
+    }
+
+    function updateColorFromText() {
+      const value = inputs.color.value.trim();
+
+      if (/^#[0-9a-fA-F]{6}$/.test(value)) {
+        document.getElementById("embedColorPicker").value = value;
+      }
+
+      renderPreview();
+    }
+
+    async function copyJson() {
+      const json = JSON.stringify(getEmbedData(), null, 2);
+      const button = document.getElementById("copyButton");
+      const miniButton = document.getElementById("copyJsonButton");
+
+      try {
+        await navigator.clipboard.writeText(json);
+
+        button.innerHTML = "Copied! ✓";
+        miniButton.textContent = "Copied!";
+
+        setTimeout(() => {
+          button.innerHTML = 'Copy embed JSON <span class="button-arrow">↗</span>';
+          miniButton.textContent = "Copy JSON";
+        }, 1800);
+      } catch {
+        const temporary = document.createElement("textarea");
+        temporary.value = json;
+        document.body.appendChild(temporary);
+        temporary.select();
+        document.execCommand("copy");
+        temporary.remove();
+
+        button.textContent = "Copied! ✓";
+        miniButton.textContent = "Copied!";
+
+        setTimeout(() => {
+          button.innerHTML = 'Copy embed JSON <span class="button-arrow">↗</span>';
+          miniButton.textContent = "Copy JSON";
+        }, 1800);
+      }
+    }
+
+    Object.values(inputs).forEach(input => {
+      input.addEventListener("input", renderPreview);
+      input.addEventListener("change", renderPreview);
+    });
+
+    document.getElementById("embedColorPicker").addEventListener("input", updateColorFromPicker);
+    inputs.color.addEventListener("input", updateColorFromText);
+    document.getElementById("addField").addEventListener("click", addField);
+    document.getElementById("resetButton").addEventListener("click", resetBuilder);
+    document.getElementById("copyButton").addEventListener("click", copyJson);
+    document.getElementById("copyJsonButton").addEventListener("click", copyJson);
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.08
+        }
+      );
+
+      revealElements.forEach(element => observer.observe(element));
+    } else {
+      revealElements.forEach(element => element.classList.add("visible"));
+    }
+
+    renderPreview();
+  </script>
+</body>
+</html>
