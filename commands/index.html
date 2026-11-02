@@ -1,1363 +1,1373 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080709">
-<meta name="description" content="Explore all Suki bot commands.">
-<title>suki. | commands</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --bg: #080709;
-  --surface: rgba(22,17,21,.78);
-  --surface-solid: #151115;
-  --surface-hover: rgba(39,25,32,.9);
-  --border: rgba(255,255,255,.075);
-  --border-hover: rgba(228,107,126,.35);
-  --text: #f6eff2;
-  --muted: #a69aa2;
-  --subtle: #71666e;
-  --accent: #b83d50;
-  --accent-light: #e46b7e;
-  --mono: "DM Mono", monospace;
-  --font: "Space Grotesk", sans-serif;
-  --max-width: 1120px;
-  --radius: 20px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 110px;
-}
-
-body {
-  min-height: 100vh;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  -webkit-font-smoothing: antialiased;
-}
-
-body::before {
-  position: fixed;
-  z-index: -2;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 15% 5%, rgba(125,35,57,.2), transparent 36%),
-    radial-gradient(ellipse at 90% 30%, rgba(92,27,49,.13), transparent 34%),
-    radial-gradient(ellipse at 50% 100%, rgba(106,35,52,.1), transparent 45%);
-}
-
-body::after {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  opacity: .12;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-button {
-  color: inherit;
-}
-
-.container {
-  width: min(calc(100% - 48px), var(--max-width));
-  margin-inline: auto;
-}
-
-.ambient {
-  position: fixed;
-  z-index: -1;
-  top: -280px;
-  left: 50%;
-  width: 850px;
-  height: 600px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: rgba(153,37,64,.13);
-  filter: blur(130px);
-  pointer-events: none;
-}
-
-.site-header {
-  position: sticky;
-  z-index: 100;
-  top: 0;
-  width: 100%;
-  border-bottom: 1px solid rgba(255,255,255,.055);
-  background: rgba(8,7,9,.76);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-}
-
-.nav {
-  display: flex;
-  min-height: 78px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-}
-
-.brand {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-mark {
-  display: grid;
-  width: 37px;
-  height: 37px;
-  place-items: center;
-  border: 1px solid rgba(228,107,126,.3);
-  border-radius: 12px;
-  background: linear-gradient(145deg,rgba(184,61,80,.25),rgba(184,61,80,.06));
-  color: var(--accent-light);
-  font-size: 18px;
-}
-
-.brand-name {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -1px;
-}
-
-.brand-name span {
-  color: var(--accent-light);
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.nav-links a {
-  position: relative;
-  padding: 9px 0;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 500;
-  transition: color .2s ease;
-}
-
-.nav-links a:hover,
-.nav-links a[aria-current="page"] {
-  color: var(--text);
-}
-
-.nav-links a[aria-current="page"]::after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent-light);
-  content: "";
-}
-
-.button {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 0 19px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
-
-.button:hover {
-  transform: translateY(-2px);
-}
-
-.button-primary {
-  border-color: rgba(255,145,161,.35);
-  background: linear-gradient(120deg,#a92f48,#c64d65);
-  color: #fff7f8;
-  box-shadow: 0 5px 25px rgba(184,61,80,.17);
-}
-
-.button-primary:hover {
-  box-shadow: 0 8px 32px rgba(184,61,80,.3);
-}
-
-.button-arrow {
-  font-size: 15px;
-}
-
-.hero {
-  position: relative;
-  padding: 104px 0 74px;
-  text-align: center;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 13px;
-  border: 1px solid rgba(228,107,126,.2);
-  border-radius: 999px;
-  background: rgba(184,61,80,.08);
-  color: var(--accent-light);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 1.5px;
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  box-shadow: 0 0 12px rgba(228,107,126,.8);
-}
-
-.hero h1 {
-  margin-top: 26px;
-  font-size: clamp(48px,8vw,86px);
-  font-weight: 600;
-  line-height: .99;
-  letter-spacing: -5px;
-}
-
-.hero h1 span {
-  background: linear-gradient(100deg,#f2dce2 5%,#e46b7e 52%,#a83d57 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.hero > p {
-  max-width: 520px;
-  margin: 24px auto 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.9;
-}
-
-.hero .hero-note {
-  margin-top: 22px;
-  color: var(--subtle);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .5px;
-}
-
-.hero-note span {
-  margin-right: 6px;
-  color: var(--accent-light);
-}
-
-.command-area {
-  padding-top: 10px;
-}
-
-.search-panel {
-  position: sticky;
-  z-index: 50;
-  top: 92px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 35px;
-  padding: 17px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: rgba(17,13,17,.88);
-  box-shadow: 0 12px 45px rgba(0,0,0,.18);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.search-wrap {
-  position: relative;
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
-  color: var(--accent-light);
-  font-size: 20px;
-  pointer-events: none;
-}
-
-.search-input {
-  width: 100%;
-  height: 47px;
-  padding: 0 16px 0 45px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  outline: none;
-  background: rgba(8,7,9,.8);
-  color: var(--text);
-  font-size: 12px;
-  transition: border-color .2s ease, background .2s ease;
-}
-
-.search-input::placeholder {
-  color: var(--subtle);
-}
-
-.search-input:focus {
-  border-color: rgba(228,107,126,.55);
-  background: rgba(30,19,25,.9);
-}
-
-.filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.filter-button {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255,255,255,.025);
-  color: var(--muted);
-  font-size: 10px;
-  transition: all .2s ease;
-  cursor: pointer;
-}
-
-.filter-button:hover,
-.filter-button.active {
-  border-color: rgba(193,77,98,.45);
-  background: rgba(193,77,98,.14);
-  color: var(--accent-light);
-}
-
-.syntax-guide {
-  margin-bottom: 34px;
-  padding: 26px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: linear-gradient(145deg,rgba(31,22,29,.86),rgba(15,12,16,.88));
-  box-shadow: 0 15px 45px rgba(0,0,0,.12);
-}
-
-.syntax-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 22px;
-}
-
-.syntax-heading .section-kicker {
-  margin-bottom: 8px;
-  color: var(--accent-light);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 1.6px;
-}
-
-.syntax-heading h2 {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -.8px;
-}
-
-.syntax-heading p:last-child {
-  margin-top: 7px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-.syntax-icon {
-  display: grid;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  place-items: center;
-  border: 1px solid rgba(228,107,126,.2);
-  border-radius: 13px;
-  background: rgba(184,61,80,.1);
-  color: var(--accent-light);
-  font-size: 19px;
-}
-
-.syntax-grid {
-  display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: 10px;
-}
-
-.syntax-item {
-  min-width: 0;
-  padding: 15px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: rgba(8,7,9,.55);
-  transition: border-color .2s ease, transform .2s ease, background .2s ease;
-}
-
-.syntax-item:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-hover);
-  background: rgba(37,23,30,.8);
-}
-
-.syntax-item code {
-  color: var(--accent-light);
-  font-family: var(--mono);
-  font-size: 12px;
-}
-
-.syntax-item p {
-  margin-top: 9px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.65;
-}
-
-.syntax-example {
-  display: block;
-  margin-top: 11px;
-  color: var(--subtle);
-  font-family: var(--mono);
-  font-size: 9px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.syntax-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-.syntax-note span {
-  color: var(--accent-light);
-}
-
-.results-line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
-  color: var(--subtle);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.results-line strong {
-  color: var(--accent-light);
-  font-weight: 400;
-}
-
-.category {
-  margin-bottom: 13px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: linear-gradient(145deg,rgba(25,19,24,.88),rgba(15,12,16,.9));
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
-  transition: border-color .2s ease, background .2s ease;
-}
-
-.category:hover,
-.category.open {
-  border-color: rgba(193,77,98,.3);
-}
-
-.category[hidden],
-.command[hidden] {
-  display: none;
-}
-
-.category-header {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 19px 21px;
-  border: 0;
-  background: transparent;
-  color: var(--text);
-  text-align: left;
-  cursor: pointer;
-  transition: background .2s ease;
-}
-
-.category-header:hover {
-  background: rgba(255,255,255,.025);
-}
-
-.category-heading {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-}
-
-.category-icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  place-items: center;
-  border: 1px solid rgba(193,77,98,.25);
-  border-radius: 12px;
-  background: linear-gradient(145deg,rgba(193,77,98,.16),rgba(193,77,98,.04));
-  color: var(--accent-light);
-  font-size: 18px;
-}
-
-.category-title {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -.2px;
-}
-
-.category-description {
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.6;
-}
-
-.category-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-shrink: 0;
-  color: var(--subtle);
-  font-family: var(--mono);
-  font-size: 9px;
-}
-
-.chevron {
-  color: var(--accent-light);
-  font-size: 17px;
-  transition: transform .25s ease;
-}
-
-.category.open .chevron {
-  transform: rotate(180deg);
-}
-
-.command-list {
-  display: none;
-  padding: 0 17px 17px;
-}
-
-.category.open .command-list {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 9px;
-}
-
-.command {
-  min-width: 0;
-  padding: 15px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: rgba(8,7,9,.6);
-  transition: border-color .2s ease, background .2s ease, transform .2s ease;
-}
-
-.command:hover {
-  transform: translateY(-2px);
-  border-color: rgba(193,77,98,.35);
-  background: rgba(36,22,29,.85);
-}
-
-.command-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 9px;
-}
-
-.command-name {
-  overflow-wrap: anywhere;
-  color: var(--accent-light);
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.command-tag {
-  flex-shrink: 0;
-  padding: 5px 8px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255,255,255,.035);
-  color: var(--subtle);
-  font-family: var(--mono);
-  font-size: 8px;
-  text-transform: uppercase;
-}
-
-.command p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.75;
-}
-
-.usage {
-  display: inline-block;
-  margin-top: 11px;
-  padding: 7px 9px;
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 7px;
-  background: rgba(255,255,255,.035);
-  color: #d2c8d1;
-  font-family: var(--mono);
-  font-size: 9px;
-  overflow-wrap: anywhere;
-}
-
-.empty-state {
-  display: none;
-  padding: 55px 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  text-align: center;
-}
-
-.empty-state.visible {
-  display: block;
-}
-
-.empty-state h3 {
-  margin-bottom: 9px;
-  font-size: 18px;
-}
-
-.empty-state p {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.bottom-cta {
-  position: relative;
-  overflow: hidden;
-  margin: 65px 0 85px;
-  padding: 65px 25px;
-  border: 1px solid rgba(193,77,98,.27);
-  border-radius: 22px;
-  background:
-    radial-gradient(ellipse at 50% 110%,rgba(157,44,69,.2),transparent 65%),
-    linear-gradient(145deg,rgba(34,22,29,.95),rgba(15,11,15,.95));
-  text-align: center;
-}
-
-.bottom-cta h2 {
-  margin: 22px 0 13px;
-  font-size: clamp(30px,5vw,43px);
-  letter-spacing: -1.8px;
-}
-
-.bottom-cta p {
-  max-width: 450px;
-  margin: 0 auto;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.85;
-}
-
-.bottom-cta .button {
-  margin-top: 25px;
-}
-
-.site-footer {
-  padding: 30px 0 35px;
-  border-top: 1px solid var(--border);
-  background: rgba(8,7,9,.45);
-}
-
-.footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 22px;
-}
-
-.footer-brand {
-  margin-top: 9px;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.footer-links {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 22px;
-}
-
-.footer-links a {
-  color: var(--muted);
-  font-size: 11px;
-  transition: color .2s ease;
-}
-
-.footer-links a:hover {
-  color: var(--accent-light);
-}
-
-.button:focus-visible,
-.nav-links a:focus-visible,
-.filter-button:focus-visible,
-.category-header:focus-visible,
-.footer-links a:focus-visible {
-  outline: 2px solid var(--accent-light);
-  outline-offset: 4px;
-}
-
-@media (max-width: 900px) {
-  .nav {
-    gap: 18px;
-  }
-
-  .nav-links {
-    gap: 20px;
-  }
-
-  .syntax-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
-
-  .search-panel {
-    top: 88px;
-  }
-}
-
-@media (max-width: 600px) {
-  .container {
-    width: min(calc(100% - 32px),var(--max-width));
-  }
-
-  .site-header {
-    min-height: 70px;
-  }
-
-  .nav {
-    min-height: 70px;
-    flex-wrap: wrap;
-    row-gap: 10px;
-    padding: 11px 0;
-  }
-
-  .brand-mark {
-    width: 33px;
-    height: 33px;
-  }
-
-  .brand-name {
-    font-size: 18px;
-  }
-
-  .nav > .button {
-    min-height: 37px;
-    padding: 0 13px;
-    font-size: 10px;
-  }
-
-  .nav-links {
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .nav-links a {
-    padding: 5px 0;
-    font-size: 11px;
-  }
-
-  .hero {
-    padding: 68px 0 47px;
-  }
-
-  .hero h1 {
-    font-size: clamp(43px,11vw,62px);
-    letter-spacing: -2.8px;
-  }
-
-  .hero > p {
-    font-size: 12px;
-  }
-
-  .command-area {
-    padding-top: 8px;
-  }
-
-  .search-panel {
-    top: 117px;
-    gap: 12px;
-    padding: 12px;
-  }
-
-  .filter-row {
-    gap: 6px;
-  }
-
-  .filter-button {
-    padding: 7px 10px;
-    font-size: 9px;
-  }
-
-  .syntax-guide {
-    padding: 17px;
-  }
-
-  .syntax-heading h2 {
-    font-size: 18px;
-  }
-
-  .syntax-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 7px;
-  }
-
-  .syntax-item {
-    padding: 11px;
-  }
-
-  .category-header {
-    padding: 15px;
-  }
-
-  .category-heading {
-    gap: 10px;
-  }
-
-  .category-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .category-title {
-    font-size: 12px;
-  }
-
-  .category-description {
-    font-size: 10px;
-  }
-
-  .category-meta {
-    gap: 7px;
-    font-size: 8px;
-  }
-
-  .category.open .command-list {
-    grid-template-columns: 1fr;
-  }
-
-  .command-list {
-    padding: 0 10px 10px;
-  }
-
-  .bottom-cta {
-    margin: 45px 0 58px;
-    padding: 45px 18px;
-  }
-
-  .footer-inner {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .footer-links {
-    gap: 15px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0d">
+  <meta name="description" content="Explore all Suki bot commands.">
+  <title>suki. | commands</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --surface: #111114;
+      --surface-hover: #17171b;
+      --border: #242429;
+      --text: #f2f0f1;
+      --muted: #96939b;
+      --accent: #c14d62;
+      --accent-hover: #d15d72;
+      --sans: "Space Grotesk", sans-serif;
+      --mono: "DM Mono", monospace;
+      --max-width: 1080px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 110px;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: white;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 11, 13, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 10px;
+      background: #211116;
+      color: var(--accent-hover);
+      font-size: 17px;
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+    }
+
+    .brand-name span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] {
+      color: var(--text);
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 17px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .button-secondary {
+      border-color: var(--border);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      border-color: #55515a;
+      background: var(--surface);
+    }
+
+    .button-arrow {
+      font-size: 15px;
+    }
+
+    main {
+      display: block;
+      min-height: auto;
+    }
+
+    .hero {
+      width: 100%;
+      padding: 110px 0 90px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 28px;
+      color: var(--accent-hover);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      max-width: 850px;
+      margin: 0 auto;
+      font-size: clamp(50px, 8vw, 88px);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: -5px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--accent);
+    }
+
+    .hero > p {
+      max-width: 430px;
+      margin: 24px auto 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .hero .hero-note {
+      margin-top: 25px;
+      color: #68656d;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .hero-note span {
+      margin-right: 6px;
+      color: var(--accent);
+    }
+
+    .command-area {
+      padding: 75px 0 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .search-panel {
+      position: sticky;
+      z-index: 50;
+      top: 88px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(17, 17, 20, 0.96);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      color: var(--accent-hover);
+      font-size: 20px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 47px;
+      padding: 0 16px 0 45px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 12px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .search-input::placeholder {
+      color: #68656d;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      background: #111114;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .filter-button {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 10px;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      border-color: var(--accent);
+      background: rgba(193, 77, 98, 0.12);
+      color: var(--accent-hover);
+    }
+
+    .syntax-guide {
+      margin-bottom: 34px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    .syntax-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .syntax-heading .section-kicker {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    .syntax-heading h2 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.8px;
+    }
+
+    .syntax-heading p:last-child {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .syntax-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 9px;
+      background: #211116;
+      color: var(--accent-hover);
+      font-size: 19px;
+    }
+
+    .syntax-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .syntax-item {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0b0b0d;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .syntax-item:hover {
+      transform: translateY(-2px);
+      border-color: #484048;
+      background: var(--surface-hover);
+    }
+
+    .syntax-item code {
+      color: var(--accent-hover);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .syntax-item p {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .syntax-example {
+      display: block;
+      margin-top: 11px;
+      color: #68656d;
+      font-family: var(--mono);
+      font-size: 9px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .syntax-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .syntax-note span {
+      color: var(--accent);
+    }
+
+    .results-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      color: #68656d;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .results-line strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .category {
+      margin-bottom: 13px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .category:hover,
+    .category.open {
+      border-color: #484048;
+    }
+
+    .category[hidden],
+    .command[hidden] {
+      display: none;
+    }
+
+    .category-header {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 19px 21px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .category-header:hover {
+      background: var(--surface-hover);
+    }
+
+    .category-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .category-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 9px;
+      background: #211116;
+      color: var(--accent-hover);
+      font-size: 18px;
+    }
+
+    .category-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .category-description {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .category-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      color: #68656d;
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .chevron {
+      color: var(--accent);
+      font-size: 17px;
+      transition: transform 0.25s ease;
+    }
+
+    .category.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .command-list {
+      display: none;
+      padding: 0 17px 17px;
+    }
+
+    .category.open .command-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .command {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0b0b0d;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .command:hover {
+      transform: translateY(-2px);
+      border-color: #484048;
+      background: var(--surface-hover);
+    }
+
+    .command-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .command-name {
+      overflow-wrap: anywhere;
+      color: var(--accent-hover);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .command-tag {
+      flex-shrink: 0;
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: #77737b;
+      font-family: var(--mono);
+      font-size: 8px;
+      text-transform: uppercase;
+    }
+
+    .command p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.75;
+    }
+
+    .usage {
+      display: inline-block;
+      margin-top: 11px;
+      padding: 7px 9px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      color: #d2c8d1;
+      font-family: var(--mono);
+      font-size: 9px;
+      overflow-wrap: anywhere;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 55px 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .empty-state.visible {
+      display: block;
+    }
+
+    .empty-state h3 {
+      margin-bottom: 9px;
+      font-size: 18px;
+    }
+
+    .empty-state p {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .bottom-cta {
+      margin: 75px 0;
+      padding: 65px 25px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .bottom-cta .eyebrow {
+      margin-bottom: 18px;
+    }
+
+    .bottom-cta h2 {
+      margin-bottom: 13px;
+      font-size: clamp(30px, 5vw, 43px);
+      font-weight: 600;
+      letter-spacing: -2px;
+    }
+
+    .bottom-cta p {
+      max-width: 440px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .bottom-cta .button {
+      margin-top: 25px;
+    }
+
+    .site-footer {
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-brand {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 22px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-size: 12px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    .button:focus-visible,
+    .nav-links a:focus-visible,
+    .filter-button:focus-visible,
+    .category-header:focus-visible,
+    .footer-links a:focus-visible,
+    .search-input:focus-visible {
+      outline: 2px solid var(--accent-hover);
+      outline-offset: 4px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 850px) {
+      .nav {
+        flex-wrap: wrap;
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 24px;
+        padding-top: 8px;
+      }
+
+      .nav > .button {
+        margin-left: auto;
+      }
+
+      .syntax-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .search-panel {
+        top: 88px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 32px);
+      }
+
+      .nav {
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 0;
+        justify-content: space-between;
+      }
+
+      .nav-links a {
+        font-size: 11px;
+      }
+
+      .nav > .button {
+        min-height: 38px;
+        padding: 0 11px;
+        font-size: 11px;
+      }
+
+      .hero {
+        padding: 85px 0 70px;
+      }
+
+      .hero h1 {
+        font-size: clamp(43px, 11vw, 62px);
+        letter-spacing: -2.8px;
+      }
+
+      .hero > p {
+        font-size: 14px;
+      }
+
+      .command-area {
+        padding-top: 60px;
+      }
+
+      .search-panel {
+        top: 117px;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .filter-row {
+        gap: 6px;
+      }
+
+      .filter-button {
+        padding: 7px 10px;
+        font-size: 9px;
+      }
+
+      .syntax-guide {
+        padding: 17px;
+      }
+
+      .syntax-heading h2 {
+        font-size: 18px;
+      }
+
+      .syntax-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      .syntax-item {
+        padding: 11px;
+      }
+
+      .category-header {
+        padding: 15px;
+      }
+
+      .category-heading {
+        gap: 10px;
+      }
+
+      .category-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .category-title {
+        font-size: 12px;
+      }
+
+      .category-description {
+        font-size: 10px;
+      }
+
+      .category-meta {
+        gap: 7px;
+        font-size: 8px;
+      }
+
+      .category.open .command-list {
+        grid-template-columns: 1fr;
+      }
+
+      .command-list {
+        padding: 0 10px 10px;
+      }
+
+      .bottom-cta {
+        margin: 55px 0;
+        padding: 48px 20px;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-links {
+        gap: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="ambient" aria-hidden="true"></div>
-
-<header class="site-header">
-  <div class="container nav">
-    <a class="brand" href="/" aria-label="SUKI homepage">
-      <span class="brand-mark" aria-hidden="true">猫</span>
-      <span class="brand-name">suki<span>.</span></span>
-    </a>
-
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="/">Home</a>
-      <a href="/features/">Features</a>
-      <a href="/commands/" aria-current="page">Commands</a>
-      <a href="/embeds/">Embeds</a>
-    </nav>
-
-    <a class="button button-primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener noreferrer">
-      Add to Discord <span class="button-arrow">↗</span>
-    </a>
-  </div>
-</header>
-
-<main>
-  <section class="hero container">
-    <div class="eyebrow"><span class="status-dot"></span> SUKI</div>
-    <h1>everything at<br><span>your fingertips.</span></h1>
-    <p>Explore Suki's commands, find the tools you're looking for and discover new ways to make your server your own.</p>
-    <p class="hero-note"><span>✳</span> so many possibilities.</p>
-  </section>
-
-  <section class="command-area container">
-    <div class="search-panel">
-      <div class="search-wrap">
-        <span class="search-icon" aria-hidden="true">⌕</span>
-        <input class="search-input" id="commandSearch" type="search" placeholder="Search commands..." autocomplete="off" aria-label="Search commands">
-      </div>
-
-      <div class="filter-row" aria-label="Command categories">
-        <button class="filter-button active" data-filter="all">All commands</button>
-        <button class="filter-button" data-filter="welcome">Welcome</button>
-        <button class="filter-button" data-filter="embeds">Embeds</button>
-        <button class="filter-button" data-filter="economy">Economy</button>
-        <button class="filter-button" data-filter="activities">Activities</button>
-        <button class="filter-button" data-filter="shop">Shop</button>
-        <button class="filter-button" data-filter="games">Games</button>
-        <button class="filter-button" data-filter="pets">Pets</button>
-        <button class="filter-button" data-filter="levels">Levels</button>
-        <button class="filter-button" data-filter="profiles">Profiles</button>
-        <button class="filter-button" data-filter="moderation">Moderation</button>
-        <button class="filter-button" data-filter="settings">Settings</button>
-        <button class="filter-button" data-filter="general">General</button>
-      </div>
-    </div>
-
-    <section class="syntax-guide">
-      <div class="syntax-heading">
-        <div>
-          <p class="section-kicker">REFERENCE</p>
-          <h2>Command syntax guide.</h2>
-          <p>Not sure what to enter? Here's a quick breakdown.</p>
-        </div>
-        <span class="syntax-icon">⌘</span>
-      </div>
-
-      <div class="syntax-grid">
-        <div class="syntax-item"><code>[user]</code><p>Select a Discord member.</p><span class="syntax-example">Example: @Emmy</span></div>
-        <div class="syntax-item"><code>[amount]</code><p>Enter a number or currency amount.</p><span class="syntax-example">Example: 500</span></div>
-        <div class="syntax-item"><code>[channel]</code><p>Select a server text channel.</p><span class="syntax-example">Example: #general</span></div>
-        <div class="syntax-item"><code>[role]</code><p>Select a server role.</p><span class="syntax-example">Example: @Members</span></div>
-        <div class="syntax-item"><code>[item]</code><p>Enter the name of an item.</p><span class="syntax-example">Example: Cat Tree</span></div>
-        <div class="syntax-item"><code>[text]</code><p>Enter your own custom text.</p><span class="syntax-example">Example: Welcome to the server!</span></div>
-        <div class="syntax-item"><code>[duration]</code><p>Specify a length of time.</p><span class="syntax-example">Example: 10m, 2h, 1d</span></div>
-        <div class="syntax-item"><code>[reason]</code><p>Explain why an action is being taken.</p><span class="syntax-example">Example: Breaking server rules</span></div>
-      </div>
-
-      <div class="syntax-note"><span>✳</span> Square brackets indicate information you need to provide. They are not typed as part of the command itself.</div>
-    </section>
-
-    <div class="results-line">
-      <span>COMMAND INDEX</span>
-      <span><strong id="resultCount">0</strong> commands shown</span>
-    </div>
-
-    <div id="categories">
-
-      <section class="category open" data-category="welcome">
-        <button class="category-header" aria-expanded="true">
-          <div class="category-heading"><span class="category-icon">✧</span><div><h2 class="category-title">Welcome & greetings</h2><p class="category-description">Welcome new members and say goodbye when they leave.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="welcome setup configure greeting"><div class="command-top"><span class="command-name">/welcome setup</span><span class="command-tag">Setup</span></div><p>Start configuring the server's welcome system.</p></article>
-          <article class="command" data-search="welcome enable activate"><div class="command-top"><span class="command-name">/welcome enable</span><span class="command-tag">Setup</span></div><p>Turn on welcome messages for new members.</p></article>
-          <article class="command" data-search="welcome disable deactivate"><div class="command-top"><span class="command-name">/welcome disable</span><span class="command-tag">Setup</span></div><p>Turn off welcome messages.</p></article>
-          <article class="command" data-search="welcome channel destination"><div class="command-top"><span class="command-name">/welcome channel</span><span class="command-tag">Setup</span></div><p>Choose where welcome messages will be sent.</p><code class="usage">/welcome channel #general</code></article>
-          <article class="command" data-search="welcome message text customize"><div class="command-top"><span class="command-name">/welcome message</span><span class="command-tag">Customize</span></div><p>Set the message displayed when someone joins.</p></article>
-          <article class="command" data-search="welcome preview test"><div class="command-top"><span class="command-name">/welcome preview</span><span class="command-tag">Preview</span></div><p>Preview your current welcome message.</p></article>
-          <article class="command" data-search="welcome test send"><div class="command-top"><span class="command-name">/welcome test</span><span class="command-tag">Preview</span></div><p>Send a test welcome message to check your setup.</p></article>
-          <article class="command" data-search="welcome image banner toggle"><div class="command-top"><span class="command-name">/welcome image</span><span class="command-tag">Customize</span></div><p>Enable, disable or configure welcome images.</p></article>
-          <article class="command" data-search="goodbye leave message"><div class="command-top"><span class="command-name">/welcome goodbye</span><span class="command-tag">Goodbye</span></div><p>Configure goodbye messages and their destination channel.</p></article>
-          <article class="command" data-search="welcome variables placeholders"><div class="command-top"><span class="command-name">/welcome variables</span><span class="command-tag">Help</span></div><p>View available message placeholders, such as username and server name.</p></article>
-          <article class="command" data-search="welcome reset clear"><div class="command-top"><span class="command-name">/welcome reset</span><span class="command-tag">Setup</span></div><p>Reset the welcome system's settings.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="embeds">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">▤</span><div><h2 class="category-title">Embed builder</h2><p class="category-description">Create, customize and save beautiful Discord embeds.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="embed create new"><div class="command-top"><span class="command-name">/embed create</span><span class="command-tag">Builder</span></div><p>Create a new embed to customize.</p></article>
-          <article class="command" data-search="embed edit message"><div class="command-top"><span class="command-name">/embed edit</span><span class="command-tag">Builder</span></div><p>Edit an existing embed message.</p><code class="usage">/embed edit message_id</code></article>
-          <article class="command" data-search="embed preview"><div class="command-top"><span class="command-name">/embed preview</span><span class="command-tag">Builder</span></div><p>Preview your current embed before sending it.</p></article>
-          <article class="command" data-search="embed send channel"><div class="command-top"><span class="command-name">/embed send</span><span class="command-tag">Builder</span></div><p>Send your finished embed to a channel.</p><code class="usage">/embed send #announcements</code></article>
-          <article class="command" data-search="embed title description color author footer thumbnail image"><div class="command-top"><span class="command-name">/embed customize</span><span class="command-tag">Design</span></div><p>Set the title, description, colour, author, footer, thumbnail and image.</p></article>
-          <article class="command" data-search="embed field add remove"><div class="command-top"><span class="command-name">/embed field</span><span class="command-tag">Design</span></div><p>Add or remove individual embed fields.</p><code class="usage">/embed field add name value</code></article>
-          <article class="command" data-search="embed timestamp"><div class="command-top"><span class="command-name">/embed timestamp</span><span class="command-tag">Design</span></div><p>Toggle the timestamp on your embed.</p></article>
-          <article class="command" data-search="embed save load list delete"><div class="command-top"><span class="command-name">/embed save</span><span class="command-tag">Templates</span></div><p>Save reusable embed templates, load them, view your saved list or delete a template.</p><code class="usage">/embed save announcement</code></article>
-          <article class="command" data-search="embed reset clear"><div class="command-top"><span class="command-name">/embed reset</span><span class="command-tag">Builder</span></div><p>Clear your current embed and start again.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="economy">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">◈</span><div><h2 class="category-title">Economy</h2><p class="category-description">Earn, save, spend and share your server currency.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="balance money currency wallet"><div class="command-top"><span class="command-name">/balance</span><span class="command-tag">Currency</span></div><p>Check your balance or another member's balance.</p><code class="usage">/balance @user</code></article>
-          <article class="command" data-search="daily reward claim"><div class="command-top"><span class="command-name">/daily</span><span class="command-tag">Rewards</span></div><p>Claim your daily currency reward.</p></article>
-          <article class="command" data-search="weekly reward claim"><div class="command-top"><span class="command-name">/weekly</span><span class="command-tag">Rewards</span></div><p>Claim your weekly currency reward.</p></article>
-          <article class="command" data-search="monthly reward claim"><div class="command-top"><span class="command-name">/monthly</span><span class="command-tag">Rewards</span></div><p>Claim your monthly currency reward.</p></article>
-          <article class="command" data-search="work earn job"><div class="command-top"><span class="command-name">/work</span><span class="command-tag">Earn</span></div><p>Complete a work task to earn currency.</p></article>
-          <article class="command" data-search="deposit bank"><div class="command-top"><span class="command-name">/deposit</span><span class="command-tag">Bank</span></div><p>Move currency into your bank.</p><code class="usage">/deposit 500</code></article>
-          <article class="command" data-search="withdraw bank"><div class="command-top"><span class="command-name">/withdraw</span><span class="command-tag">Bank</span></div><p>Withdraw currency from your bank.</p><code class="usage">/withdraw 200</code></article>
-          <article class="command" data-search="pay transfer send money"><div class="command-top"><span class="command-name">/pay</span><span class="command-tag">Transfer</span></div><p>Send currency to another member.</p><code class="usage">/pay @user 250</code></article>
-          <article class="command" data-search="leaderboard richest wealth"><div class="command-top"><span class="command-name">/leaderboard</span><span class="command-tag">Ranking</span></div><p>View the server's economy leaderboard.</p></article>
-          <article class="command" data-search="economy stats history currency"><div class="command-top"><span class="command-name">/economy</span><span class="command-tag">Info</span></div><p>View economy statistics, transaction history and currency settings.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="activities">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">✿</span><div><h2 class="category-title">Jobs & activities</h2><p class="category-description">Find a job, complete activities and earn rewards.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="jobs list available"><div class="command-top"><span class="command-name">/jobs</span><span class="command-tag">Jobs</span></div><p>Browse available jobs and their rewards.</p></article>
-          <article class="command" data-search="job apply"><div class="command-top"><span class="command-name">/job apply</span><span class="command-tag">Jobs</span></div><p>Apply for a job.</p><code class="usage">/job apply Barista</code></article>
-          <article class="command" data-search="job quit leave"><div class="command-top"><span class="command-name">/job quit</span><span class="command-tag">Jobs</span></div><p>Leave your current job.</p></article>
-          <article class="command" data-search="job info details"><div class="command-top"><span class="command-name">/job info</span><span class="command-tag">Jobs</span></div><p>View the details and requirements of a job.</p></article>
-          <article class="command" data-search="job promote promotion"><div class="command-top"><span class="command-name">/job promote</span><span class="command-tag">Jobs</span></div><p>Check your promotion progress.</p></article>
-          <article class="command" data-search="job salary pay"><div class="command-top"><span class="command-name">/job salary</span><span class="command-tag">Jobs</span></div><p>Check your job's salary information.</p></article>
-          <article class="command" data-search="activity list"><div class="command-top"><span class="command-name">/activity</span><span class="command-tag">Activities</span></div><p>Browse available activities.</p></article>
-          <article class="command" data-search="activity complete task"><div class="command-top"><span class="command-name">/activity complete</span><span class="command-tag">Activities</span></div><p>Complete an activity to earn its reward.</p></article>
-          <article class="command" data-search="activity daily weekly rewards"><div class="command-top"><span class="command-name">/activity rewards</span><span class="command-tag">Activities</span></div><p>View your daily and weekly activity rewards.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="shop">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">◇</span><div><h2 class="category-title">Shop & inventory</h2><p class="category-description">Browse items, make purchases and manage your collection.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="shop browse"><div class="command-top"><span class="command-name">/shop</span><span class="command-tag">Shop</span></div><p>Browse the available shop items.</p></article>
-          <article class="command" data-search="shop category search item"><div class="command-top"><span class="command-name">/shop search</span><span class="command-tag">Shop</span></div><p>Find an item or browse a specific category.</p><code class="usage">/shop search Flower</code></article>
-          <article class="command" data-search="shop buy purchase"><div class="command-top"><span class="command-name">/shop buy</span><span class="command-tag">Shop</span></div><p>Purchase an item using your currency.</p><code class="usage">/shop buy Rose</code></article>
-          <article class="command" data-search="shop sell"><div class="command-top"><span class="command-name">/shop sell</span><span class="command-tag">Shop</span></div><p>Sell an eligible item from your inventory.</p></article>
-          <article class="command" data-search="shop featured daily"><div class="command-top"><span class="command-name">/shop featured</span><span class="command-tag">Shop</span></div><p>View featured and rotating shop items.</p></article>
-          <article class="command" data-search="inventory collection"><div class="command-top"><span class="command-name">/inventory</span><span class="command-tag">Inventory</span></div><p>View your items or another member's inventory.</p></article>
-          <article class="command" data-search="inventory item inspect"><div class="command-top"><span class="command-name">/inventory item</span><span class="command-tag">Inventory</span></div><p>Inspect an item and view its details.</p></article>
-          <article class="command" data-search="inventory use"><div class="command-top"><span class="command-name">/inventory use</span><span class="command-tag">Inventory</span></div><p>Use an item from your inventory.</p></article>
-          <article class="command" data-search="inventory equip unequip"><div class="command-top"><span class="command-name">/inventory equip</span><span class="command-tag">Inventory</span></div><p>Equip or unequip eligible items.</p></article>
-          <article class="command" data-search="inventory gift discard sort value"><div class="command-top"><span class="command-name">/inventory manage</span><span class="command-tag">Inventory</span></div><p>Gift, discard, sort, search or check the value of your items.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="games">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">♠</span><div><h2 class="category-title">Games & fun</h2><p class="category-description">Take a break, play a game and challenge your friends.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="coinflip coin flip bet heads tails"><div class="command-top"><span class="command-name">/coinflip</span><span class="command-tag">Game</span></div><p>Flip a coin or place a bet on heads or tails.</p><code class="usage">/coinflip bet 100 heads</code></article>
-          <article class="command" data-search="blackjack cards"><div class="command-top"><span class="command-name">/blackjack</span><span class="command-tag">Game</span></div><p>Play blackjack using interactive game controls.</p></article>
-          <article class="command" data-search="slots slot machine"><div class="command-top"><span class="command-name">/slots</span><span class="command-tag">Game</span></div><p>Try your luck on the slot machine.</p><code class="usage">/slots 100</code></article>
-          <article class="command" data-search="dice roll"><div class="command-top"><span class="command-name">/dice</span><span class="command-tag">Game</span></div><p>Roll the dice and test your luck.</p></article>
-          <article class="command" data-search="rps rock paper scissors"><div class="command-top"><span class="command-name">/rps</span><span class="command-tag">Game</span></div><p>Play rock, paper, scissors.</p></article>
-          <article class="command" data-search="higher lower"><div class="command-top"><span class="command-name">/higherlower</span><span class="command-tag">Game</span></div><p>Guess whether the next number will be higher or lower.</p></article>
-          <article class="command" data-search="trivia quiz questions"><div class="command-top"><span class="command-name">/trivia</span><span class="command-tag">Game</span></div><p>Answer trivia questions and test your knowledge.</p></article>
-          <article class="command" data-search="guess number"><div class="command-top"><span class="command-name">/guess</span><span class="command-tag">Game</span></div><p>Try to guess the hidden number.</p></article>
-          <article class="command" data-search="wordle word puzzle"><div class="command-top"><span class="command-name">/wordle</span><span class="command-tag">Game</span></div><p>Play a word-guessing puzzle.</p></article>
-          <article class="command" data-search="mines"><div class="command-top"><span class="command-name">/mines</span><span class="command-tag">Game</span></div><p>Play a mines-style risk and reward game.</p></article>
-          <article class="command" data-search="gamestats game statistics leaderboard"><div class="command-top"><span class="command-name">/gamestats</span><span class="command-tag">Stats</span></div><p>View your game statistics and records.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="pets">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">♡</span><div><h2 class="category-title">Pets & companions</h2><p class="category-description">Adopt, care for and build a bond with your pets.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="pet adopt"><div class="command-top"><span class="command-name">/pet adopt</span><span class="command-tag">Pets</span></div><p>Adopt a new companion.</p></article>
-          <article class="command" data-search="pet list collection"><div class="command-top"><span class="command-name">/pet list</span><span class="command-tag">Pets</span></div><p>View all the pets you own.</p></article>
-          <article class="command" data-search="pet info details"><div class="command-top"><span class="command-name">/pet info</span><span class="command-tag">Pets</span></div><p>View a pet's details, stats and progress.</p></article>
-          <article class="command" data-search="pet feed food hunger"><div class="command-top"><span class="command-name">/pet feed</span><span class="command-tag">Care</span></div><p>Feed your pet to keep it happy and healthy.</p></article>
-          <article class="command" data-search="pet play happiness"><div class="command-top"><span class="command-name">/pet play</span><span class="command-tag">Care</span></div><p>Spend time playing with your pet.</p></article>
-          <article class="command" data-search="pet interact bond"><div class="command-top"><span class="command-name">/pet interact</span><span class="command-tag">Care</span></div><p>Interact with your companion and build your bond.</p></article>
-          <article class="command" data-search="pet clean cleanliness"><div class="command-top"><span class="command-name">/pet clean</span><span class="command-tag">Care</span></div><p>Take care of your pet's cleanliness.</p></article>
-          <article class="command" data-search="pet rest energy"><div class="command-top"><span class="command-name">/pet rest</span><span class="command-tag">Care</span></div><p>Let your pet rest and recover energy.</p></article>
-          <article class="command" data-search="pet rename name"><div class="command-top"><span class="command-name">/pet rename</span><span class="command-tag">Customize</span></div><p>Give your pet a new name.</p></article>
-          <article class="command" data-search="pet equip favourite"><div class="command-top"><span class="command-name">/pet equip</span><span class="command-tag">Customize</span></div><p>Choose your active companion or favourite pet.</p></article>
-          <article class="command" data-search="pet level xp bond evolve"><div class="command-top"><span class="command-name">/pet level</span><span class="command-tag">Progression</span></div><p>View pet XP, bond progress and evolution details.</p></article>
-          <article class="command" data-search="pet stats history leaderboard"><div class="command-top"><span class="command-name">/pet stats</span><span class="command-tag">Stats</span></div><p>View pet statistics, care history and collection rankings.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="levels">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">↗</span><div><h2 class="category-title">XP & leveling</h2><p class="category-description">Chat, earn experience and unlock rewards.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="level rank xp experience"><div class="command-top"><span class="command-name">/level</span><span class="command-tag">Progress</span></div><p>View your level and experience progress.</p></article>
-          <article class="command" data-search="rank user profile"><div class="command-top"><span class="command-name">/rank</span><span class="command-tag">Progress</span></div><p>View your rank card or another member's rank.</p></article>
-          <article class="command" data-search="xp experience"><div class="command-top"><span class="command-name">/xp</span><span class="command-tag">Progress</span></div><p>Check your current experience points.</p></article>
-          <article class="command" data-search="leaderboard levels xp"><div class="command-top"><span class="command-name">/leaderboard xp</span><span class="command-tag">Ranking</span></div><p>View the server's XP leaderboard.</p></article>
-          <article class="command" data-search="rewards claim level"><div class="command-top"><span class="command-name">/rewards</span><span class="command-tag">Rewards</span></div><p>View and claim your level-up rewards.</p></article>
-          <article class="command" data-search="level progress"><div class="command-top"><span class="command-name">/level progress</span><span class="command-tag">Progress</span></div><p>See how close you are to your next level.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="profiles">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">◎</span><div><h2 class="category-title">Profiles & customization</h2><p class="category-description">Create a profile that feels like you.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="profile view"><div class="command-top"><span class="command-name">/profile</span><span class="command-tag">Profile</span></div><p>View your profile or another member's profile.</p></article>
-          <article class="command" data-search="profile edit bio name"><div class="command-top"><span class="command-name">/profile edit</span><span class="command-tag">Customize</span></div><p>Update your profile name, bio and personal details.</p></article>
-          <article class="command" data-search="profile avatar background"><div class="command-top"><span class="command-name">/profile background</span><span class="command-tag">Customize</span></div><p>Choose a profile background or avatar style.</p></article>
-          <article class="command" data-search="profile colour color"><div class="command-top"><span class="command-name">/profile colour</span><span class="command-tag">Customize</span></div><p>Set your profile's accent colour.</p></article>
-          <article class="command" data-search="profile badge badges"><div class="command-top"><span class="command-name">/profile badges</span><span class="command-tag">Collection</span></div><p>View and manage your profile badges.</p></article>
-          <article class="command" data-search="profile title showcase"><div class="command-top"><span class="command-name">/profile showcase</span><span class="command-tag">Customize</span></div><p>Choose what to display on your profile.</p></article>
-          <article class="command" data-search="profile privacy reset"><div class="command-top"><span class="command-name">/profile privacy</span><span class="command-tag">Settings</span></div><p>Manage profile visibility and privacy options.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="moderation">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">⌑</span><div><h2 class="category-title">Moderation & administration</h2><p class="category-description">Keep your server organized, safe and running smoothly.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="ban user moderation"><div class="command-top"><span class="command-name">/ban</span><span class="command-tag">Moderation</span></div><p>Ban a member from the server.</p><code class="usage">/ban @user reason</code></article>
-          <article class="command" data-search="unban user"><div class="command-top"><span class="command-name">/unban</span><span class="command-tag">Moderation</span></div><p>Remove a user's ban.</p></article>
-          <article class="command" data-search="kick user"><div class="command-top"><span class="command-name">/kick</span><span class="command-tag">Moderation</span></div><p>Remove a member from the server.</p></article>
-          <article class="command" data-search="timeout mute duration"><div class="command-top"><span class="command-name">/timeout</span><span class="command-tag">Moderation</span></div><p>Temporarily restrict a member from communicating.</p></article>
-          <article class="command" data-search="warn warning"><div class="command-top"><span class="command-name">/warn</span><span class="command-tag">Moderation</span></div><p>Issue a warning to a member.</p></article>
-          <article class="command" data-search="warnings history"><div class="command-top"><span class="command-name">/warnings</span><span class="command-tag">Moderation</span></div><p>View a member's warning history.</p></article>
-          <article class="command" data-search="clearwarnings"><div class="command-top"><span class="command-name">/clearwarnings</span><span class="command-tag">Moderation</span></div><p>Clear a member's warning records.</p></article>
-          <article class="command" data-search="purge clear messages"><div class="command-top"><span class="command-name">/purge</span><span class="command-tag">Moderation</span></div><p>Bulk-delete recent messages.</p><code class="usage">/purge 25</code></article>
-          <article class="command" data-search="slowmode channel"><div class="command-top"><span class="command-name">/slowmode</span><span class="command-tag">Channel</span></div><p>Set a slowmode interval for a channel.</p></article>
-          <article class="command" data-search="lock unlock channel"><div class="command-top"><span class="command-name">/lock</span><span class="command-tag">Channel</span></div><p>Lock or unlock a channel.</p></article>
-          <article class="command" data-search="userinfo serverinfo"><div class="command-top"><span class="command-name">/userinfo</span><span class="command-tag">Information</span></div><p>View information about a member or the server.</p></article>
-          <article class="command" data-search="role add remove"><div class="command-top"><span class="command-name">/role</span><span class="command-tag">Roles</span></div><p>Add or remove a role from a member.</p></article>
-          <article class="command" data-search="nickname"><div class="command-top"><span class="command-name">/nickname</span><span class="command-tag">Members</span></div><p>Change a member's server nickname.</p></article>
-          <article class="command" data-search="modlogs logs"><div class="command-top"><span class="command-name">/modlogs</span><span class="command-tag">Logs</span></div><p>View moderation records and server logs.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="settings">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">⚙</span><div><h2 class="category-title">Configuration & bot settings</h2><p class="category-description">Customize how Suki works in your server.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="config settings dashboard"><div class="command-top"><span class="command-name">/config</span><span class="command-tag">Settings</span></div><p>View and manage Suki's server configuration.</p></article>
-          <article class="command" data-search="config language"><div class="command-top"><span class="command-name">/config language</span><span class="command-tag">Settings</span></div><p>Choose the bot's language.</p></article>
-          <article class="command" data-search="config timezone"><div class="command-top"><span class="command-name">/config timezone</span><span class="command-tag">Settings</span></div><p>Set your server's preferred timezone.</p></article>
-          <article class="command" data-search="config logs channel enable"><div class="command-top"><span class="command-name">/config logs</span><span class="command-tag">Settings</span></div><p>Choose a log channel and enable or disable server logging.</p></article>
-          <article class="command" data-search="config permissions"><div class="command-top"><span class="command-name">/config permissions</span><span class="command-tag">Settings</span></div><p>Review permissions required by Suki's features.</p></article>
-          <article class="command" data-search="config reset"><div class="command-top"><span class="command-name">/config reset</span><span class="command-tag">Settings</span></div><p>Reset selected server configuration settings.</p></article>
-        </div>
-      </section>
-
-      <section class="category" data-category="general">
-        <button class="category-header" aria-expanded="false">
-          <div class="category-heading"><span class="category-icon">✳</span><div><h2 class="category-title">General & information</h2><p class="category-description">Useful commands for getting to know Suki.</p></div></div>
-          <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
-        </button>
-        <div class="command-list">
-          <article class="command" data-search="help commands guide"><div class="command-top"><span class="command-name">/help</span><span class="command-tag">Help</span></div><p>View the command guide or explore a specific category.</p></article>
-          <article class="command" data-search="about bot information"><div class="command-top"><span class="command-name">/about</span><span class="command-tag">Info</span></div><p>Learn more about Suki.</p></article>
-          <article class="command" data-search="ping latency"><div class="command-top"><span class="command-name">/ping</span><span class="command-tag">Info</span></div><p>Check Suki's response latency.</p></article>
-          <article class="command" data-search="botinfo version uptime"><div class="command-top"><span class="command-name">/botinfo</span><span class="command-tag">Info</span></div><p>View bot information, version and uptime.</p></article>
-          <article class="command" data-search="invite add bot"><div class="command-top"><span class="command-name">/invite</span><span class="command-tag">Links</span></div><p>Get a link to invite Suki to a server.</p></article>
-          <article class="command" data-search="support server"><div class="command-top"><span class="command-name">/support</span><span class="command-tag">Links</span></div><p>Get an invitation to the support server.</p></article>
-          <article class="command" data-search="feedback suggestion report"><div class="command-top"><span class="command-name">/feedback</span><span class="command-tag">Community</span></div><p>Send feedback or suggestions about Suki.</p></article>
-        </div>
-      </section>
-
-    </div>
-
-    <div class="empty-state" id="emptyState">
-      <h3>No commands found.</h3>
-      <p>Try another search or choose a different category.</p>
-    </div>
-
-    <section class="bottom-cta">
-      <div class="eyebrow"><span class="status-dot"></span> MAKE YOURSELF AT HOME</div>
-      <h2>Ready to meet Suki?</h2>
-      <p>Bring a little bit of everything to your Discord server.</p>
-      <a class="button button-primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener noreferrer">
-        Add to Discord <span class="button-arrow">↗</span>
-      </a>
-    </section>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div>
+  <header class="site-header">
+    <div class="container nav">
       <a class="brand" href="/" aria-label="SUKI homepage">
-        <span class="brand-mark">猫</span>
+        <span class="brand-mark" aria-hidden="true">猫</span>
         <span class="brand-name">suki<span>.</span></span>
       </a>
-      <p class="footer-brand">A little bit of everything.</p>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/commands/" aria-current="page">Commands</a>
+        <a href="/embeds/">Embeds</a>
+      </nav>
+
+      <a class="button button-primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener noreferrer">
+        Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
+  </header>
 
-    <nav class="footer-links" aria-label="Footer navigation">
-      <a href="/">Home</a>
-      <a href="/features/">Features</a>
-      <a href="/commands/">Commands</a>
-      <a href="/embeds/">Embeds</a>
-      <a href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener noreferrer">Support server</a>
-    </nav>
-  </div>
-</footer>
+  <main>
+    <section class="hero container">
+      <div class="eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        SUKI
+      </div>
 
-<script>
-const searchInput = document.getElementById("commandSearch");
-const filterButtons = document.querySelectorAll(".filter-button");
-const categories = document.querySelectorAll(".category");
-const resultCount = document.getElementById("resultCount");
-const emptyState = document.getElementById("emptyState");
+      <h1>
+        everything at
+        <span>your fingertips.</span>
+      </h1>
 
-let activeFilter = "all";
-let activeQuery = "";
+      <p>
+        Explore Suki's commands, find the tools you're looking for
+        and discover new ways to make your server your own.
+      </p>
 
-function updateCommands() {
-  const query = searchInput.value.trim().toLowerCase();
-  activeQuery = query;
+      <p class="hero-note">
+        <span>✳</span> so many possibilities.
+      </p>
+    </section>
 
-  let totalVisible = 0;
+    <section class="command-area container">
+      <div class="search-panel">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input class="search-input" id="commandSearch" type="search" placeholder="Search commands..." autocomplete="off" aria-label="Search commands">
+        </div>
 
-  categories.forEach(category => {
-    const categoryName = category.dataset.category;
-    const matchesFilter = activeFilter === "all" || activeFilter === categoryName;
-    const commands = category.querySelectorAll(".command");
-    let visibleInCategory = 0;
+        <div class="filter-row" aria-label="Command categories">
+          <button class="filter-button active" data-filter="all" aria-pressed="true">All commands</button>
+          <button class="filter-button" data-filter="welcome" aria-pressed="false">Welcome</button>
+          <button class="filter-button" data-filter="embeds" aria-pressed="false">Embeds</button>
+          <button class="filter-button" data-filter="economy" aria-pressed="false">Economy</button>
+          <button class="filter-button" data-filter="activities" aria-pressed="false">Activities</button>
+          <button class="filter-button" data-filter="shop" aria-pressed="false">Shop</button>
+          <button class="filter-button" data-filter="games" aria-pressed="false">Games</button>
+          <button class="filter-button" data-filter="pets" aria-pressed="false">Pets</button>
+          <button class="filter-button" data-filter="levels" aria-pressed="false">Levels</button>
+          <button class="filter-button" data-filter="profiles" aria-pressed="false">Profiles</button>
+          <button class="filter-button" data-filter="moderation" aria-pressed="false">Moderation</button>
+          <button class="filter-button" data-filter="settings" aria-pressed="false">Settings</button>
+          <button class="filter-button" data-filter="general" aria-pressed="false">General</button>
+        </div>
+      </div>
 
-    commands.forEach(command => {
-      const searchableText = (
-        command.textContent + " " + (command.dataset.search || "")
-      ).toLowerCase();
+      <section class="syntax-guide reveal">
+        <div class="syntax-heading">
+          <div>
+            <p class="section-kicker">REFERENCE</p>
+            <h2>Command syntax guide.</h2>
+            <p>Not sure what to enter? Here's a quick breakdown.</p>
+          </div>
+          <span class="syntax-icon" aria-hidden="true">⌘</span>
+        </div>
 
-      const matchesSearch = !query || searchableText.includes(query);
-      const visible = matchesFilter && matchesSearch;
+        <div class="syntax-grid">
+          <div class="syntax-item"><code>[user]</code><p>Select a Discord member.</p><span class="syntax-example">Example: @Emmy</span></div>
+          <div class="syntax-item"><code>[amount]</code><p>Enter a number or currency amount.</p><span class="syntax-example">Example: 500</span></div>
+          <div class="syntax-item"><code>[channel]</code><p>Select a server text channel.</p><span class="syntax-example">Example: #general</span></div>
+          <div class="syntax-item"><code>[role]</code><p>Select a server role.</p><span class="syntax-example">Example: @Members</span></div>
+          <div class="syntax-item"><code>[item]</code><p>Enter the name of an item.</p><span class="syntax-example">Example: Cat Tree</span></div>
+          <div class="syntax-item"><code>[text]</code><p>Enter your own custom text.</p><span class="syntax-example">Example: Welcome to the server!</span></div>
+          <div class="syntax-item"><code>[duration]</code><p>Specify a length of time.</p><span class="syntax-example">Example: 10m, 2h, 1d</span></div>
+          <div class="syntax-item"><code>[reason]</code><p>Explain why an action is being taken.</p><span class="syntax-example">Example: Breaking server rules</span></div>
+        </div>
 
-      command.hidden = !visible;
+        <div class="syntax-note">
+          <span>✳</span>
+          Square brackets indicate information you need to provide. They are not typed as part of the command itself.
+        </div>
+      </section>
 
-      if (visible) {
-        visibleInCategory++;
-        totalVisible++;
-      }
-    });
+      <div class="results-line">
+        <span>COMMAND INDEX</span>
+        <span><strong id="resultCount">0</strong> commands shown</span>
+      </div>
 
-    category.hidden = visibleInCategory === 0;
+      <div id="categories">
 
-    const header = category.querySelector(".category-header");
+        <section class="category open" data-category="welcome">
+          <button class="category-header" aria-expanded="true">
+            <div class="category-heading"><span class="category-icon">✧</span><div><h2 class="category-title">Welcome & greetings</h2><p class="category-description">Welcome new members and say goodbye when they leave.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="welcome setup configure greeting"><div class="command-top"><span class="command-name">/welcome setup</span><span class="command-tag">Setup</span></div><p>Start configuring the server's welcome system.</p></article>
+            <article class="command" data-search="welcome enable activate"><div class="command-top"><span class="command-name">/welcome enable</span><span class="command-tag">Setup</span></div><p>Turn on welcome messages for new members.</p></article>
+            <article class="command" data-search="welcome disable deactivate"><div class="command-top"><span class="command-name">/welcome disable</span><span class="command-tag">Setup</span></div><p>Turn off welcome messages.</p></article>
+            <article class="command" data-search="welcome channel destination"><div class="command-top"><span class="command-name">/welcome channel</span><span class="command-tag">Setup</span></div><p>Choose where welcome messages will be sent.</p><code class="usage">/welcome channel #general</code></article>
+            <article class="command" data-search="welcome message text customize"><div class="command-top"><span class="command-name">/welcome message</span><span class="command-tag">Customize</span></div><p>Set the message displayed when someone joins.</p></article>
+            <article class="command" data-search="welcome preview test"><div class="command-top"><span class="command-name">/welcome preview</span><span class="command-tag">Preview</span></div><p>Preview your current welcome message.</p></article>
+            <article class="command" data-search="welcome test send"><div class="command-top"><span class="command-name">/welcome test</span><span class="command-tag">Preview</span></div><p>Send a test welcome message to check your setup.</p></article>
+            <article class="command" data-search="welcome image banner toggle"><div class="command-top"><span class="command-name">/welcome image</span><span class="command-tag">Customize</span></div><p>Enable, disable or configure welcome images.</p></article>
+            <article class="command" data-search="goodbye leave message"><div class="command-top"><span class="command-name">/welcome goodbye</span><span class="command-tag">Goodbye</span></div><p>Configure goodbye messages and their destination channel.</p></article>
+            <article class="command" data-search="welcome variables placeholders"><div class="command-top"><span class="command-name">/welcome variables</span><span class="command-tag">Help</span></div><p>View available message placeholders, such as username and server name.</p></article>
+            <article class="command" data-search="welcome reset clear"><div class="command-top"><span class="command-name">/welcome reset</span><span class="command-tag">Setup</span></div><p>Reset the welcome system's settings.</p></article>
+          </div>
+        </section>
 
-    if (query || activeFilter !== "all") {
-      category.classList.toggle("open", visibleInCategory > 0);
+        <section class="category" data-category="embeds">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">▤</span><div><h2 class="category-title">Embed builder</h2><p class="category-description">Create, customize and save beautiful Discord embeds.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="embed create new"><div class="command-top"><span class="command-name">/embed create</span><span class="command-tag">Builder</span></div><p>Create a new embed to customize.</p></article>
+            <article class="command" data-search="embed edit message"><div class="command-top"><span class="command-name">/embed edit</span><span class="command-tag">Builder</span></div><p>Edit an existing embed message.</p><code class="usage">/embed edit message_id</code></article>
+            <article class="command" data-search="embed preview"><div class="command-top"><span class="command-name">/embed preview</span><span class="command-tag">Builder</span></div><p>Preview your current embed before sending it.</p></article>
+            <article class="command" data-search="embed send channel"><div class="command-top"><span class="command-name">/embed send</span><span class="command-tag">Builder</span></div><p>Send your finished embed to a channel.</p><code class="usage">/embed send #announcements</code></article>
+            <article class="command" data-search="embed title description color author footer thumbnail image"><div class="command-top"><span class="command-name">/embed customize</span><span class="command-tag">Design</span></div><p>Set the title, description, colour, author, footer, thumbnail and image.</p></article>
+            <article class="command" data-search="embed field add remove"><div class="command-top"><span class="command-name">/embed field</span><span class="command-tag">Design</span></div><p>Add or remove individual embed fields.</p><code class="usage">/embed field add name value</code></article>
+            <article class="command" data-search="embed timestamp"><div class="command-top"><span class="command-name">/embed timestamp</span><span class="command-tag">Design</span></div><p>Toggle the timestamp on your embed.</p></article>
+            <article class="command" data-search="embed save load list delete"><div class="command-top"><span class="command-name">/embed save</span><span class="command-tag">Templates</span></div><p>Save reusable embed templates, load them, view your saved list or delete a template.</p><code class="usage">/embed save announcement</code></article>
+            <article class="command" data-search="embed reset clear"><div class="command-top"><span class="command-name">/embed reset</span><span class="command-tag">Builder</span></div><p>Clear your current embed and start again.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="economy">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">◈</span><div><h2 class="category-title">Economy</h2><p class="category-description">Earn, save, spend and share your server currency.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="balance money currency wallet"><div class="command-top"><span class="command-name">/balance</span><span class="command-tag">Currency</span></div><p>Check your balance or another member's balance.</p><code class="usage">/balance @user</code></article>
+            <article class="command" data-search="daily reward claim"><div class="command-top"><span class="command-name">/daily</span><span class="command-tag">Rewards</span></div><p>Claim your daily currency reward.</p></article>
+            <article class="command" data-search="weekly reward claim"><div class="command-top"><span class="command-name">/weekly</span><span class="command-tag">Rewards</span></div><p>Claim your weekly currency reward.</p></article>
+            <article class="command" data-search="monthly reward claim"><div class="command-top"><span class="command-name">/monthly</span><span class="command-tag">Rewards</span></div><p>Claim your monthly currency reward.</p></article>
+            <article class="command" data-search="work earn job"><div class="command-top"><span class="command-name">/work</span><span class="command-tag">Earn</span></div><p>Complete a work task to earn currency.</p></article>
+            <article class="command" data-search="deposit bank"><div class="command-top"><span class="command-name">/deposit</span><span class="command-tag">Bank</span></div><p>Move currency into your bank.</p><code class="usage">/deposit 500</code></article>
+            <article class="command" data-search="withdraw bank"><div class="command-top"><span class="command-name">/withdraw</span><span class="command-tag">Bank</span></div><p>Withdraw currency from your bank.</p><code class="usage">/withdraw 200</code></article>
+            <article class="command" data-search="pay transfer send money"><div class="command-top"><span class="command-name">/pay</span><span class="command-tag">Transfer</span></div><p>Send currency to another member.</p><code class="usage">/pay @user 250</code></article>
+            <article class="command" data-search="leaderboard richest wealth"><div class="command-top"><span class="command-name">/leaderboard</span><span class="command-tag">Ranking</span></div><p>View the server's economy leaderboard.</p></article>
+            <article class="command" data-search="economy stats history currency"><div class="command-top"><span class="command-name">/economy</span><span class="command-tag">Info</span></div><p>View economy statistics, transaction history and currency settings.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="activities">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">✿</span><div><h2 class="category-title">Jobs & activities</h2><p class="category-description">Find a job, complete activities and earn rewards.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="jobs list available"><div class="command-top"><span class="command-name">/jobs</span><span class="command-tag">Jobs</span></div><p>Browse available jobs and their rewards.</p></article>
+            <article class="command" data-search="job apply"><div class="command-top"><span class="command-name">/job apply</span><span class="command-tag">Jobs</span></div><p>Apply for a job.</p><code class="usage">/job apply Barista</code></article>
+            <article class="command" data-search="job quit leave"><div class="command-top"><span class="command-name">/job quit</span><span class="command-tag">Jobs</span></div><p>Leave your current job.</p></article>
+            <article class="command" data-search="job info details"><div class="command-top"><span class="command-name">/job info</span><span class="command-tag">Jobs</span></div><p>View the details and requirements of a job.</p></article>
+            <article class="command" data-search="job promote promotion"><div class="command-top"><span class="command-name">/job promote</span><span class="command-tag">Jobs</span></div><p>Check your promotion progress.</p></article>
+            <article class="command" data-search="job salary pay"><div class="command-top"><span class="command-name">/job salary</span><span class="command-tag">Jobs</span></div><p>Check your job's salary information.</p></article>
+            <article class="command" data-search="activity list"><div class="command-top"><span class="command-name">/activity</span><span class="command-tag">Activities</span></div><p>Browse available activities.</p></article>
+            <article class="command" data-search="activity complete task"><div class="command-top"><span class="command-name">/activity complete</span><span class="command-tag">Activities</span></div><p>Complete an activity to earn its reward.</p></article>
+            <article class="command" data-search="activity daily weekly rewards"><div class="command-top"><span class="command-name">/activity rewards</span><span class="command-tag">Activities</span></div><p>View your daily and weekly activity rewards.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="shop">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">◇</span><div><h2 class="category-title">Shop & inventory</h2><p class="category-description">Browse items, make purchases and manage your collection.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="shop browse"><div class="command-top"><span class="command-name">/shop</span><span class="command-tag">Shop</span></div><p>Browse the available shop items.</p></article>
+            <article class="command" data-search="shop category search item"><div class="command-top"><span class="command-name">/shop search</span><span class="command-tag">Shop</span></div><p>Find an item or browse a specific category.</p><code class="usage">/shop search Flower</code></article>
+            <article class="command" data-search="shop buy purchase"><div class="command-top"><span class="command-name">/shop buy</span><span class="command-tag">Shop</span></div><p>Purchase an item using your currency.</p><code class="usage">/shop buy Rose</code></article>
+            <article class="command" data-search="shop sell"><div class="command-top"><span class="command-name">/shop sell</span><span class="command-tag">Shop</span></div><p>Sell an eligible item from your inventory.</p></article>
+            <article class="command" data-search="shop featured daily"><div class="command-top"><span class="command-name">/shop featured</span><span class="command-tag">Shop</span></div><p>View featured and rotating shop items.</p></article>
+            <article class="command" data-search="inventory collection"><div class="command-top"><span class="command-name">/inventory</span><span class="command-tag">Inventory</span></div><p>View your items or another member's inventory.</p></article>
+            <article class="command" data-search="inventory item inspect"><div class="command-top"><span class="command-name">/inventory item</span><span class="command-tag">Inventory</span></div><p>Inspect an item and view its details.</p></article>
+            <article class="command" data-search="inventory use"><div class="command-top"><span class="command-name">/inventory use</span><span class="command-tag">Inventory</span></div><p>Use an item from your inventory.</p></article>
+            <article class="command" data-search="inventory equip unequip"><div class="command-top"><span class="command-name">/inventory equip</span><span class="command-tag">Inventory</span></div><p>Equip or unequip eligible items.</p></article>
+            <article class="command" data-search="inventory gift discard sort value"><div class="command-top"><span class="command-name">/inventory manage</span><span class="command-tag">Inventory</span></div><p>Gift, discard, sort, search or check the value of your items.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="games">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">♠</span><div><h2 class="category-title">Games & fun</h2><p class="category-description">Take a break, play a game and challenge your friends.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="coinflip coin flip bet heads tails"><div class="command-top"><span class="command-name">/coinflip</span><span class="command-tag">Game</span></div><p>Flip a coin or place a bet on heads or tails.</p><code class="usage">/coinflip bet 100 heads</code></article>
+            <article class="command" data-search="blackjack cards"><div class="command-top"><span class="command-name">/blackjack</span><span class="command-tag">Game</span></div><p>Play blackjack using interactive game controls.</p></article>
+            <article class="command" data-search="slots slot machine"><div class="command-top"><span class="command-name">/slots</span><span class="command-tag">Game</span></div><p>Try your luck on the slot machine.</p><code class="usage">/slots 100</code></article>
+            <article class="command" data-search="dice roll"><div class="command-top"><span class="command-name">/dice</span><span class="command-tag">Game</span></div><p>Roll the dice and test your luck.</p></article>
+            <article class="command" data-search="rps rock paper scissors"><div class="command-top"><span class="command-name">/rps</span><span class="command-tag">Game</span></div><p>Play rock, paper, scissors.</p></article>
+            <article class="command" data-search="higher lower"><div class="command-top"><span class="command-name">/higherlower</span><span class="command-tag">Game</span></div><p>Guess whether the next number will be higher or lower.</p></article>
+            <article class="command" data-search="trivia quiz questions"><div class="command-top"><span class="command-name">/trivia</span><span class="command-tag">Game</span></div><p>Answer trivia questions and test your knowledge.</p></article>
+            <article class="command" data-search="guess number"><div class="command-top"><span class="command-name">/guess</span><span class="command-tag">Game</span></div><p>Try to guess the hidden number.</p></article>
+            <article class="command" data-search="wordle word puzzle"><div class="command-top"><span class="command-name">/wordle</span><span class="command-tag">Game</span></div><p>Play a word-guessing puzzle.</p></article>
+            <article class="command" data-search="mines"><div class="command-top"><span class="command-name">/mines</span><span class="command-tag">Game</span></div><p>Play a mines-style risk and reward game.</p></article>
+            <article class="command" data-search="gamestats game statistics leaderboard"><div class="command-top"><span class="command-name">/gamestats</span><span class="command-tag">Stats</span></div><p>View your game statistics and records.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="pets">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">♡</span><div><h2 class="category-title">Pets & companions</h2><p class="category-description">Adopt, care for and build a bond with your pets.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="pet adopt"><div class="command-top"><span class="command-name">/pet adopt</span><span class="command-tag">Pets</span></div><p>Adopt a new companion.</p></article>
+            <article class="command" data-search="pet list collection"><div class="command-top"><span class="command-name">/pet list</span><span class="command-tag">Pets</span></div><p>View all the pets you own.</p></article>
+            <article class="command" data-search="pet info details"><div class="command-top"><span class="command-name">/pet info</span><span class="command-tag">Pets</span></div><p>View a pet's details, stats and progress.</p></article>
+            <article class="command" data-search="pet feed food hunger"><div class="command-top"><span class="command-name">/pet feed</span><span class="command-tag">Care</span></div><p>Feed your pet to keep it happy and healthy.</p></article>
+            <article class="command" data-search="pet play happiness"><div class="command-top"><span class="command-name">/pet play</span><span class="command-tag">Care</span></div><p>Spend time playing with your pet.</p></article>
+            <article class="command" data-search="pet interact bond"><div class="command-top"><span class="command-name">/pet interact</span><span class="command-tag">Care</span></div><p>Interact with your companion and build your bond.</p></article>
+            <article class="command" data-search="pet clean cleanliness"><div class="command-top"><span class="command-name">/pet clean</span><span class="command-tag">Care</span></div><p>Take care of your pet's cleanliness.</p></article>
+            <article class="command" data-search="pet rest energy"><div class="command-top"><span class="command-name">/pet rest</span><span class="command-tag">Care</span></div><p>Let your pet rest and recover energy.</p></article>
+            <article class="command" data-search="pet rename name"><div class="command-top"><span class="command-name">/pet rename</span><span class="command-tag">Customize</span></div><p>Give your pet a new name.</p></article>
+            <article class="command" data-search="pet equip favourite"><div class="command-top"><span class="command-name">/pet equip</span><span class="command-tag">Customize</span></div><p>Choose your active companion or favourite pet.</p></article>
+            <article class="command" data-search="pet level xp bond evolve"><div class="command-top"><span class="command-name">/pet level</span><span class="command-tag">Progression</span></div><p>View pet XP, bond progress and evolution details.</p></article>
+            <article class="command" data-search="pet stats history leaderboard"><div class="command-top"><span class="command-name">/pet stats</span><span class="command-tag">Stats</span></div><p>View pet statistics, care history and collection rankings.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="levels">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">↗</span><div><h2 class="category-title">XP & leveling</h2><p class="category-description">Chat, earn experience and unlock rewards.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="level rank xp experience"><div class="command-top"><span class="command-name">/level</span><span class="command-tag">Progress</span></div><p>View your level and experience progress.</p></article>
+            <article class="command" data-search="rank user profile"><div class="command-top"><span class="command-name">/rank</span><span class="command-tag">Progress</span></div><p>View your rank card or another member's rank.</p></article>
+            <article class="command" data-search="xp experience"><div class="command-top"><span class="command-name">/xp</span><span class="command-tag">Progress</span></div><p>Check your current experience points.</p></article>
+            <article class="command" data-search="leaderboard levels xp"><div class="command-top"><span class="command-name">/leaderboard xp</span><span class="command-tag">Ranking</span></div><p>View the server's XP leaderboard.</p></article>
+            <article class="command" data-search="rewards claim level"><div class="command-top"><span class="command-name">/rewards</span><span class="command-tag">Rewards</span></div><p>View and claim your level-up rewards.</p></article>
+            <article class="command" data-search="level progress"><div class="command-top"><span class="command-name">/level progress</span><span class="command-tag">Progress</span></div><p>See how close you are to your next level.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="profiles">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">◎</span><div><h2 class="category-title">Profiles & customization</h2><p class="category-description">Create a profile that feels like you.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="profile view"><div class="command-top"><span class="command-name">/profile</span><span class="command-tag">Profile</span></div><p>View your profile or another member's profile.</p></article>
+            <article class="command" data-search="profile edit bio name"><div class="command-top"><span class="command-name">/profile edit</span><span class="command-tag">Customize</span></div><p>Update your profile name, bio and personal details.</p></article>
+            <article class="command" data-search="profile avatar background"><div class="command-top"><span class="command-name">/profile background</span><span class="command-tag">Customize</span></div><p>Choose a profile background or avatar style.</p></article>
+            <article class="command" data-search="profile colour color"><div class="command-top"><span class="command-name">/profile colour</span><span class="command-tag">Customize</span></div><p>Set your profile's accent colour.</p></article>
+            <article class="command" data-search="profile badge badges"><div class="command-top"><span class="command-name">/profile badges</span><span class="command-tag">Collection</span></div><p>View and manage your profile badges.</p></article>
+            <article class="command" data-search="profile title showcase"><div class="command-top"><span class="command-name">/profile showcase</span><span class="command-tag">Customize</span></div><p>Choose what to display on your profile.</p></article>
+            <article class="command" data-search="profile privacy reset"><div class="command-top"><span class="command-name">/profile privacy</span><span class="command-tag">Settings</span></div><p>Manage profile visibility and privacy options.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="moderation">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">⌑</span><div><h2 class="category-title">Moderation & administration</h2><p class="category-description">Keep your server organized, safe and running smoothly.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="ban user moderation"><div class="command-top"><span class="command-name">/ban</span><span class="command-tag">Moderation</span></div><p>Ban a member from the server.</p><code class="usage">/ban @user reason</code></article>
+            <article class="command" data-search="unban user"><div class="command-top"><span class="command-name">/unban</span><span class="command-tag">Moderation</span></div><p>Remove a user's ban.</p></article>
+            <article class="command" data-search="kick user"><div class="command-top"><span class="command-name">/kick</span><span class="command-tag">Moderation</span></div><p>Remove a member from the server.</p></article>
+            <article class="command" data-search="timeout mute duration"><div class="command-top"><span class="command-name">/timeout</span><span class="command-tag">Moderation</span></div><p>Temporarily restrict a member from communicating.</p></article>
+            <article class="command" data-search="warn warning"><div class="command-top"><span class="command-name">/warn</span><span class="command-tag">Moderation</span></div><p>Issue a warning to a member.</p></article>
+            <article class="command" data-search="warnings history"><div class="command-top"><span class="command-name">/warnings</span><span class="command-tag">Moderation</span></div><p>View a member's warning history.</p></article>
+            <article class="command" data-search="clearwarnings"><div class="command-top"><span class="command-name">/clearwarnings</span><span class="command-tag">Moderation</span></div><p>Clear a member's warning records.</p></article>
+            <article class="command" data-search="purge clear messages"><div class="command-top"><span class="command-name">/purge</span><span class="command-tag">Moderation</span></div><p>Bulk-delete recent messages.</p><code class="usage">/purge 25</code></article>
+            <article class="command" data-search="slowmode channel"><div class="command-top"><span class="command-name">/slowmode</span><span class="command-tag">Channel</span></div><p>Set a slowmode interval for a channel.</p></article>
+            <article class="command" data-search="lock unlock channel"><div class="command-top"><span class="command-name">/lock</span><span class="command-tag">Channel</span></div><p>Lock or unlock a channel.</p></article>
+            <article class="command" data-search="userinfo serverinfo"><div class="command-top"><span class="command-name">/userinfo</span><span class="command-tag">Information</span></div><p>View information about a member or the server.</p></article>
+            <article class="command" data-search="role add remove"><div class="command-top"><span class="command-name">/role</span><span class="command-tag">Roles</span></div><p>Add or remove a role from a member.</p></article>
+            <article class="command" data-search="nickname"><div class="command-top"><span class="command-name">/nickname</span><span class="command-tag">Members</span></div><p>Change a member's server nickname.</p></article>
+            <article class="command" data-search="modlogs logs"><div class="command-top"><span class="command-name">/modlogs</span><span class="command-tag">Logs</span></div><p>View moderation records and server logs.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="settings">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">⚙</span><div><h2 class="category-title">Configuration & bot settings</h2><p class="category-description">Customize how Suki works in your server.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="config settings dashboard"><div class="command-top"><span class="command-name">/config</span><span class="command-tag">Settings</span></div><p>View and manage Suki's server configuration.</p></article>
+            <article class="command" data-search="config language"><div class="command-top"><span class="command-name">/config language</span><span class="command-tag">Settings</span></div><p>Choose the bot's language.</p></article>
+            <article class="command" data-search="config timezone"><div class="command-top"><span class="command-name">/config timezone</span><span class="command-tag">Settings</span></div><p>Set your server's preferred timezone.</p></article>
+            <article class="command" data-search="config logs channel enable"><div class="command-top"><span class="command-name">/config logs</span><span class="command-tag">Settings</span></div><p>Choose a log channel and enable or disable server logging.</p></article>
+            <article class="command" data-search="config permissions"><div class="command-top"><span class="command-name">/config permissions</span><span class="command-tag">Settings</span></div><p>Review permissions required by Suki's features.</p></article>
+            <article class="command" data-search="config reset"><div class="command-top"><span class="command-name">/config reset</span><span class="command-tag">Settings</span></div><p>Reset selected server configuration settings.</p></article>
+          </div>
+        </section>
+
+        <section class="category" data-category="general">
+          <button class="category-header" aria-expanded="false">
+            <div class="category-heading"><span class="category-icon">✳</span><div><h2 class="category-title">General & information</h2><p class="category-description">Useful commands for getting to know Suki.</p></div></div>
+            <div class="category-meta"><span class="category-count"></span><span class="chevron">⌄</span></div>
+          </button>
+          <div class="command-list">
+            <article class="command" data-search="help commands guide"><div class="command-top"><span class="command-name">/help</span><span class="command-tag">Help</span></div><p>View the command guide or explore a specific category.</p></article>
+            <article class="command" data-search="about bot information"><div class="command-top"><span class="command-name">/about</span><span class="command-tag">Info</span></div><p>Learn more about Suki.</p></article>
+            <article class="command" data-search="ping latency"><div class="command-top"><span class="command-name">/ping</span><span class="command-tag">Info</span></div><p>Check Suki's response latency.</p></article>
+            <article class="command" data-search="botinfo version uptime"><div class="command-top"><span class="command-name">/botinfo</span><span class="command-tag">Info</span></div><p>View bot information, version and uptime.</p></article>
+            <article class="command" data-search="invite add bot"><div class="command-top"><span class="command-name">/invite</span><span class="command-tag">Links</span></div><p>Get a link to invite Suki to a server.</p></article>
+            <article class="command" data-search="support server"><div class="command-top"><span class="command-name">/support</span><span class="command-tag">Links</span></div><p>Get an invitation to the support server.</p></article>
+            <article class="command" data-search="feedback suggestion report"><div class="command-top"><span class="command-name">/feedback</span><span class="command-tag">Community</span></div><p>Send feedback or suggestions about Suki.</p></article>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="empty-state" id="emptyState">
+        <h3>No commands found.</h3>
+        <p>Try another search or choose a different category.</p>
+      </div>
+
+      <section class="bottom-cta reveal">
+        <div class="eyebrow">
+          <span class="status-dot" aria-hidden="true"></span>
+          Make yourself at home
+        </div>
+        <h2>Ready to meet Suki?</h2>
+        <p>Bring a little bit of everything to your Discord server.</p>
+        <a class="button button-primary" href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot" target="_blank" rel="noopener noreferrer">
+          Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="/" aria-label="SUKI homepage">
+          <span class="brand-mark" aria-hidden="true">猫</span>
+          <span class="brand-name">suki<span>.</span></span>
+        </a>
+        <p class="footer-brand" style="margin-top: 9px;">
+          A little bit of everything.
+        </p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="/">Home</a>
+        <a href="/features/">Features</a>
+        <a href="/commands/">Commands</a>
+        <a href="/embeds/">Embeds</a>
+        <a href="https://discord.gg/N6ubjFkZKF" target="_blank" rel="noopener noreferrer">Support server</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById("commandSearch");
+    const filterButtons = document.querySelectorAll(".filter-button");
+    const categories = document.querySelectorAll(".category");
+    const resultCount = document.getElementById("resultCount");
+    const emptyState = document.getElementById("emptyState");
+
+    let activeFilter = "all";
+
+    function updateCommands() {
+      const query = searchInput.value.trim().toLowerCase();
+      let totalVisible = 0;
+
+      categories.forEach(category => {
+        const categoryName = category.dataset.category;
+        const matchesFilter = activeFilter === "all" || activeFilter === categoryName;
+        const commands = category.querySelectorAll(".command");
+        let visibleInCategory = 0;
+
+        commands.forEach(command => {
+          const searchableText = (
+            command.textContent + " " + (command.dataset.search || "")
+          ).toLowerCase();
+
+          const matchesSearch = !query || searchableText.includes(query);
+          const visible = matchesFilter && matchesSearch;
+
+          command.hidden = !visible;
+
+          if (visible) {
+            visibleInCategory++;
+            totalVisible++;
+          }
+        });
+
+        category.hidden = visibleInCategory === 0;
+
+        const header = category.querySelector(".category-header");
+        const hasActiveSearch = query.length > 0;
+        const hasActiveFilter = activeFilter !== "all";
+
+        if (hasActiveSearch || hasActiveFilter) {
+          category.classList.toggle("open", visibleInCategory > 0);
+        }
+
+        header.setAttribute(
+          "aria-expanded",
+          String(category.classList.contains("open"))
+        );
+      });
+
+      resultCount.textContent = totalVisible;
+      emptyState.classList.toggle("visible", totalVisible === 0);
     }
 
-    header.setAttribute(
-      "aria-expanded",
-      category.classList.contains("open") ? "true" : "false"
-    );
-  });
+    searchInput.addEventListener("input", updateCommands);
 
-  resultCount.textContent = totalVisible;
-  emptyState.classList.toggle("visible", totalVisible === 0);
-}
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach(item => {
+          item.classList.remove("active");
+          item.setAttribute("aria-pressed", "false");
+        });
 
-searchInput.addEventListener("input", updateCommands);
+        button.classList.add("active");
+        button.setAttribute("aria-pressed", "true");
 
-filterButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    filterButtons.forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        updateCommands();
+      });
+    });
 
-    activeFilter = button.dataset.filter;
+    document.querySelectorAll(".category-header").forEach(header => {
+      header.addEventListener("click", () => {
+        const category = header.closest(".category");
+
+        if (category.hidden) return;
+
+        const isOpen = category.classList.toggle("open");
+        header.setAttribute("aria-expanded", String(isOpen));
+      });
+    });
+
+    categories.forEach(category => {
+      const count = category.querySelectorAll(".command").length;
+      category.querySelector(".category-count").textContent = count + " commands";
+    });
+
     updateCommands();
-  });
-});
 
-document.querySelectorAll(".category-header").forEach(header => {
-  header.addEventListener("click", () => {
-    const category = header.closest(".category");
+    const revealElements = document.querySelectorAll(".reveal");
 
-    if (category.hidden) return;
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.08
+        }
+      );
 
-    const isOpen = category.classList.toggle("open");
-    header.setAttribute("aria-expanded", String(isOpen));
-  });
-});
-
-categories.forEach(category => {
-  const count = category.querySelectorAll(".command").length;
-  category.querySelector(".category-count").textContent = count + " commands";
-});
-
-updateCommands();
-</script>
+      revealElements.forEach(element => observer.observe(element));
+    } else {
+      revealElements.forEach(element => element.classList.add("visible"));
+    }
+  </script>
 </body>
 </html>
