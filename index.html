@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b0b0d">
-  <meta name="description" content="suki: all in one discord management">
-  <title>suki. | home</title>
+  <meta name="description" content="Suki's interactive embed builder.">
+  <title>suki. | embeds</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +48,16 @@
     a {
       color: inherit;
       text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -170,13 +179,13 @@
 
     main {
       display: flex;
-      min-height: 610px;
+      min-height: 500px;
       align-items: center;
     }
 
     .hero {
       width: 100%;
-      padding: 110px 0 120px;
+      padding: 100px 0 110px;
       text-align: center;
     }
 
@@ -221,14 +230,6 @@
       line-height: 1.8;
     }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
     .hero-note {
       margin-top: 25px;
       color: #68656d;
@@ -236,7 +237,11 @@
       font-size: 10px;
     }
 
-    .overview {
+    .hero-note span {
+      color: var(--accent-hover);
+    }
+
+    .builder-section {
       padding: 85px 0;
       border-top: 1px solid var(--border);
     }
@@ -271,84 +276,16 @@
       line-height: 1.8;
     }
 
-    .preview-grid {
+    .builder-layout {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: start;
       gap: 14px;
     }
 
-    .preview-card {
-      display: flex;
-      min-height: 215px;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 23px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--surface);
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .preview-card:hover {
-      transform: translateY(-3px);
-      border-color: #484048;
-      background: var(--surface-hover);
-    }
-
-    .preview-icon {
-      display: grid;
-      width: 38px;
-      height: 38px;
-      place-items: center;
-      margin-bottom: 22px;
-      border-radius: 9px;
-      background: #211116;
-      color: var(--accent-hover);
-      font-size: 18px;
-    }
-
-    .preview-card h3 {
-      margin-bottom: 8px;
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .preview-card p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    .preview-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: auto;
-      padding-top: 20px;
-      color: var(--accent-hover);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .preview-link span {
-      transition: transform 0.2s ease;
-    }
-
-    .preview-card:hover .preview-link span {
-      transform: translateX(4px);
-    }
-
-    .highlights {
-      padding: 0 0 90px;
-    }
-
-    .highlight-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .highlight {
+    .builder-panel,
+    .preview-panel {
+      min-width: 0;
       padding: 23px;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -356,33 +293,608 @@
       transition: background 0.2s ease, border-color 0.2s ease;
     }
 
-    .highlight:hover {
+    .builder-panel:hover,
+    .preview-panel:hover {
       border-color: #484048;
       background: var(--surface-hover);
     }
 
-    .highlight > span {
-      display: block;
-      margin-bottom: 15px;
-      color: var(--accent-hover);
-      font-size: 19px;
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
     }
 
-    .highlight h3 {
+    .panel-heading h3 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.35px;
+    }
+
+    .panel-label {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .form-section {
+      padding: 22px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .form-section:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .form-section-title {
+      margin-bottom: 15px;
+      color: var(--accent-hover);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       margin-bottom: 8px;
-      font-size: 15px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .field-hint {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 400;
+    }
+
+    .form-control {
+      width: 100%;
+      min-height: 42px;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      background: #0b0b0d;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 12px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .form-control::placeholder {
+      color: #68656d;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      background: #101013;
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-picker {
+      width: 46px;
+      height: 42px;
+      flex-shrink: 0;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0b0b0d;
+      cursor: pointer;
+    }
+
+    .color-row .form-control {
+      flex: 1;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 12px 0;
+    }
+
+    .toggle-copy strong {
+      display: block;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .toggle-copy span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 39px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #242429;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .toggle-track::before {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #96939b;
+      content: "";
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .toggle input:checked + .toggle-track {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .toggle input:checked + .toggle-track::before {
+      transform: translateX(17px);
+      background: white;
+    }
+
+    .toggle input:focus-visible + .toggle-track {
+      outline: 2px solid var(--accent-hover);
+      outline-offset: 3px;
+    }
+
+    .fields-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field-editor {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b0b0d;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .field-editor:hover {
+      border-color: #484048;
+      background: #101013;
+    }
+
+    .field-editor-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .field-editor-top span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .remove-field {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--accent-hover);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .remove-field:hover {
+      border-color: var(--accent);
+      background: #211116;
+    }
+
+    .add-field {
+      display: flex;
+      width: 100%;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      border: 1px dashed #484048;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--accent-hover);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .add-field:hover {
+      border-color: var(--accent);
+      background: #211116;
+    }
+
+    .field-options {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .field-options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .field-options input {
+      accent-color: var(--accent);
+    }
+
+    .builder-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .builder-actions .button {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .preview-panel {
+      position: sticky;
+      top: 92px;
+    }
+
+    .preview-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .preview-label::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #43b581;
+      content: "";
+    }
+
+    .discord-window {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid #242429;
+      border-radius: 10px;
+      background: #313338;
+    }
+
+    .discord-message {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .discord-avatar {
+      display: grid;
+      width: 39px;
+      height: 39px;
+      flex-shrink: 0;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 50%;
+      background: #211116;
+      color: var(--accent-hover);
+      font-size: 16px;
       font-weight: 600;
     }
 
-    .highlight p {
-      color: var(--muted);
+    .discord-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .discord-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .discord-user {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 7px;
+      color: #f2f3f5;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .bot-tag {
+      padding: 2px 4px;
+      border-radius: 3px;
+      background: #5865f2;
+      color: white;
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .discord-time {
+      color: #949ba4;
+      font-size: 10px;
+      font-weight: 400;
+    }
+
+    .embed-card {
+      max-width: 100%;
+      margin-top: 5px;
+      padding: 13px 14px 15px;
+      overflow: hidden;
+      border-left: 4px solid var(--accent);
+      border-radius: 3px;
+      background: #2b2d31;
+      color: #dbdee1;
+    }
+
+    .embed-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 9px;
+      color: #f2f3f5;
+      font-size: 11px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-author img {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .embed-title {
+      margin-bottom: 7px;
+      color: #00a8fc;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-title a {
+      color: #00a8fc;
+    }
+
+    .embed-title a:hover {
+      text-decoration: underline;
+    }
+
+    .embed-description {
+      color: #dbdee1;
       font-size: 12px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 9px;
+      margin-top: 13px;
+    }
+
+    .embed-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .embed-field strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #f2f3f5;
+      font-size: 11px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-field span {
+      display: block;
+      color: #dbdee1;
+      font-size: 11px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-thumbnail {
+      float: right;
+      width: 75px;
+      max-width: 30%;
+      max-height: 75px;
+      margin: 0 0 10px 12px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .embed-image {
+      display: block;
+      width: 100%;
+      max-height: 260px;
+      margin-top: 13px;
+      border-radius: 3px;
+      object-fit: contain;
+    }
+
+    .embed-footer {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      color: #b5bac1;
+      font-size: 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .embed-footer img {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .embed-empty {
+      color: #949ba4;
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .json-section {
+      margin-top: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b0b0d;
+    }
+
+    .json-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .json-heading span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .copy-json {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--accent-hover);
+      font-size: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .copy-json:hover {
+      border-color: var(--accent);
+      background: #211116;
+    }
+
+    .json-output {
+      max-height: 250px;
+      padding: 14px;
+      overflow: auto;
+      color: #c9aab1;
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .builder-tip {
+      margin-top: 15px;
+      color: var(--muted);
+      font-size: 11px;
       line-height: 1.8;
     }
 
-    .divider {
-      height: 1px;
-      background: var(--border);
+    .identity-reset {
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .identity-reset:hover {
+      border-color: #55515a;
+      background: var(--surface);
+      color: var(--text);
     }
 
     .bottom-cta {
@@ -487,9 +999,12 @@
         gap: 12px;
       }
 
-      .preview-grid,
-      .highlight-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .builder-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-panel {
+        position: static;
       }
     }
 
@@ -534,21 +1049,43 @@
         font-size: 14px;
       }
 
-      .overview {
+      .builder-section {
         padding: 65px 0;
       }
 
-      .preview-grid,
-      .highlight-grid {
+      .builder-panel,
+      .preview-panel {
+        padding: 16px;
+      }
+
+      .form-row {
         grid-template-columns: 1fr;
+        gap: 0;
       }
 
-      .preview-card {
-        min-height: 195px;
+      .discord-window {
+        padding: 12px;
       }
 
-      .highlights {
-        padding-bottom: 60px;
+      .discord-message {
+        gap: 9px;
+      }
+
+      .discord-avatar {
+        width: 33px;
+        height: 33px;
+      }
+
+      .embed-card {
+        padding: 11px;
+      }
+
+      .builder-actions {
+        flex-direction: column;
+      }
+
+      .builder-actions .button {
+        width: 100%;
       }
 
       .bottom-cta {
@@ -593,10 +1130,10 @@
       </a>
 
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="/" aria-current="page">Home</a>
+        <a href="/">Home</a>
         <a href="/features/">Features</a>
         <a href="/commands/">Commands</a>
-        <a href="/embeds/">Embeds</a>
+        <a href="/embeds/" aria-current="page">Embeds</a>
       </nav>
 
       <a
@@ -618,131 +1155,217 @@
       </div>
 
       <h1>
-        your server.
-        <span>your own way.</span>
+        make it yours.
+        <span>down to every detail.</span>
       </h1>
 
       <p class="intro">
-        A little bit of everything.
-        Make your server feel like yours with Suki.
+        Create, customize and preview your own Discord embeds.
       </p>
 
-      <div class="actions">
-        <a
-          class="button button-primary"
-          href="https://discord.com/oauth2/authorize?client_id=1566529997840191498&permissions=275146730560&integration_type=0&scope=applications.commands+bot"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="button button-secondary" href="/features/">
-          Explore features <span class="button-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-
       <p class="hero-note">
-        suki: all in one discord management
+        <span>✳</span> featuring your design.
       </p>
     </section>
   </main>
 
-  <section class="overview">
+  <section class="builder-section">
     <div class="container">
       <div class="section-heading reveal">
         <div>
-          <p class="section-kicker">Get to know Suki</p>
-          <h2>Everything in one place.</h2>
+          <p class="section-kicker">EMBED BUILDER</p>
+          <h2>Build your embed.</h2>
         </div>
 
         <p class="section-description">
-          Explore the tools, commands and customization options
-          that bring your Discord community together.
+          Edit the fields on the left and watch your Discord-style
+          preview update instantly. No coding required.
         </p>
       </div>
 
-      <div class="preview-grid">
-        <a class="preview-card reveal" href="/features/">
-          <div class="preview-icon" aria-hidden="true">✧</div>
-          <h3>Features</h3>
-          <p>
-            From server management to economy, games and collectibles.
-            Explore everything Suki has to offer.
-          </p>
-          <span class="preview-link">
-            Explore features <span aria-hidden="true">→</span>
-          </span>
-        </a>
+      <div class="builder-layout">
+        <div class="builder-panel reveal">
+          <div class="panel-heading">
+            <h3>Embed editor</h3>
+            <span class="panel-label">CUSTOMISE</span>
+          </div>
 
-        <a class="preview-card reveal" href="/commands/">
-          <div class="preview-icon" aria-hidden="true">⌘</div>
-          <h3>Commands</h3>
-          <p>
-            Find the commands you need, explore categories and
-            learn how to use Suki.
-          </p>
-          <span class="preview-link">
-            Browse commands <span aria-hidden="true">→</span>
-          </span>
-        </a>
+          <section class="form-section">
+            <div class="panel-heading">
+              <h3>Bot identity</h3>
+              <button class="identity-reset" id="resetIdentity" type="button">
+                Reset identity
+              </button>
+            </div>
 
-        <a class="preview-card reveal" href="/embeds/">
-          <div class="preview-icon" aria-hidden="true">▤</div>
-          <h3>Embeds</h3>
-          <p>
-            Discover customizable embeds for welcomes,
-            announcements and server messages.
-          </p>
-          <span class="preview-link">
-            Explore embeds <span aria-hidden="true">→</span>
-          </span>
-        </a>
-      </div>
-    </div>
-  </section>
+            <p class="form-section-title">Message appearance</p>
 
-  <section class="highlights">
-    <div class="container">
-      <div class="section-heading reveal">
-        <div>
-          <p class="section-kicker">A little bit of everything</p>
-          <h2>Made for your community.</h2>
+            <div class="form-group">
+              <label for="botName">Bot name</label>
+              <input class="form-control" id="botName" maxlength="80" value="suki." placeholder="Enter bot name...">
+            </div>
+
+            <div class="form-group">
+              <label for="botAvatar">Bot avatar URL</label>
+              <input class="form-control" id="botAvatar" type="url" placeholder="https://example.com/avatar.png">
+            </div>
+
+            <p class="builder-tip">
+              Customise the bot's appearance in the preview.
+              This does not change its actual Discord profile.
+            </p>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Basic information</p>
+
+            <div class="form-group">
+              <label for="embedTitle">
+                Title
+                <span class="field-hint">256 characters max</span>
+              </label>
+              <input class="form-control" id="embedTitle" maxlength="256" placeholder="Something interesting...">
+            </div>
+
+            <div class="form-group">
+              <label for="embedDescription">
+                Description
+                <span class="field-hint">4096 characters max</span>
+              </label>
+              <textarea class="form-control" id="embedDescription" maxlength="4096" placeholder="Write your embed description here..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="embedUrl">Title URL <span class="field-hint">Optional</span></label>
+              <input class="form-control" id="embedUrl" type="url" placeholder="https://example.com">
+            </div>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Appearance</p>
+
+            <div class="form-group">
+              <label for="embedColor">Embed colour</label>
+              <div class="color-row">
+                <input class="color-picker" id="embedColorPicker" type="color" value="#c14d62" aria-label="Choose embed colour">
+                <input class="form-control" id="embedColor" value="#c14d62" maxlength="7" aria-label="Embed colour hex code">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="embedThumbnail">Thumbnail URL</label>
+                <input class="form-control" id="embedThumbnail" type="url" placeholder="https://...">
+              </div>
+
+              <div class="form-group">
+                <label for="embedImage">Main image URL</label>
+                <input class="form-control" id="embedImage" type="url" placeholder="https://...">
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Author</p>
+
+            <div class="form-group">
+              <label for="embedAuthor">Author name</label>
+              <input class="form-control" id="embedAuthor" maxlength="256" placeholder="Your name or server name">
+            </div>
+
+            <div class="form-group">
+              <label for="embedAuthorUrl">Author URL</label>
+              <input class="form-control" id="embedAuthorUrl" type="url" placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="embedAuthorIcon">Author icon URL</label>
+              <input class="form-control" id="embedAuthorIcon" type="url" placeholder="https://example.com/icon.png">
+            </div>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Embed fields</p>
+
+            <div class="fields-list" id="fieldsList"></div>
+
+            <button class="add-field" id="addField" type="button">
+              <span>＋</span> Add embed field
+            </button>
+          </section>
+
+          <section class="form-section">
+            <p class="form-section-title">Footer</p>
+
+            <div class="form-group">
+              <label for="embedFooter">Footer text</label>
+              <input class="form-control" id="embedFooter" maxlength="2048" placeholder="A little note at the bottom...">
+            </div>
+
+            <div class="form-group">
+              <label for="embedFooterIcon">Footer icon URL</label>
+              <input class="form-control" id="embedFooterIcon" type="url" placeholder="https://example.com/icon.png">
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-copy">
+                <strong>Show timestamp</strong>
+                <span>Add the current timestamp to your embed.</span>
+              </div>
+              <label class="toggle">
+                <input id="embedTimestamp" type="checkbox">
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </section>
+
+          <div class="builder-actions">
+            <button class="button button-secondary" id="resetButton" type="button">
+              Reset builder
+            </button>
+            <button class="button button-primary" id="copyButton" type="button">
+              Copy embed JSON <span class="button-arrow">↗</span>
+            </button>
+          </div>
         </div>
 
-        <p class="section-description">
-          More ways to connect, create, collect and have fun
-          with the people in your server.
-        </p>
-      </div>
+        <aside class="preview-panel reveal">
+          <div class="panel-heading">
+            <h3>Live preview</h3>
+            <span class="preview-label">PREVIEW</span>
+          </div>
 
-      <div class="highlight-grid">
-        <article class="highlight reveal">
-          <span aria-hidden="true">◈</span>
-          <h3>Build your economy</h3>
-          <p>
-            Earn currency, take on jobs, shop for items
-            and grow your collection.
-          </p>
-        </article>
+          <div class="discord-window">
+            <div class="discord-message">
+              <div class="discord-avatar" id="discordAvatarPreview">猫</div>
 
-        <article class="highlight reveal">
-          <span aria-hidden="true">♡</span>
-          <h3>Make it personal</h3>
-          <p>
-            Collect pets, customize your profile
-            and show off your progress.
-          </p>
-        </article>
+              <div class="discord-content">
+                <div class="discord-user">
+                  <span id="discordBotName">suki.</span>
+                  <span class="bot-tag">BOT</span>
+                  <span class="discord-time">Today at 12:00 PM</span>
+                </div>
 
-        <article class="highlight reveal">
-          <span aria-hidden="true">✦</span>
-          <h3>Keep things fun</h3>
-          <p>
-            Play games, discover drops and give
-            your community more to enjoy.
+                <div class="embed-card" id="embedPreview">
+                  <div class="embed-empty">Start typing to build your embed...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="json-section">
+            <div class="json-heading">
+              <span>Generated JSON</span>
+              <button class="copy-json" id="copyJsonButton" type="button">Copy JSON</button>
+            </div>
+            <pre class="json-output" id="jsonOutput">{}</pre>
+          </div>
+
+          <p class="builder-tip">
+            ✳ This preview is a visual approximation of a Discord embed.
+            Some details may appear slightly differently in Discord itself.
           </p>
-        </article>
+        </aside>
       </div>
     </div>
   </section>
@@ -753,14 +1376,14 @@
     <section class="bottom-cta reveal">
       <div class="eyebrow">
         <span class="status-dot" aria-hidden="true"></span>
-        Make yourself at home
+        MAKE IT OFFICIAL
       </div>
 
-      <h2>Ready to add Suki?</h2>
+      <h2>Your embed. Your server.</h2>
 
       <p>
-        Give your Discord server a little something extra.
-        Bring Suki into your community and make the experience your own.
+        Copy your embed JSON and use it
+        as the starting point for your Suki embed setup.
       </p>
 
       <a
@@ -769,7 +1392,7 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        Add to Discord <span class="button-arrow" aria-hidden="true">↗</span>
+        Add Suki to Discord <span class="button-arrow">↗</span>
       </a>
     </section>
   </div>
@@ -797,6 +1420,389 @@
   </footer>
 
   <script>
+    const fieldsList = document.getElementById("fieldsList");
+    const embedPreview = document.getElementById("embedPreview");
+    const jsonOutput = document.getElementById("jsonOutput");
+
+    const botNameInput = document.getElementById("botName");
+    const botAvatarInput = document.getElementById("botAvatar");
+    const discordBotName = document.getElementById("discordBotName");
+    const discordAvatarPreview = document.getElementById("discordAvatarPreview");
+    const colorPicker = document.getElementById("embedColorPicker");
+
+    const inputs = {
+      title: document.getElementById("embedTitle"),
+      description: document.getElementById("embedDescription"),
+      url: document.getElementById("embedUrl"),
+      color: document.getElementById("embedColor"),
+      thumbnail: document.getElementById("embedThumbnail"),
+      image: document.getElementById("embedImage"),
+      author: document.getElementById("embedAuthor"),
+      authorUrl: document.getElementById("embedAuthorUrl"),
+      authorIcon: document.getElementById("embedAuthorIcon"),
+      footer: document.getElementById("embedFooter"),
+      footerIcon: document.getElementById("embedFooterIcon"),
+      timestamp: document.getElementById("embedTimestamp")
+    };
+
+    function isValidUrl(value) {
+      if (!value) return false;
+
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" || url.protocol === "http:";
+      } catch {
+        return false;
+      }
+    }
+
+    function safeUrl(value) {
+      return isValidUrl(value) ? value : "";
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[character]);
+    }
+
+    function renderBotIdentity() {
+      const name = botNameInput.value.trim() || "suki.";
+      const avatar = safeUrl(botAvatarInput.value.trim());
+
+      discordBotName.textContent = name;
+
+      if (avatar) {
+        discordAvatarPreview.innerHTML = "";
+
+        const img = document.createElement("img");
+        img.src = avatar;
+        img.alt = "";
+        img.onerror = () => {
+          discordAvatarPreview.textContent = "猫";
+        };
+
+        discordAvatarPreview.appendChild(img);
+      } else {
+        discordAvatarPreview.textContent = "猫";
+      }
+    }
+
+    function resetBotIdentity() {
+      botNameInput.value = "suki.";
+      botAvatarInput.value = "";
+      renderBotIdentity();
+    }
+
+    function getFields() {
+      return [...fieldsList.querySelectorAll(".field-editor")].map(editor => ({
+        name: editor.querySelector(".field-name").value.trim(),
+        value: editor.querySelector(".field-value").value.trim(),
+        inline: editor.querySelector(".field-inline").checked
+      })).filter(field => field.name || field.value);
+    }
+
+    function getEmbedData() {
+      const data = {};
+
+      const title = inputs.title.value.trim();
+      const description = inputs.description.value.trim();
+      const url = safeUrl(inputs.url.value.trim());
+      const author = inputs.author.value.trim();
+      const authorUrl = safeUrl(inputs.authorUrl.value.trim());
+      const authorIcon = safeUrl(inputs.authorIcon.value.trim());
+      const footer = inputs.footer.value.trim();
+      const footerIcon = safeUrl(inputs.footerIcon.value.trim());
+      const thumbnail = safeUrl(inputs.thumbnail.value.trim());
+      const image = safeUrl(inputs.image.value.trim());
+      const color = inputs.color.value.trim();
+
+      if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+        data.color = parseInt(color.slice(1), 16);
+      }
+
+      if (title) data.title = title;
+      if (description) data.description = description;
+      if (url) data.url = url;
+
+      if (author) {
+        data.author = { name: author };
+
+        if (authorUrl) data.author.url = authorUrl;
+        if (authorIcon) data.author.icon_url = authorIcon;
+      }
+
+      const fields = getFields();
+
+      if (fields.length) {
+        data.fields = fields.map(field => ({
+          name: field.name || "Untitled field",
+          value: field.value || "No content",
+          inline: field.inline
+        }));
+      }
+
+      if (footer) {
+        data.footer = { text: footer };
+
+        if (footerIcon) data.footer.icon_url = footerIcon;
+      }
+
+      if (thumbnail) data.thumbnail = { url: thumbnail };
+      if (image) data.image = { url: image };
+
+      if (inputs.timestamp.checked) {
+        data.timestamp = new Date().toISOString();
+      }
+
+      return data;
+    }
+
+    function renderPreview() {
+      const data = getEmbedData();
+
+      embedPreview.style.borderLeftColor =
+        inputs.color.value.match(/^#[0-9a-fA-F]{6}$/)
+          ? inputs.color.value
+          : "#c14d62";
+
+      let html = "";
+
+      if (data.author) {
+        html += `
+          <div class="embed-author">
+            ${data.author.icon_url
+              ? `<img src="${escapeHtml(data.author.icon_url)}" alt="" onerror="this.style.display='none'">`
+              : ""}
+            ${escapeHtml(data.author.name)}
+          </div>
+        `;
+      }
+
+      if (data.thumbnail) {
+        html += `
+          <img class="embed-thumbnail"
+            src="${escapeHtml(data.thumbnail.url)}"
+            alt=""
+            onerror="this.style.display='none'">
+        `;
+      }
+
+      if (data.title) {
+        html += `
+          <div class="embed-title">
+            ${data.url
+              ? `<a href="${escapeHtml(data.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(data.title)}</a>`
+              : escapeHtml(data.title)}
+          </div>
+        `;
+      }
+
+      if (data.description) {
+        html += `<div class="embed-description">${escapeHtml(data.description)}</div>`;
+      }
+
+      if (data.fields && data.fields.length) {
+        html += `<div class="embed-fields">`;
+
+        data.fields.forEach(field => {
+          html += `
+            <div class="embed-field ${field.inline ? "" : "full"}">
+              <strong>${escapeHtml(field.name)}</strong>
+              <span>${escapeHtml(field.value)}</span>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      if (data.image) {
+        html += `
+          <img class="embed-image"
+            src="${escapeHtml(data.image.url)}"
+            alt=""
+            onerror="this.style.display='none'">
+        `;
+      }
+
+      if (data.footer) {
+        html += `
+          <div class="embed-footer">
+            ${data.footer.icon_url
+              ? `<img src="${escapeHtml(data.footer.icon_url)}" alt="" onerror="this.style.display='none'">`
+              : ""}
+            ${escapeHtml(data.footer.text)}
+            ${data.timestamp
+              ? `<span> · ${new Date(data.timestamp).toLocaleString()}</span>`
+              : ""}
+          </div>
+        `;
+      } else if (data.timestamp) {
+        html += `
+          <div class="embed-footer">
+            ${new Date(data.timestamp).toLocaleString()}
+          </div>
+        `;
+      }
+
+      if (!html) {
+        html = `<div class="embed-empty">Start typing to build your embed...</div>`;
+      }
+
+      embedPreview.innerHTML = html;
+      jsonOutput.textContent = JSON.stringify(data, null, 2);
+    }
+
+    function addField() {
+      const existingFields = fieldsList.querySelectorAll(".field-editor");
+
+      if (existingFields.length >= 25) {
+        alert("Discord embeds can contain a maximum of 25 fields.");
+        return;
+      }
+
+      const editor = document.createElement("div");
+      editor.className = "field-editor";
+
+      editor.innerHTML = `
+        <div class="field-editor-top">
+          <span>Field ${existingFields.length + 1}</span>
+          <button class="remove-field" type="button" aria-label="Remove field">×</button>
+        </div>
+
+        <div class="form-group">
+          <label>Field name</label>
+          <input class="form-control field-name" maxlength="256" placeholder="Field heading">
+        </div>
+
+        <div class="form-group">
+          <label>Field value</label>
+          <textarea class="form-control field-value" maxlength="1024" placeholder="Field content..." style="min-height:75px;"></textarea>
+        </div>
+
+        <div class="field-options">
+          <label>
+            <input class="field-inline" type="checkbox">
+            Display inline
+          </label>
+        </div>
+      `;
+
+      editor.querySelectorAll("input, textarea").forEach(input => {
+        input.addEventListener("input", renderPreview);
+        input.addEventListener("change", renderPreview);
+      });
+
+      editor.querySelector(".remove-field").addEventListener("click", () => {
+        editor.remove();
+        updateFieldLabels();
+        renderPreview();
+      });
+
+      fieldsList.appendChild(editor);
+      updateFieldLabels();
+      renderPreview();
+
+      editor.querySelector(".field-name").focus();
+    }
+
+    function updateFieldLabels() {
+      fieldsList.querySelectorAll(".field-editor").forEach((editor, index) => {
+        editor.querySelector(".field-editor-top span").textContent = `Field ${index + 1}`;
+      });
+    }
+
+    function resetBuilder() {
+      Object.values(inputs).forEach(input => {
+        if (input.type === "checkbox") {
+          input.checked = false;
+        } else if (input.id === "embedColor") {
+          input.value = "#c14d62";
+        } else {
+          input.value = "";
+        }
+      });
+
+      colorPicker.value = "#c14d62";
+      fieldsList.innerHTML = "";
+
+      resetBotIdentity();
+      renderPreview();
+    }
+
+    function updateColorFromPicker() {
+      inputs.color.value = colorPicker.value;
+      renderPreview();
+    }
+
+    function updateColorFromText() {
+      const value = inputs.color.value.trim();
+
+      if (/^#[0-9a-fA-F]{6}$/.test(value)) {
+        colorPicker.value = value;
+      }
+
+      renderPreview();
+    }
+
+    async function copyJson() {
+      const json = JSON.stringify(getEmbedData(), null, 2);
+      const button = document.getElementById("copyButton");
+      const miniButton = document.getElementById("copyJsonButton");
+
+      const originalButtonContent = 'Copy embed JSON <span class="button-arrow">↗</span>';
+
+      try {
+        await navigator.clipboard.writeText(json);
+      } catch {
+        const temporary = document.createElement("textarea");
+        temporary.value = json;
+        temporary.style.position = "fixed";
+        temporary.style.opacity = "0";
+        document.body.appendChild(temporary);
+        temporary.select();
+
+        const copied = document.execCommand("copy");
+        temporary.remove();
+
+        if (!copied) {
+          button.textContent = "Unable to copy";
+          miniButton.textContent = "Unable to copy";
+          return;
+        }
+      }
+
+      button.textContent = "Copied! ✓";
+      miniButton.textContent = "Copied!";
+
+      setTimeout(() => {
+        button.innerHTML = originalButtonContent;
+        miniButton.textContent = "Copy JSON";
+      }, 1800);
+    }
+
+    Object.values(inputs).forEach(input => {
+      input.addEventListener("input", renderPreview);
+      input.addEventListener("change", renderPreview);
+    });
+
+    botNameInput.addEventListener("input", renderBotIdentity);
+    botAvatarInput.addEventListener("input", renderBotIdentity);
+
+    document.getElementById("resetIdentity").addEventListener("click", resetBotIdentity);
+
+    colorPicker.addEventListener("input", updateColorFromPicker);
+    inputs.color.addEventListener("input", updateColorFromText);
+    document.getElementById("addField").addEventListener("click", addField);
+    document.getElementById("resetButton").addEventListener("click", resetBuilder);
+    document.getElementById("copyButton").addEventListener("click", copyJson);
+    document.getElementById("copyJsonButton").addEventListener("click", copyJson);
+
     const revealElements = document.querySelectorAll(".reveal");
 
     if ("IntersectionObserver" in window) {
@@ -818,6 +1824,9 @@
     } else {
       revealElements.forEach(element => element.classList.add("visible"));
     }
+
+    renderPreview();
+    renderBotIdentity();
   </script>
 </body>
 </html>
